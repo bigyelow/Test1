@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "SubTestExtension.h"
 
 @interface ViewController ()
 
@@ -16,7 +17,9 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  // Do any additional setup after loading the view, typically from a nib.
+
+  SubTestExtension *se = [[SubTestExtension alloc] init];
+//  se.identifier = @"1";
 }
 
 

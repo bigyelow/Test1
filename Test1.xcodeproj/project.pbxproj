@@ -15,6 +15,8 @@
 		71B12A381EE1063500622A2E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71B12A361EE1063500622A2E /* LaunchScreen.storyboard */; };
 		71B12A431EE1063500622A2E /* Test1Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A421EE1063500622A2E /* Test1Tests.m */; };
 		71B12A4E1EE1063500622A2E /* Test1UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A4D1EE1063500622A2E /* Test1UITests.m */; };
+		71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A5C1EE1065C00622A2E /* TestExtension.m */; };
+		71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A5F1EE1067000622A2E /* SubTestExtension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,10 @@
 		71B12A491EE1063500622A2E /* Test1UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Test1UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71B12A4D1EE1063500622A2E /* Test1UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Test1UITests.m; sourceTree = "<group>"; };
 		71B12A4F1EE1063500622A2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		71B12A5B1EE1065C00622A2E /* TestExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestExtension.h; sourceTree = "<group>"; };
+		71B12A5C1EE1065C00622A2E /* TestExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestExtension.m; sourceTree = "<group>"; };
+		71B12A5E1EE1067000622A2E /* SubTestExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubTestExtension.h; sourceTree = "<group>"; };
+		71B12A5F1EE1067000622A2E /* SubTestExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubTestExtension.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,10 @@
 				71B12A361EE1063500622A2E /* LaunchScreen.storyboard */,
 				71B12A391EE1063500622A2E /* Info.plist */,
 				71B12A281EE1063500622A2E /* Supporting Files */,
+				71B12A5B1EE1065C00622A2E /* TestExtension.h */,
+				71B12A5C1EE1065C00622A2E /* TestExtension.m */,
+				71B12A5E1EE1067000622A2E /* SubTestExtension.h */,
+				71B12A5F1EE1067000622A2E /* SubTestExtension.m */,
 			);
 			path = Test1;
 			sourceTree = "<group>";
@@ -278,7 +288,9 @@
 			files = (
 				71B12A301EE1063500622A2E /* ViewController.m in Sources */,
 				71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */,
+				71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */,
 				71B12A2A1EE1063500622A2E /* main.m in Sources */,
+				71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
