@@ -10,4 +10,6 @@
 
 @interface SubTestExtension : TestExtension
 
+- (void)setIdentifier:(NSString *)identifier;
+
 @end

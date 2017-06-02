@@ -19,7 +19,9 @@
   [super viewDidLoad];
 
   SubTestExtension *se = [[SubTestExtension alloc] init];
-//  se.identifier = @"1";
+  [se setIdentifier:@"hh"];
+
+  NSLog(@"id = %@", se.identifier);
 }
 
 

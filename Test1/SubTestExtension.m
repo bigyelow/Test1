@@ -10,6 +10,9 @@
 
 @implementation SubTestExtension
 
-
+- (void)setIdentifier:(NSString *)identifier
+{
+  _identifier = [identifier copy];
+}
 
 @end
