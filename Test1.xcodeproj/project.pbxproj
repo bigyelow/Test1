@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A6C6761EF1461900E13CA3 /* PresentingViewController.m */; };
 		71B12A2A1EE1063500622A2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A291EE1063500622A2E /* main.m */; };
 		71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A2C1EE1063500622A2E /* AppDelegate.m */; };
 		71B12A301EE1063500622A2E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A2F1EE1063500622A2E /* ViewController.m */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		71A6C6751EF1461900E13CA3 /* PresentingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresentingViewController.h; sourceTree = "<group>"; };
+		71A6C6761EF1461900E13CA3 /* PresentingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentingViewController.m; sourceTree = "<group>"; };
 		71B12A251EE1063500622A2E /* Test1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71B12A291EE1063500622A2E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		71B12A2B1EE1063500622A2E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -120,6 +123,8 @@
 				71B12A5C1EE1065C00622A2E /* TestExtension.m */,
 				71B12A5E1EE1067000622A2E /* SubTestExtension.h */,
 				71B12A5F1EE1067000622A2E /* SubTestExtension.m */,
+				71A6C6751EF1461900E13CA3 /* PresentingViewController.h */,
+				71A6C6761EF1461900E13CA3 /* PresentingViewController.m */,
 			);
 			path = Test1;
 			sourceTree = "<group>";
@@ -289,6 +294,7 @@
 				71B12A301EE1063500622A2E /* ViewController.m in Sources */,
 				71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */,
 				71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */,
+				71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */,
 				71B12A2A1EE1063500622A2E /* main.m in Sources */,
 				71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */,
 			);

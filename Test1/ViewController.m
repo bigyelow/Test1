@@ -10,6 +10,7 @@
 
 #import "ViewController.h"
 #import "SubTestExtension.h"
+#import "PresentingViewController.h"
 
 @interface ViewController ()
 
@@ -23,10 +24,12 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  self.title = @"Home";
+
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Start"
                                                                             style:UIBarButtonItemStylePlain
                                                                            target:self
-                                                                           action:@selector(_te_startToLoad)];
+                                                                           action:@selector(_te_presentVC)];
   _webView = [[WKWebView alloc] initWithFrame:CGRectZero];
   [self.view addSubview:_webView];
 }
@@ -35,6 +38,13 @@
 {
   [super viewDidLayoutSubviews];
   _webView.frame = self.view.bounds;
+}
+
+- (void)_te_presentVC
+{
+  [self presentViewController:[[UINavigationController alloc] initWithRootViewController:[PresentingViewController new]]
+                     animated:YES
+                   completion:nil];
 }
 
 - (void)_te_startToLoad
