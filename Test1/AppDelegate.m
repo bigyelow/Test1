@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "Test1-Swift.h"
 
 @interface AppDelegate ()
 
@@ -22,6 +23,9 @@
   _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   _window.rootViewController = nav;
   [_window makeKeyAndVisible];
+
+  TestSwift *test = [[TestSwift alloc] init];
+  [test test];
 
   return YES;
 }

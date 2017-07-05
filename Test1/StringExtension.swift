@@ -1,0 +1,114 @@
+//
+//  StringExtension.swift
+//  Test1
+//
+//  Created by bigyelow on 05/07/2017.
+//  Copyright © 2017 huangduyu. All rights reserved.
+//
+
+import Foundation
+
+extension String {
+  var urlEncoded: String {
+    var user: String?
+    var password: String?
+    var host: String?
+    var path: String?
+    var query: String?
+    var fragment: String?
+
+    /// 1. Decode first
+    guard let decodedStr = removingPercentEncoding else { return self }
+
+
+    /// 2. Begin to parse, sample: http://foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz
+    let sep0: [String] = decodedStr.components(separatedBy: "://")  // [http, foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz]
+    guard sep0.count > 1 else { return self }
+    let str0 = sep0[1]  // foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz
+
+    // Host, user, password
+    let sep1: [String] = str0.components(separatedBy: "/") // [foobar:nicate@example.com:8080, some, path, file.html;params-here?foo=bar#baz]
+    guard sep1.count > 0 else { return self }
+
+    let userHost = sep1[0]  // foobar:nicate@example.com:8080
+    let sepUserHost = userHost.components(separatedBy: "@") // [foobar:nicate, example.com:8080]
+    if sepUserHost.count >= 2 {
+      let sepUserPassword = sepUserHost[0].components(separatedBy: ":")
+      if sepUserPassword.count > 0 {
+        user = sepUserPassword[0]
+        if sepUserPassword.count > 1 {
+          password = sepUserPassword[1]
+        }
+      }
+      host = sepUserHost[1]
+    } else if sepUserHost.count == 1 {
+      host = sepUserHost[0]
+    } else {
+      assert(false)
+      return self
+    }
+
+    // Query, path
+    if str0.characters.count > 0 {
+      // Query
+      let sep2: [String] = str0.components(separatedBy: "?")  // [foobar:nicate@example.com:8080/some/path/file.html;params-here, foo=bar#baz]
+      if sep2.count > 1 {
+        let queryFragment = sep2[1]
+        let sep3: [String] = queryFragment.components(separatedBy: "#")
+        if sep3.count > 0 {
+          query = sep3[0]
+          if sep3.count > 1 {
+            fragment = sep3[1]
+          }
+        }
+      }
+
+      // Path
+      if sep2.count > 0 {
+        let hostPath: String = sep2[0]
+        let sep3: [String] = hostPath.components(separatedBy: "/") // [foobar:nicate@example.com:8080, some, path, file.html;params-here]
+        if sep3.count > 1 {
+          let sep4 = sep3[1..<sep3.count]
+          path = sep4.joined(separator: "/")
+        }
+      }
+    }
+
+    user = user?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlUserAllowed)
+    password = password?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPasswordAllowed)
+    host = host?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlHostAllowed)
+    path = path?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)
+    query = query?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+    fragment = fragment?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlFragmentAllowed)
+
+    /// 3. Regenerate url string
+    var urlString = sep0[0] + "://"
+
+    var hasUser = false
+    if let user = user, user.characters.count > 0 {
+      hasUser = true
+      urlString += user
+    }
+    if let password = password, password.characters.count > 0 {
+      assert(hasUser == true)
+      urlString += (":" + password)
+    }
+    if let host = host, host.characters.count > 0 {
+      if hasUser {
+        urlString += "@"
+      }
+      urlString += host
+    }
+    if let path = path, path.characters.count > 0 {
+      urlString += ("/" + path)
+    }
+    if let query = query, query.characters.count > 0 {
+      urlString += ("?" + query)
+    }
+    if let fragment = fragment,fragment.characters.count > 0 {
+      urlString += ("#" + fragment)
+    }
+    
+    return urlString
+  }
+}

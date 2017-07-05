@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC891F0CB125006D3EA8 /* StringExtension.swift */; };
+		7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */; };
 		71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A6C6761EF1461900E13CA3 /* PresentingViewController.m */; };
 		71B12A2A1EE1063500622A2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A291EE1063500622A2E /* main.m */; };
 		71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A2C1EE1063500622A2E /* AppDelegate.m */; };
@@ -38,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7162AC881F0CB124006D3EA8 /* Test1-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Test1-Bridging-Header.h"; sourceTree = "<group>"; };
+		7162AC891F0CB125006D3EA8 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSwift.swift; sourceTree = "<group>"; };
 		71A6C6751EF1461900E13CA3 /* PresentingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresentingViewController.h; sourceTree = "<group>"; };
 		71A6C6761EF1461900E13CA3 /* PresentingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentingViewController.m; sourceTree = "<group>"; };
 		71B12A251EE1063500622A2E /* Test1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +130,9 @@
 				71B12A5F1EE1067000622A2E /* SubTestExtension.m */,
 				71A6C6751EF1461900E13CA3 /* PresentingViewController.h */,
 				71A6C6761EF1461900E13CA3 /* PresentingViewController.m */,
+				7162AC891F0CB125006D3EA8 /* StringExtension.swift */,
+				7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */,
+				7162AC881F0CB124006D3EA8 /* Test1-Bridging-Header.h */,
 			);
 			path = Test1;
 			sourceTree = "<group>";
@@ -223,6 +231,7 @@
 					71B12A241EE1063500622A2E = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = V92MEYS6M8;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					71B12A3D1EE1063500622A2E = {
@@ -292,11 +301,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				71B12A301EE1063500622A2E /* ViewController.m in Sources */,
+				7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */,
 				71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */,
 				71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */,
 				71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */,
 				71B12A2A1EE1063500622A2E /* main.m in Sources */,
 				71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */,
+				7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +456,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = V92MEYS6M8;
 				INFOPLIST_FILE = Test1/Info.plist;
@@ -452,6 +464,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = huangduyu.Test1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Test1/Test1-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -459,6 +474,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = V92MEYS6M8;
 				INFOPLIST_FILE = Test1/Info.plist;
@@ -466,12 +482,15 @@
 				PRODUCT_BUNDLE_IDENTIFIER = huangduyu.Test1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Test1/Test1-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 		71B12A561EE1063500622A2E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = V92MEYS6M8;
 				INFOPLIST_FILE = Test1Tests/Info.plist;
@@ -485,6 +504,7 @@
 		71B12A571EE1063500622A2E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = V92MEYS6M8;
 				INFOPLIST_FILE = Test1Tests/Info.plist;
@@ -498,6 +518,7 @@
 		71B12A591EE1063500622A2E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = V92MEYS6M8;
 				INFOPLIST_FILE = Test1UITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -510,6 +531,7 @@
 		71B12A5A1EE1063500622A2E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = V92MEYS6M8;
 				INFOPLIST_FILE = Test1UITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
