@@ -20,16 +20,20 @@ extension String {
     /// 1. Decode first
     guard let decodedStr = removingPercentEncoding else { return self }
 
-
     /// 2. Begin to parse, sample: http://foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz
     let sep0: [String] = decodedStr.components(separatedBy: "://")  // [http, foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz]
     guard sep0.count > 1 else { return self }
-    let str0 = sep0[1]  // foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz
+    var str0 = sep0[1]  // foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz
+    for comp in sep0 {
+      if comp != sep0[1] && comp != sep0[0] {
+        str0.append("://" + comp) // query 里可能有重定向
+      }
+    }
 
     // Host, user, password
-    let sep1: [String] = str0.components(separatedBy: "/") // [foobar:nicate@example.com:8080, some, path, file.html;params-here?foo=bar#baz]
+    var sep1: [String] = str0.components(separatedBy: "/") // [foobar:nicate@example.com:8080, some, path, file.html;params-here?foo=bar#baz]
     guard sep1.count > 0 else { return self }
-
+    sep1 = sep1[0].components(separatedBy: "?")
     let userHost = sep1[0]  // foobar:nicate@example.com:8080
     let sepUserHost = userHost.components(separatedBy: "@") // [foobar:nicate, example.com:8080]
     if sepUserHost.count >= 2 {
@@ -53,7 +57,12 @@ extension String {
       // Query
       let sep2: [String] = str0.components(separatedBy: "?")  // [foobar:nicate@example.com:8080/some/path/file.html;params-here, foo=bar#baz]
       if sep2.count > 1 {
-        let queryFragment = sep2[1]
+        var queryFragment = sep2[1]
+        for comp in sep2 {
+          if comp != sep2[0] && comp != sep2[1] {
+            queryFragment.append("?" + comp)  // query 中可能有重定向
+          }
+        }
         let sep3: [String] = queryFragment.components(separatedBy: "#")
         if sep3.count > 0 {
           query = sep3[0]

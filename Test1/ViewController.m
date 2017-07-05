@@ -11,6 +11,7 @@
 #import "ViewController.h"
 #import "SubTestExtension.h"
 #import "PresentingViewController.h"
+#import "Test1-Swift.h"
 
 @interface ViewController () <NSURLSessionDelegate>
 
@@ -29,7 +30,7 @@
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Start"
                                                                             style:UIBarButtonItemStylePlain
                                                                            target:self
-                                                                           action:@selector(_te_testHTTP2)];
+                                                                           action:@selector(_te_testURLEncoding)];
   _webView = [[WKWebView alloc] initWithFrame:CGRectZero];
   [self.view addSubview:_webView];
 }
@@ -38,6 +39,12 @@
 {
   [super viewDidLayoutSubviews];
   _webView.frame = self.view.bounds;
+}
+
+- (void)_te_testURLEncoding
+{
+  TestSwift *ts = [TestSwift new];
+  [ts test];
 }
 
 - (void)_te_testHTTP2
