@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		712E711B1F1381C5009F5329 /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E711A1F1381C5009F5329 /* ImageProcessor.swift */; };
 		7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC891F0CB125006D3EA8 /* StringExtension.swift */; };
 		7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */; };
 		71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A6C6761EF1461900E13CA3 /* PresentingViewController.m */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		712E711A1F1381C5009F5329 /* ImageProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
 		7162AC881F0CB124006D3EA8 /* Test1-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Test1-Bridging-Header.h"; sourceTree = "<group>"; };
 		7162AC891F0CB125006D3EA8 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSwift.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 		712E71191F1376DD009F5329 /* ImageAndVideo */ = {
 			isa = PBXGroup;
 			children = (
+				712E711A1F1381C5009F5329 /* ImageProcessor.swift */,
 			);
 			path = ImageAndVideo;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71B12A301EE1063500622A2E /* ViewController.m in Sources */,
+				712E711B1F1381C5009F5329 /* ImageProcessor.swift in Sources */,
 				7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */,
 				71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */,
 				71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */,
