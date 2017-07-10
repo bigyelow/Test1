@@ -13,32 +13,142 @@
 #import "PresentingViewController.h"
 #import "Test1-Swift.h"
 
-@interface ViewController () <NSURLSessionDelegate>
+static NSString * const WKWebViewStr = @"WKWebView";
+static NSString * const ImageStr = @"Image";
+static NSString * const VideoStr = @"Video";
+static NSString * const NSURLSessionStr = @"NSURLSession";
+static NSString * const URLEncodingStr = @"NSURLEncoding";
+static NSString * const PresentingStr = @"Presenting";
 
+@interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, copy) NSArray *demos;
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, assign) BOOL tag;
+@property (nonatomic, strong) UITableView *tableView;
 
 @end
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+- (instancetype)init
+{
+  if (self = [super init]) {
+    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr];
+  }
+  return self;
+}
+
+- (void)viewDidLoad
+{
   [super viewDidLoad];
 
   self.title = @"Home";
 
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Start"
-                                                                            style:UIBarButtonItemStylePlain
-                                                                           target:self
-                                                                           action:@selector(_te_testURLEncoding)];
+  // TableView
+  _tableView = [[UITableView alloc] initWithFrame:CGRectZero];
+  [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:NSStringFromClass([UITableViewCell class])];
+  _tableView.delegate = self;
+  _tableView.dataSource = self;
+  [self.view addSubview:_tableView];
+
+  // WebView
   _webView = [[WKWebView alloc] initWithFrame:CGRectZero];
+  _webView.hidden = YES;
   [self.view addSubview:_webView];
+
+  // Navigation bar
+  UIBarButtonItem *switchItem = [[UIBarButtonItem alloc] initWithTitle:@"Switch"
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                                                action:@selector(_te_hiddenWebView)];
+  UIBarButtonItem *startLoadItem = [[UIBarButtonItem alloc] initWithTitle:@"Start"
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(_te_startToLoad)];
+  self.navigationItem.rightBarButtonItems = @[startLoadItem, switchItem];
 }
 
 - (void)viewDidLayoutSubviews
 {
   [super viewDidLayoutSubviews];
+  _tableView.frame = self.view.bounds;
   _webView.frame = self.view.bounds;
+}
+
+#pragma mark - TableView delegate and datasource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+  return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+  return _demos.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+  return 40;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([UITableViewCell class])
+                                                          forIndexPath:indexPath];
+  cell.textLabel.text = _demos[indexPath.row];
+  return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  [tableView deselectRowAtIndexPath:indexPath animated:NO];
+
+  if ([_demos[indexPath.row] isEqualToString:WKWebViewStr]) {
+    [self _te_startToLoad];
+  }
+  else if ([_demos[indexPath.row] isEqualToString:ImageStr]) {
+
+  }
+  else if ([_demos[indexPath.row] isEqualToString:VideoStr]) {
+
+  }
+  else if ([_demos[indexPath.row] isEqualToString:NSURLSessionStr]) {
+    [self _te_testHTTP2];
+  }
+  else if ([_demos[indexPath.row] isEqualToString:URLEncodingStr]) {
+    [self _te_testURLEncoding];
+  }
+  else if ([_demos[indexPath.row] isEqualToString:PresentingStr]) {
+    [self _te_presentVC];
+  }
+}
+
+#pragma mark - Test
+
+- (void)_te_startToLoad
+{
+  NSURLRequest *request;
+  if (_tag) {
+    NSURL *url = [NSURL URLWithString:@"https://erebor.douban.com/redirect/?ad=185609&uid=&bid=c13147858ac7e0c759bc194402c04bfaea7d2193&unit=dale_feed_today_fifth&crtr=&mark=&hn=dis4&sig=690a8833c1fc9b1a9cc91af982bce043b469fe6fa236c49bb88811f81ec3a9895c7421eec35ee5e645976080dabc83eb5e525bafcd013e33b498d1bc2e1332d7&pid=debug_bcc04c2100b7567cbfaf86c98443252a4db7751d&target=https%3A%2F%2Fclick.gridsumdissector.com%2Ftrack.ashx%3Fgsadid%3Dgad_158_vbn837cv"];
+    request = [NSURLRequest requestWithURL:url];
+
+    self.tag = NO;
+  }
+  else {
+    request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com"]];
+
+    self.tag = YES;
+  }
+
+  [_webView loadRequest:request];
+}
+
+- (void)_te_presentVC
+{
+  [self presentViewController:[[UINavigationController alloc] initWithRootViewController:[PresentingViewController new]]
+                     animated:YES
+                   completion:nil];
 }
 
 - (void)_te_testURLEncoding
@@ -68,29 +178,9 @@
   [task resume];
 }
 
-- (void)_te_presentVC
+- (void)_te_hiddenWebView
 {
-  [self presentViewController:[[UINavigationController alloc] initWithRootViewController:[PresentingViewController new]]
-                     animated:YES
-                   completion:nil];
-}
-
-- (void)_te_startToLoad
-{
-  NSURLRequest *request;
-  if (_tag) {
-    NSURL *url = [NSURL URLWithString:@"https://erebor.douban.com/redirect/?ad=185609&uid=&bid=c13147858ac7e0c759bc194402c04bfaea7d2193&unit=dale_feed_today_fifth&crtr=&mark=&hn=dis4&sig=690a8833c1fc9b1a9cc91af982bce043b469fe6fa236c49bb88811f81ec3a9895c7421eec35ee5e645976080dabc83eb5e525bafcd013e33b498d1bc2e1332d7&pid=debug_bcc04c2100b7567cbfaf86c98443252a4db7751d&target=https%3A%2F%2Fclick.gridsumdissector.com%2Ftrack.ashx%3Fgsadid%3Dgad_158_vbn837cv"];
-    request = [NSURLRequest requestWithURL:url];
-
-    self.tag = NO;
-  }
-  else {
-    request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com"]];
-
-    self.tag = YES;
-  }
-
-  [_webView loadRequest:request];
+  _webView.hidden = !_webView.hidden;
 }
 
 #pragma mark - URLSession delegate

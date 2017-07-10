@@ -22,6 +22,10 @@
                                                                             style:UIBarButtonItemStylePlain
                                                                            target:self
                                                                            action:@selector(_te_pushVC)];
+  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                           style:UIBarButtonItemStylePlain
+                                                                          target:self
+                                                                          action:@selector(_te_cancel)];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -34,6 +38,11 @@
   else if (self.navigationController) {
     NSLog(@"navi");
   }
+}
+
+- (void)_te_cancel
+{
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)_te_pushVC

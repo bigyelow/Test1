@@ -92,6 +92,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		712E71191F1376DD009F5329 /* ImageAndVideo */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ImageAndVideo;
+			sourceTree = "<group>";
+		};
 		71B12A1C1EE1063500622A2E = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +122,7 @@
 		71B12A271EE1063500622A2E /* Test1 */ = {
 			isa = PBXGroup;
 			children = (
+				712E71191F1376DD009F5329 /* ImageAndVideo */,
 				71B12A2B1EE1063500622A2E /* AppDelegate.h */,
 				71B12A2C1EE1063500622A2E /* AppDelegate.m */,
 				71B12A2E1EE1063500622A2E /* ViewController.h */,
