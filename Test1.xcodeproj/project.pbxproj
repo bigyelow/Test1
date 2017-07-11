@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		712E711B1F1381C5009F5329 /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E711A1F1381C5009F5329 /* ImageProcessor.swift */; };
+		715F291C1F148AE2006C07EB /* ImageProcessorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F291B1F148AE2006C07EB /* ImageProcessorViewController.swift */; };
 		7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC891F0CB125006D3EA8 /* StringExtension.swift */; };
 		7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */; };
 		71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A6C6761EF1461900E13CA3 /* PresentingViewController.m */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		712E711A1F1381C5009F5329 /* ImageProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
+		715F291B1F148AE2006C07EB /* ImageProcessorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessorViewController.swift; sourceTree = "<group>"; };
 		7162AC881F0CB124006D3EA8 /* Test1-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Test1-Bridging-Header.h"; sourceTree = "<group>"; };
 		7162AC891F0CB125006D3EA8 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSwift.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				712E711A1F1381C5009F5329 /* ImageProcessor.swift */,
+				715F291B1F148AE2006C07EB /* ImageProcessorViewController.swift */,
 			);
 			path = ImageAndVideo;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */,
 				71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */,
 				71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */,
+				715F291C1F148AE2006C07EB /* ImageProcessorViewController.swift in Sources */,
 				71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */,
 				71B12A2A1EE1063500622A2E /* main.m in Sources */,
 				71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */,
