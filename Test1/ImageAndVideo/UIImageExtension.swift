@@ -25,15 +25,22 @@ extension UIImage {
 
     // 2. Draw rectangle
     context.setStrokeColor(UIColor.yellow.cgColor)
-    context.setLineWidth(5)
+    context.setLineWidth(4)
     for boundingBox in boundingBoxes {
-      let drawSize = CGSize(width: size.width * boundingBox.size.width, height: size.height * boundingBox.size.height)
-      let drawPoint = CGPoint(x: size.width * boundingBox.origin.x, y: size.height * (1 - boundingBox.origin.y) - drawSize.height)
-      context.stroke(CGRect(origin: drawPoint, size: drawSize))
+      context.stroke(convertToFrame(withBoundingBox: boundingBox))
     }
 
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     return image
   }
+
+  private func convertToFrame(withBoundingBox boundingBox: CGRect) -> CGRect {
+    let aSize = CGSize(width: size.width * boundingBox.size.width, height: size.height * boundingBox.size.height)
+    let aPoint = CGPoint(x: size.width * boundingBox.origin.x, y: size.height * (1 - boundingBox.origin.y) - aSize.height)
+
+    return CGRect(origin: aPoint, size: aSize)
+  }
 }
+
+

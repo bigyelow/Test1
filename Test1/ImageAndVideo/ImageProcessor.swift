@@ -11,7 +11,7 @@ import UIKit
 
 @available(iOS 11, *)
 class ImageProcessor {
-  static func detectFace(image: UIImage, completion: @escaping ([CGRect]?) -> Void) {
+  static func detectFace(of image: UIImage, completion: @escaping ([CGRect]?) -> Void) {
     guard let cgImage = image.convertToCGImage() else { return }
 
     let request = VNDetectFaceRectanglesRequest { (request, error) in
