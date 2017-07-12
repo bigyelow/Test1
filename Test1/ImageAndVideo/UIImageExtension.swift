@@ -7,12 +7,24 @@
 //
 
 import UIKit
+import Vision
 
 extension UIImage {
   func convertToCGImage() -> CGImage? {
     guard let ciImage = CIImage(image: self) else { return nil }
     let context = CIContext(options: nil)
     return context.createCGImage(ciImage, from: ciImage.extent)
+  }
+
+  @available(iOS 11, *)
+  func draw(_ landmarkses: [VNFaceLandmarks2D]) {
+    for landmarks in landmarkses {
+      guard let points = landmarks.faceContour?.points, let count = landmarks.faceContour?.pointCount else { continue }
+      let cgPoints = convertToCGPoints(from: points, count: count)
+      for cgPoint in cgPoints {
+        print("x = \(cgPoint.x), y = \(cgPoint.y)")
+      }
+    }
   }
 
   /// - Parameter boundingBoxes: see `VNFaceObservation.boundingBox`
@@ -33,6 +45,14 @@ extension UIImage {
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     return image
+  }
+
+  private func convertToCGPoints(from points: UnsafePointer<vector_float2>, count: Int) -> [CGPoint] {
+    var cgPoints = [CGPoint]()
+    for i in 0 ..< count {
+      cgPoints.append(CGPoint(x: Double(points[i].x), y: Double(points[i].y)))
+    }
+    return cgPoints
   }
 
   private func convertToFrame(withBoundingBox boundingBox: CGRect) -> CGRect {

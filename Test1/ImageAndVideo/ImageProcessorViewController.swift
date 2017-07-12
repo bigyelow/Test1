@@ -32,13 +32,17 @@ class ImageProcessorViewController: UIViewController {
     guard let image = imageView.image else { return }
     ImageProcessor.detectFace(of: image) { [weak self] (rects) in
       guard let sself = self, let rects = rects else { return }
-      let detectedImage = image.drawRectangles(withBoundingBoxes: rects)
-      sself.imageView.image = detectedImage
+      sself.imageView.image = image.drawRectangles(withBoundingBoxes: rects)
     }
   }
 
+  @available(iOS 11, *)
   @objc private func detectFaceLandmarks() {
-
+    guard let image = imageView.image else { return }
+    ImageProcessor.detectFaceLandmarks(of: image) { (landmarks) in
+      guard let landmarks = landmarks else { return }
+      image.draw(landmarks)
+    }
   }
 
   @objc private func changeCover() {
