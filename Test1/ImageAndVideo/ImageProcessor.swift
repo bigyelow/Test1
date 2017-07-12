@@ -21,13 +21,31 @@ class ImageProcessor {
     }
   }
 
-  static func detectFaceLandmarks(of image: UIImage) {
+  static func detectFaceLandmarks(of image: UIImage, completion: @escaping ([VNFaceLandmarks2D]?) -> Void) {
     getFaceObservations(of: image) { (observations) in
       guard let observations = observations else {
+        completion(nil)
         return
       }
 
+      let request = VNDetectFaceLandmarksRequest { (request, error) in
+        guard error == nil, var results = request.results as? [VNFaceObservation] else {
+          completion(nil)
+          return
+        }
 
+        results = results.filter { $0.confidence > 0.9 && $0.landmarks != nil}
+        completion(results.map { $0.landmarks! })
+      }
+
+      guard let cgImage = image.convertToCGImage() else { return }
+      request.inputFaceObservations = observations
+      let handler = VNImageRequestHandler(cgImage: cgImage)
+      do {
+        try handler.perform([request])
+      } catch {
+        print(error)
+      }
     }
   }
 
@@ -35,7 +53,7 @@ class ImageProcessor {
     guard let cgImage = image.convertToCGImage() else { return }
 
     let request = VNDetectFaceRectanglesRequest { (request, error) in
-      guard var results = request.results as? [VNFaceObservation] else {
+      guard error == nil, var results = request.results as? [VNFaceObservation] else {
         completion(nil)
         return
       }
