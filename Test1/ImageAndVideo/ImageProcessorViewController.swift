@@ -34,7 +34,6 @@ class ImageProcessorViewController: UIViewController {
       guard let sself = self, let rects = rects else { return }
       let detectedImage = image.drawRectangles(withBoundingBoxes: rects)
       sself.imageView.image = detectedImage
-      sself.view.setNeedsDisplay()
     }
   }
 

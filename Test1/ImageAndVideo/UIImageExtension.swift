@@ -6,6 +6,8 @@
 //  Copyright © 2017 huangduyu. All rights reserved.
 //
 
+import UIKit
+
 extension UIImage {
   func convertToCGImage() -> CGImage? {
     guard let ciImage = CIImage(image: self) else { return nil }
@@ -13,6 +15,7 @@ extension UIImage {
     return context.createCGImage(ciImage, from: ciImage.extent)
   }
 
+  /// - Parameter boundingBoxes: see `VNFaceObservation.boundingBox`
   func drawRectangles(withBoundingBoxes boundingBoxes: [CGRect]) -> UIImage? {
     UIGraphicsBeginImageContext(size)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}

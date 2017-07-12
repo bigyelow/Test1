@@ -7,6 +7,7 @@
 //
 
 import Vision
+import UIKit
 
 @available(iOS 11, *)
 class ImageProcessor {
@@ -18,13 +19,8 @@ class ImageProcessor {
         completion(nil)
         return
       }
-      results = results.filter({ (observation) -> Bool in
-        return observation.confidence > 0.9
-      })
-
-      completion(results.map({ (observation) -> CGRect in
-        return observation.boundingBox
-      }))
+      results = results.filter { $0.confidence > 0.9 }
+      completion(results.map { $0.boundingBox })
     }
 
     let handler = VNImageRequestHandler(cgImage: cgImage)
