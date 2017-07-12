@@ -23,10 +23,8 @@ class ImageProcessorViewController: UIViewController {
     label.backgroundColor = UIColor.white
 
     if #available(iOS 11, *) {
-      navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Detect", style: .plain, target: self, action: #selector(detectFace))
+      navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(openActionSheet))
     }
-
-    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Change", style: .plain, target: self, action: #selector(changeCover))
   }
 
   @available(iOS 11, *)
@@ -39,53 +37,41 @@ class ImageProcessorViewController: UIViewController {
     }
   }
 
-  @objc private func changeCover () {
+  @objc private func detectFaceLandmarks() {
+
+  }
+
+  @objc private func changeCover() {
     imageView.image = ImageProcessorViewController.cover
+  }
+
+  @available(iOS 11, *)
+  @objc private func openActionSheet() {
+    let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    let action1 = UIAlertAction(title: "Detect Face", style: .default) { (_) in
+      self.detectFace()
+    }
+    let action2 = UIAlertAction(title: "Detect Face Landmarks", style: .default) { (_) in
+      self.detectFaceLandmarks()
+    }
+    let changeCover = UIAlertAction(title: "Change Image", style: .default) { (_) in
+      self.changeCover()
+    }
+    let cancel = UIAlertAction(title: "Cancel", style: .default) { [weak controller] (_) in
+      guard let ctr = controller else { return }
+      ctr.dismiss(animated: true, completion: nil)
+    }
+    controller.addAction(action1)
+    controller.addAction(action2)
+    controller.addAction(changeCover)
+    controller.addAction(cancel)
+
+    present(controller, animated: true, completion: nil)
   }
 
   static var cover: UIImage? {
     index += 1
     return UIImage(named: "Cover\(index % 3)")
   }
-
-//  @objc private func download() {
-//    guard let url = URL(string: "https://img1.doubanio.com/view/photo/raw/public/p2475060299.jpg") else { return }
-//    downloadImage(with: url) { [weak self] (image, error) in
-//      guard let sself = self else { return }
-//      if error == nil && image != nil {
-//        sself.imageView.image = image!
-//        sself.view.setNeedsLayout()
-//      }
-//    }
-//  }
-//
-//  private func downloadImage(with url: URL, completion: @escaping (UIImage?, Error?) -> Swift.Void) {
-//    let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-//      guard let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-//        let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
-//        let data = data,
-//        let image = UIImage(data: data),
-//        error == nil else {
-//          completion(nil, error)
-//          return
-//      }
-//
-//      completion(image, nil)
-//    }
-//
-//    let task = URLSession.shared.downloadTask(with: url) { (location, _, error) in
-//      do {
-//        guard error == nil, let location = location, let image = try UIImage(data: Data(contentsOf: location)) else {
-//          completion(nil, error)
-//          return
-//        }
-//        completion(image, nil)
-//      } catch {
-//        print(error)
-//      }
-//    }
-//
-//    task.resume()
-//  }
 }
 
