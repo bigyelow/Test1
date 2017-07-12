@@ -58,14 +58,19 @@ class ImageProcessor {
         return
       }
       results = results.filter { $0.confidence > 0.9 }
-      completion(results)
+
+      DispatchQueue.main.sync {
+        completion(results)
+      }
     }
 
     let handler = VNImageRequestHandler(cgImage: cgImage)
-    do {
-      try handler.perform([request])
-    } catch {
-      print(error)
-    }
+      DispatchQueue.global().async {
+        do {
+          try handler.perform([request])
+        } catch {
+          print(error)
+        }
+      }
   }
 }

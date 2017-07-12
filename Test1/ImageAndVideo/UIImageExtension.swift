@@ -10,12 +10,7 @@ import UIKit
 import Vision
 
 extension UIImage {
-  func convertToCGImage() -> CGImage? {
-    guard let ciImage = CIImage(image: self) else { return nil }
-    let context = CIContext(options: nil)
-    return context.createCGImage(ciImage, from: ciImage.extent)
-  }
-
+  // MARK: Draw
   @available(iOS 11, *)
   func draw(_ landmarkses: [VNFaceLandmarks2D]) {
     for landmarks in landmarkses {
@@ -45,6 +40,13 @@ extension UIImage {
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     return image
+  }
+
+  // MARK: Utils
+  func convertToCGImage() -> CGImage? {
+    guard let ciImage = CIImage(image: self) else { return nil }
+    let context = CIContext(options: nil)
+    return context.createCGImage(ciImage, from: ciImage.extent)
   }
 
   private func convertToCGPoints(from points: UnsafePointer<vector_float2>, count: Int) -> [CGPoint] {

@@ -12,15 +12,17 @@ import Foundation
 class ImageProcessorViewController: UIViewController {
   private static var index = -1
   private let imageView = UIImageView(image: ImageProcessorViewController.cover)
-  private let label = UILabel()
+  private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
 
   override func viewDidLoad() {
     super.viewDidLoad()
     imageView.contentMode = .scaleAspectFill
-    imageView.frame = CGRect(x: 0, y: 64, width: UIScreen.main.bounds.size.width, height: 500)
+    imageView.frame = CGRect(x: 0, y: 64, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.height - 100)
+    imageView.clipsToBounds = true
     view.addSubview(imageView)
 
-    label.backgroundColor = UIColor.white
+    indicator.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 20)
+    view.addSubview(indicator)
 
     if #available(iOS 11, *) {
       navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(openActionSheet))
@@ -30,8 +32,12 @@ class ImageProcessorViewController: UIViewController {
   @available(iOS 11, *)
   @objc private func detectFace() {
     guard let image = imageView.image else { return }
+    indicator.startAnimating()
     ImageProcessor.detectFace(of: image) { [weak self] (rects) in
-      guard let sself = self, let rects = rects else { return }
+      guard let sself = self else { return }
+      sself.indicator.stopAnimating()
+
+      guard let rects = rects else { return }
       sself.imageView.image = image.drawRectangles(withBoundingBoxes: rects)
     }
   }
@@ -39,7 +45,11 @@ class ImageProcessorViewController: UIViewController {
   @available(iOS 11, *)
   @objc private func detectFaceLandmarks() {
     guard let image = imageView.image else { return }
-    ImageProcessor.detectFaceLandmarks(of: image) { (landmarks) in
+    indicator.startAnimating()
+    ImageProcessor.detectFaceLandmarks(of: image) { [weak self] (landmarks) in
+      guard let sself = self else { return }
+      sself.indicator.stopAnimating()
+
       guard let landmarks = landmarks else { return }
       image.draw(landmarks)
     }
