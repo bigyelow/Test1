@@ -6,24 +6,25 @@
 //  Copyright © 2017 huangduyu. All rights reserved.
 //
 
-import Foundation
-import CoreImage
-import CoreGraphics
-import UIKit
 import Vision
 
 @available(iOS 11, *)
 class ImageProcessor {
-  static func detectFace(image: UIImage, completion: @escaping (CGRect?) -> Void) {
-    guard let cgImage = createCGImage(from: image) else { return }
+  static func detectFace(image: UIImage, completion: @escaping ([CGRect]?) -> Void) {
+    guard let cgImage = image.convertToCGImage() else { return }
 
     let request = VNDetectFaceRectanglesRequest { (request, error) in
-      guard let results = request.results as? [VNFaceObservation], let topResult = results.first else {
+      guard var results = request.results as? [VNFaceObservation] else {
         completion(nil)
         return
       }
-      print("confidence = \(topResult.confidence), rect = \(topResult.boundingBox))")
-      completion(topResult.boundingBox)
+      results = results.filter({ (observation) -> Bool in
+        return observation.confidence > 0.9
+      })
+
+      completion(results.map({ (observation) -> CGRect in
+        return observation.boundingBox
+      }))
     }
 
     let handler = VNImageRequestHandler(cgImage: cgImage)
@@ -32,11 +33,5 @@ class ImageProcessor {
     } catch {
       print(error)
     }
-  }
-
-  static private func createCGImage(from image: UIImage) -> CGImage? {
-    guard let ciImage = CIImage(image: image) else { return nil }
-    let context = CIContext(options: nil)
-    return context.createCGImage(ciImage, from: ciImage.extent)
   }
 }

@@ -30,19 +30,12 @@ class ImageProcessorViewController: UIViewController {
   @available(iOS 11, *)
   @objc private func detectFace() {
     guard let image = imageView.image else { return }
-    ImageProcessor.detectFace(image: image) { [weak self] (rect) in
-      guard let sself = self, let rect = rect else { return }
-      let detectedImage = image.drawRectangle(withBoundingBox: rect)
+    ImageProcessor.detectFace(image: image) { [weak self] (rects) in
+      guard let sself = self, let rects = rects else { return }
+      let detectedImage = image.drawRectangles(withBoundingBoxes: rects)
       sself.imageView.image = detectedImage
       sself.view.setNeedsDisplay()
     }
-  }
-
-  private func unNormalizedRect(fromContainer container: CGRect, normaliezedRect rect: CGRect) -> CGRect {
-    return CGRect(x: container.maxX * rect.origin.x,
-                  y: container.maxY * rect.origin.y,
-                  width: container.size.width * rect.size.width,
-                  height: container.size.height * rect.size.height)
   }
 
   @objc private func download() {
