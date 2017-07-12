@@ -7,8 +7,11 @@
 //
 
 #import "PresentingViewController.h"
+#import "UIImageView+GeometryConversion.h"
 
 @interface PresentingViewController ()
+
+@property (nonatomic, strong) UIImageView *imageView;
 
 @end
 
@@ -26,6 +29,10 @@
                                                                            style:UIBarButtonItemStylePlain
                                                                           target:self
                                                                           action:@selector(_te_cancel)];
+
+  _imageView = [[UIImageView alloc] initWithImage:nil];
+  CGRect rect =  [_imageView convertRectFromImage:CGRectMake(0, 0, 10, 10)];
+  NSLog(@(rect.origin.x));
 }
 
 - (void)viewDidAppear:(BOOL)animated

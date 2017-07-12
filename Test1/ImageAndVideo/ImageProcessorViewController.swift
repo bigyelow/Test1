@@ -31,12 +31,10 @@ class ImageProcessorViewController: UIViewController {
   @objc private func detectFace() {
     guard let image = imageView.image else { return }
     ImageProcessor.detectFace(image: image) { [weak self] (rect) in
-      guard let sself = self, let rect = rect, let size = sself.imageView.image?.size else { return }
-      sself.label.frame = CGRect(x: size.width * rect.origin.x,
-                                 y: size.height * rect.origin.y,
-                                 width: size.width * rect.size.width,
-                                 height: size.height * rect.size.height)
-      sself.imageView.addSubview(sself.label)
+      guard let sself = self, let rect = rect else { return }
+      let detectedImage = image.drawRectangle(withBoundingBox: rect)
+      sself.imageView.image = detectedImage
+      sself.view.setNeedsDisplay()
     }
   }
 

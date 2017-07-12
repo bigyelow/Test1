@@ -15,16 +15,17 @@ import Vision
 @available(iOS 11, *)
 class ImageProcessor {
   static func detectFace(image: UIImage, completion: @escaping (CGRect?) -> Void) {
+    guard let cgImage = createCGImage(from: image) else { return }
+
     let request = VNDetectFaceRectanglesRequest { (request, error) in
       guard let results = request.results as? [VNFaceObservation], let topResult = results.first else {
-        assert(false)
         completion(nil)
+        return
       }
       print("confidence = \(topResult.confidence), rect = \(topResult.boundingBox))")
       completion(topResult.boundingBox)
     }
 
-    guard let cgImage = createCGImage(from: image) else { return }
     let handler = VNImageRequestHandler(cgImage: cgImage)
     do {
       try handler.perform([request])
