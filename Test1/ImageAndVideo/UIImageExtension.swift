@@ -30,19 +30,28 @@ extension UIImage {
       let containerFrame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
       // Face contour
+      var points = [CGPoint]()
+      var startPoint: CGPoint?
       if let faceContourPoints = tuple.1.faceContour?.points, let count = tuple.1.faceContour?.pointCount {
-        context.drawPoints(faceContourPoints, count: count, scaledFrame: tuple.0, containerFrame: containerFrame)
+        points.append(contentsOf: ImageProcessor.convertToCGPoints(from: faceContourPoints, count: count).reversed())
+        startPoint = ImageProcessor.convertToCGPoints(from: faceContourPoints, count: count).last
       }
 
       // Left eyebrow
       if let leftEyebrowPoints = tuple.1.leftEyebrow?.points, let count = tuple.1.leftEyebrow?.pointCount {
-        context.drawPoints(leftEyebrowPoints, count: count, scaledFrame: tuple.0, containerFrame: containerFrame)
+        points.append(contentsOf: ImageProcessor.convertToCGPoints(from: leftEyebrowPoints, count: count))
       }
 
       // Right eyebrow
       if let rightEyebrowPoints = tuple.1.rightEyebrow?.points, let count = tuple.1.rightEyebrow?.pointCount {
-        context.drawPoints(rightEyebrowPoints, count: count, scaledFrame: tuple.0, containerFrame: containerFrame)
+        points.append(contentsOf: ImageProcessor.convertToCGPoints(from: rightEyebrowPoints, count: count))
       }
+
+      if let startPoint = startPoint {
+        points.append(startPoint)
+      }
+
+      context.drawPoints(points, scaledFrame: tuple.0, containerFrame: containerFrame)
     }
 
     let image = UIGraphicsGetImageFromCurrentImageContext()

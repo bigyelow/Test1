@@ -103,8 +103,8 @@
 		712E71191F1376DD009F5329 /* ImageAndVideo */ = {
 			isa = PBXGroup;
 			children = (
-				712E711A1F1381C5009F5329 /* ImageProcessor.swift */,
 				715F291B1F148AE2006C07EB /* ImageProcessorViewController.swift */,
+				712E711A1F1381C5009F5329 /* ImageProcessor.swift */,
 				7106AED11F15DA380072AA43 /* UIImageExtension.swift */,
 				71DF3C2C1F1745BF0058C2C1 /* CoreGraphicsExtension.swift */,
 			);

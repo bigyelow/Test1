@@ -11,11 +11,9 @@ import CoreGraphics
 
 extension CGContext {
   @available(iOS 11, *)
-  func drawPoints(_ points: UnsafePointer<vector_float2>, count: Int, scaledFrame: CGRect, containerFrame: CGRect) {
+  func drawPoints(_ points: [CGPoint], scaledFrame: CGRect, containerFrame: CGRect) {
     let frame = ImageProcessor.convertToFrame(withScaledFrame: scaledFrame, containerFrame: containerFrame)
-    let cgPoints = ImageProcessor.convertToCGPoints(from: points, count: count).map {
-      ImageProcessor.convertToPoint(withScaledPoint: $0, containerFrame: frame)
-    }
+    let cgPoints = points.map { ImageProcessor.convertToPoint(withScaledPoint: $0, containerFrame: frame) }
 
     addLines(between: cgPoints)
     strokePath()
