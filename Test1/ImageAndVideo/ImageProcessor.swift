@@ -21,7 +21,7 @@ class ImageProcessor {
     }
   }
 
-  static func detectFaceLandmarks(of image: UIImage, completion: @escaping ([VNFaceLandmarks2D]?) -> Void) {
+  static func detectFaceLandmarks(of image: UIImage, completion: @escaping ([(CGRect, VNFaceLandmarks2D)]?) -> Void) {
     getFaceObservations(of: image) { (observations) in
       guard let observations = observations else {
         completion(nil)
@@ -35,7 +35,7 @@ class ImageProcessor {
         }
 
         results = results.filter { $0.confidence > 0.9 && $0.landmarks != nil}
-        completion(results.map { $0.landmarks! })
+        completion(results.map { ($0.boundingBox, $0.landmarks!) })
       }
 
       guard let cgImage = image.convertToCGImage() else { return }

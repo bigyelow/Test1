@@ -12,9 +12,10 @@ import Vision
 extension UIImage {
   // MARK: Draw
   @available(iOS 11, *)
-  func draw(_ landmarkses: [VNFaceLandmarks2D]) {
-    for landmarks in landmarkses {
-      guard let points = landmarks.faceContour?.points, let count = landmarks.faceContour?.pointCount else { continue }
+  func draw(_ landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) {
+    for tuple in landmarksTuples {
+      guard let points = tuple.1.faceContour?.points, let count = tuple.1.faceContour?.pointCount else { continue }
+      print("face bounding = \(tuple.0)\n")
       let cgPoints = convertToCGPoints(from: points, count: count)
       for cgPoint in cgPoints {
         print("x = \(cgPoint.x), y = \(cgPoint.y)")

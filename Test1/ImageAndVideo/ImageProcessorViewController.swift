@@ -46,12 +46,14 @@ class ImageProcessorViewController: UIViewController {
   @objc private func detectFaceLandmarks() {
     guard let image = imageView.image else { return }
     indicator.startAnimating()
-    ImageProcessor.detectFaceLandmarks(of: image) { [weak self] (landmarks) in
+    ImageProcessor.detectFaceLandmarks(of: image) { [weak self] (landmarksTuples) in
       guard let sself = self else { return }
       sself.indicator.stopAnimating()
 
-      guard let landmarks = landmarks else { return }
-      image.draw(landmarks)
+      guard let landmarksTuples = landmarksTuples else { return }
+      image.draw(landmarksTuples)
+
+//      sself.imageView.image = image.drawRectangles(withBoundingBoxes: landmarksTuples.map {$0.0})
     }
   }
 
