@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 
 class ImageProcessorViewController: UIViewController {
-  private static var index = -1
+  private static var index = 3
   private let imageView = UIImageView(image: ImageProcessorViewController.cover)
   private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
 
@@ -51,9 +51,7 @@ class ImageProcessorViewController: UIViewController {
       sself.indicator.stopAnimating()
 
       guard let landmarksTuples = landmarksTuples else { return }
-      image.draw(landmarksTuples)
-
-//      sself.imageView.image = image.drawRectangles(withBoundingBoxes: landmarksTuples.map {$0.0})
+      sself.imageView.image = image.draw(landmarksTuples)
     }
   }
 
@@ -86,8 +84,9 @@ class ImageProcessorViewController: UIViewController {
   }
 
   static var cover: UIImage? {
+    let image = UIImage(named: "Cover\(index % 8)")
     index += 1
-    return UIImage(named: "Cover\(index % 3)")
+    return image
   }
 }
 

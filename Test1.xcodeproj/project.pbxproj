@@ -23,6 +23,7 @@
 		71B12A4E1EE1063500622A2E /* Test1UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A4D1EE1063500622A2E /* Test1UITests.m */; };
 		71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A5C1EE1065C00622A2E /* TestExtension.m */; };
 		71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A5F1EE1067000622A2E /* SubTestExtension.m */; };
+		71DF3C2D1F1745BF0058C2C1 /* CoreGraphicsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DF3C2C1F1745BF0058C2C1 /* CoreGraphicsExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		71B12A5C1EE1065C00622A2E /* TestExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestExtension.m; sourceTree = "<group>"; };
 		71B12A5E1EE1067000622A2E /* SubTestExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubTestExtension.h; sourceTree = "<group>"; };
 		71B12A5F1EE1067000622A2E /* SubTestExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubTestExtension.m; sourceTree = "<group>"; };
+		71DF3C2C1F1745BF0058C2C1 /* CoreGraphicsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreGraphicsExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,9 +103,10 @@
 		712E71191F1376DD009F5329 /* ImageAndVideo */ = {
 			isa = PBXGroup;
 			children = (
-				7106AED11F15DA380072AA43 /* UIImageExtension.swift */,
 				712E711A1F1381C5009F5329 /* ImageProcessor.swift */,
 				715F291B1F148AE2006C07EB /* ImageProcessorViewController.swift */,
+				7106AED11F15DA380072AA43 /* UIImageExtension.swift */,
+				71DF3C2C1F1745BF0058C2C1 /* CoreGraphicsExtension.swift */,
 			);
 			path = ImageAndVideo;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */,
 				7106AED21F15DA380072AA43 /* UIImageExtension.swift in Sources */,
 				71B12A2A1EE1063500622A2E /* main.m in Sources */,
+				71DF3C2D1F1745BF0058C2C1 /* CoreGraphicsExtension.swift in Sources */,
 				71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */,
 				7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */,
 			);

@@ -12,6 +12,7 @@ import UIKit
 @available(iOS 11, *)
 class ImageProcessor {
   // MARK: Detection
+  
   static func detectFace(of image: UIImage, completion: @escaping ([CGRect]?) -> Void) {
     getFaceObservations(of: image) { (observations) in
       guard let observations = observations else {
@@ -76,15 +77,18 @@ class ImageProcessor {
   }
 
   // MARK: Utils
+
   /// - Parameters:
-  ///   - scaledPoint: scaledFrame uses lower-left corner.
+  ///   - scaledPoint: uses lower-left corner.
+  ///   - containerFrame: uses upper-left corner.
   static func convertToPoint(withScaledPoint scaledPoint: CGPoint, containerFrame: CGRect) -> CGPoint {
-    return CGPoint(x: containerFrame.size.width * scaledPoint.x,
-                   y: containerFrame.size.height * (1 - scaledPoint.y))
+    return CGPoint(x: containerFrame.size.width * scaledPoint.x + containerFrame.origin.x,
+                   y: containerFrame.size.height * (1 - scaledPoint.y) + containerFrame.origin.y)
   }
 
   /// - Parameters:
   ///   - scaledFrame: scaledFrame uses lower-left corner.
+  ///   - containerFrame: uses upper-left corner.
   static func convertToFrame(withScaledFrame scaledFrame: CGRect, containerFrame: CGRect) -> CGRect {
     let aSize = CGSize(width: containerFrame.size.width * scaledFrame.size.width,
                        height: containerFrame.size.height * scaledFrame.size.height)

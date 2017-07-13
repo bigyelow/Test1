@@ -11,16 +11,43 @@ import Vision
 
 extension UIImage {
   // MARK: Draw
+
   @available(iOS 11, *)
-  func draw(_ landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) {
+  func draw(_ landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
+    guard landmarksTuples.count > 0 else { return nil }
+
+    UIGraphicsBeginImageContext(size)
+    guard let context = UIGraphicsGetCurrentContext() else { return nil}
+
+    // 1. Draw original image
+    draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+
+    context.setStrokeColor(UIColor.yellow.cgColor)
+    context.setLineWidth(4)
+
+    // 2. Draw points
     for tuple in landmarksTuples {
-      guard let points = tuple.1.faceContour?.points, let count = tuple.1.faceContour?.pointCount else { continue }
-      let faceFrame = ImageProcessor.convertToFrame(withScaledFrame: tuple.0,
-                                                    containerFrame: CGRect(origin: .zero, size: size))
-      let cgPoints = ImageProcessor.convertToCGPoints(from: points, count: count).map {
-        CGPoint(x: $0.x * faceFrame.size.width, y: $0.y * faceFrame.size.height)
+      let containerFrame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+
+      // Face contour
+      if let faceContourPoints = tuple.1.faceContour?.points, let count = tuple.1.faceContour?.pointCount {
+        context.drawPoints(faceContourPoints, count: count, scaledFrame: tuple.0, containerFrame: containerFrame)
+      }
+
+      // Left eyebrow
+      if let leftEyebrowPoints = tuple.1.leftEyebrow?.points, let count = tuple.1.leftEyebrow?.pointCount {
+        context.drawPoints(leftEyebrowPoints, count: count, scaledFrame: tuple.0, containerFrame: containerFrame)
+      }
+
+      // Right eyebrow
+      if let rightEyebrowPoints = tuple.1.rightEyebrow?.points, let count = tuple.1.rightEyebrow?.pointCount {
+        context.drawPoints(rightEyebrowPoints, count: count, scaledFrame: tuple.0, containerFrame: containerFrame)
       }
     }
+
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
   }
 
   /// - Parameter boundingBoxes: see `VNFaceObservation.boundingBox`
@@ -46,6 +73,7 @@ extension UIImage {
   }
 
   // MARK: Utils
+
   func convertToCGImage() -> CGImage? {
     guard let ciImage = CIImage(image: self) else { return nil }
     let context = CIContext(options: nil)
