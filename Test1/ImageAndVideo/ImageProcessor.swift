@@ -11,6 +11,7 @@ import UIKit
 
 @available(iOS 11, *)
 class ImageProcessor {
+  // MARK: Detection
   static func detectFace(of image: UIImage, completion: @escaping ([CGRect]?) -> Void) {
     getFaceObservations(of: image) { (observations) in
       guard let observations = observations else {
@@ -72,5 +73,32 @@ class ImageProcessor {
           print(error)
         }
       }
+  }
+
+  // MARK: Utils
+  /// - Parameters:
+  ///   - scaledPoint: scaledFrame uses lower-left corner.
+  static func convertToPoint(withScaledPoint scaledPoint: CGPoint, containerFrame: CGRect) -> CGPoint {
+    return CGPoint(x: containerFrame.size.width * scaledPoint.x,
+                   y: containerFrame.size.height * (1 - scaledPoint.y))
+  }
+
+  /// - Parameters:
+  ///   - scaledFrame: scaledFrame uses lower-left corner.
+  static func convertToFrame(withScaledFrame scaledFrame: CGRect, containerFrame: CGRect) -> CGRect {
+    let aSize = CGSize(width: containerFrame.size.width * scaledFrame.size.width,
+                       height: containerFrame.size.height * scaledFrame.size.height)
+    let aPoint = CGPoint(x: containerFrame.size.width * scaledFrame.origin.x,
+                         y: containerFrame.size.height * (1 - scaledFrame.origin.y) - aSize.height)
+
+    return CGRect(origin: aPoint, size: aSize)
+  }
+
+  static func convertToCGPoints(from points: UnsafePointer<vector_float2>, count: Int) -> [CGPoint] {
+    var cgPoints = [CGPoint]()
+    for i in 0 ..< count {
+      cgPoints.append(CGPoint(x: Double(points[i].x), y: Double(points[i].y)))
+    }
+    return cgPoints
   }
 }

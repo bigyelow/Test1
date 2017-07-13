@@ -15,15 +15,16 @@ extension UIImage {
   func draw(_ landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) {
     for tuple in landmarksTuples {
       guard let points = tuple.1.faceContour?.points, let count = tuple.1.faceContour?.pointCount else { continue }
-      print("face bounding = \(tuple.0)\n")
-      let cgPoints = convertToCGPoints(from: points, count: count)
-      for cgPoint in cgPoints {
-        print("x = \(cgPoint.x), y = \(cgPoint.y)")
+      let faceFrame = ImageProcessor.convertToFrame(withScaledFrame: tuple.0,
+                                                    containerFrame: CGRect(origin: .zero, size: size))
+      let cgPoints = ImageProcessor.convertToCGPoints(from: points, count: count).map {
+        CGPoint(x: $0.x * faceFrame.size.width, y: $0.y * faceFrame.size.height)
       }
     }
   }
 
   /// - Parameter boundingBoxes: see `VNFaceObservation.boundingBox`
+  @available(iOS 11, *)
   func drawRectangles(withBoundingBoxes boundingBoxes: [CGRect]) -> UIImage? {
     UIGraphicsBeginImageContext(size)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
@@ -35,7 +36,8 @@ extension UIImage {
     context.setStrokeColor(UIColor.yellow.cgColor)
     context.setLineWidth(4)
     for boundingBox in boundingBoxes {
-      context.stroke(convertToFrame(withBoundingBox: boundingBox))
+      context.stroke(ImageProcessor.convertToFrame(withScaledFrame: boundingBox,
+                                                   containerFrame: CGRect(origin: .zero, size: size)))
     }
 
     let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -49,21 +51,4 @@ extension UIImage {
     let context = CIContext(options: nil)
     return context.createCGImage(ciImage, from: ciImage.extent)
   }
-
-  private func convertToCGPoints(from points: UnsafePointer<vector_float2>, count: Int) -> [CGPoint] {
-    var cgPoints = [CGPoint]()
-    for i in 0 ..< count {
-      cgPoints.append(CGPoint(x: Double(points[i].x), y: Double(points[i].y)))
-    }
-    return cgPoints
-  }
-
-  private func convertToFrame(withBoundingBox boundingBox: CGRect) -> CGRect {
-    let aSize = CGSize(width: size.width * boundingBox.size.width, height: size.height * boundingBox.size.height)
-    let aPoint = CGPoint(x: size.width * boundingBox.origin.x, y: size.height * (1 - boundingBox.origin.y) - aSize.height)
-
-    return CGRect(origin: aPoint, size: aSize)
-  }
 }
-
-
