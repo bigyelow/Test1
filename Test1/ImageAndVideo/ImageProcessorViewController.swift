@@ -12,21 +12,31 @@ import Foundation
 class ImageProcessorViewController: UIViewController {
   private static var index = 3
   private let imageView = UIImageView(image: ImageProcessorViewController.cover)
-  private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+  private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    imageView.contentMode = .scaleAspectFill
-    imageView.frame = CGRect(x: 0, y: 64, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.height - 100)
+    view.backgroundColor = UIColor.white
+
+    imageView.contentMode = .scaleAspectFit
+    imageView.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.height - 200)
     imageView.clipsToBounds = true
     view.addSubview(imageView)
 
     indicator.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 20)
     view.addSubview(indicator)
 
+    var items = [UIBarButtonItem]()
     if #available(iOS 11, *) {
-      navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(openActionSheet))
+      let editItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(openActionSheet))
+      items.append(editItem)
     }
+    items.append(UIBarButtonItem(title: "Change",
+                                 style: .plain,
+                                 target: self,
+                                 action: #selector(changeCover)))
+
+    navigationItem.rightBarButtonItems = items
   }
 
   @available(iOS 11, *)
@@ -68,16 +78,12 @@ class ImageProcessorViewController: UIViewController {
     let action2 = UIAlertAction(title: "Detect Face Landmarks", style: .default) { (_) in
       self.detectFaceLandmarks()
     }
-    let changeCover = UIAlertAction(title: "Change Image", style: .default) { (_) in
-      self.changeCover()
-    }
     let cancel = UIAlertAction(title: "Cancel", style: .default) { [weak controller] (_) in
       guard let ctr = controller else { return }
       ctr.dismiss(animated: true, completion: nil)
     }
     controller.addAction(action1)
     controller.addAction(action2)
-    controller.addAction(changeCover)
     controller.addAction(cancel)
 
     present(controller, animated: true, completion: nil)
