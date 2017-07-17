@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		7106AED21F15DA380072AA43 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7106AED11F15DA380072AA43 /* UIImageExtension.swift */; };
 		712E711B1F1381C5009F5329 /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E711A1F1381C5009F5329 /* ImageProcessor.swift */; };
+		715C51441F1C8DCF0049D1E9 /* TCommond.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C51431F1C8DCF0049D1E9 /* TCommond.m */; };
+		715C51461F1C8E730049D1E9 /* TestNullabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715C51451F1C8E730049D1E9 /* TestNullabilityViewController.swift */; };
 		715F291C1F148AE2006C07EB /* ImageProcessorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715F291B1F148AE2006C07EB /* ImageProcessorViewController.swift */; };
 		7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC891F0CB125006D3EA8 /* StringExtension.swift */; };
 		7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */; };
@@ -46,6 +48,9 @@
 /* Begin PBXFileReference section */
 		7106AED11F15DA380072AA43 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		712E711A1F1381C5009F5329 /* ImageProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
+		715C51421F1C8DCF0049D1E9 /* TCommond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCommond.h; sourceTree = "<group>"; };
+		715C51431F1C8DCF0049D1E9 /* TCommond.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCommond.m; sourceTree = "<group>"; };
+		715C51451F1C8E730049D1E9 /* TestNullabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNullabilityViewController.swift; sourceTree = "<group>"; };
 		715F291B1F148AE2006C07EB /* ImageProcessorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessorViewController.swift; sourceTree = "<group>"; };
 		7162AC881F0CB124006D3EA8 /* Test1-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Test1-Bridging-Header.h"; sourceTree = "<group>"; };
 		7162AC891F0CB125006D3EA8 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -153,6 +158,9 @@
 				7162AC891F0CB125006D3EA8 /* StringExtension.swift */,
 				7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */,
 				7162AC881F0CB124006D3EA8 /* Test1-Bridging-Header.h */,
+				715C51421F1C8DCF0049D1E9 /* TCommond.h */,
+				715C51431F1C8DCF0049D1E9 /* TCommond.m */,
+				715C51451F1C8E730049D1E9 /* TestNullabilityViewController.swift */,
 			);
 			path = Test1;
 			sourceTree = "<group>";
@@ -320,6 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				715C51441F1C8DCF0049D1E9 /* TCommond.m in Sources */,
 				71B12A301EE1063500622A2E /* ViewController.m in Sources */,
 				712E711B1F1381C5009F5329 /* ImageProcessor.swift in Sources */,
 				7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */,
@@ -331,6 +340,7 @@
 				71B12A2A1EE1063500622A2E /* main.m in Sources */,
 				71DF3C2D1F1745BF0058C2C1 /* CoreGraphicsExtension.swift in Sources */,
 				71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */,
+				715C51461F1C8E730049D1E9 /* TestNullabilityViewController.swift in Sources */,
 				7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

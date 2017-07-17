@@ -11,6 +11,7 @@
 #import "ViewController.h"
 #import "SubTestExtension.h"
 #import "PresentingViewController.h"
+#import "TCommond.h"
 #import "Test1-Swift.h"
 
 static NSString * const WKWebViewStr = @"WKWebView";
@@ -19,6 +20,7 @@ static NSString * const VideoStr = @"Video";
 static NSString * const NSURLSessionStr = @"NSURLSession";
 static NSString * const URLEncodingStr = @"NSURLEncoding";
 static NSString * const PresentingStr = @"Presenting";
+static NSString * const Nullability = @"Nullability";
 
 @interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -34,7 +36,7 @@ static NSString * const PresentingStr = @"Presenting";
 - (instancetype)init
 {
   if (self = [super init]) {
-    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr];
+    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability];
   }
   return self;
 }
@@ -121,6 +123,11 @@ static NSString * const PresentingStr = @"Presenting";
   }
   else if ([_demos[indexPath.row] isEqualToString:PresentingStr]) {
     [self _te_presentVC];
+  }
+  else if ([_demos[indexPath.row] isEqualToString:Nullability]) {
+    TCommond *commond = [[TCommond alloc] initWithID:@"123" name:nil];
+    TestNullabilityViewController *ctr = [[TestNullabilityViewController alloc] initWithCommond:commond];
+    [self.navigationController pushViewController:ctr animated:YES];
   }
 }
 
