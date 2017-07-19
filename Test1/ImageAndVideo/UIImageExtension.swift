@@ -13,28 +13,25 @@ extension UIImage {
   // MARK: Draw
 
   @available(iOS 11, *)
-  func draw(_ landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
+
+//  func draw(_ image: UIImage, to landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
+//
+//  }
+
+  func getClippedImage(from landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
     guard landmarksTuples.count > 0 else { return nil }
 
     UIGraphicsBeginImageContext(size)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
-    // 1. Draw original image
-    draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-
-    context.setStrokeColor(UIColor.yellow.cgColor)
-    context.setLineWidth(4)
-
-    // 2. Draw points
+    // Clip face between points
     for tuple in landmarksTuples {
       let containerFrame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
       // Face contour
       var points = [CGPoint]()
-      var startPoint: CGPoint?
       if let faceContourPoints = tuple.1.faceContour?.points, let count = tuple.1.faceContour?.pointCount {
         points.append(contentsOf: ImageProcessor.convertToCGPoints(from: faceContourPoints, count: count).reversed())
-        startPoint = ImageProcessor.convertToCGPoints(from: faceContourPoints, count: count).last
       }
 
       // Left eyebrow
@@ -46,13 +43,12 @@ extension UIImage {
       if let rightEyebrowPoints = tuple.1.rightEyebrow?.points, let count = tuple.1.rightEyebrow?.pointCount {
         points.append(contentsOf: ImageProcessor.convertToCGPoints(from: rightEyebrowPoints, count: count))
       }
-
-      if let startPoint = startPoint {
-        points.append(startPoint)
-      }
-
-      context.drawPoints(points, scaledFrame: tuple.0, containerFrame: containerFrame)
+      
+      context.clip(with: points, scaledFrame: tuple.0, containerFrame: containerFrame)
     }
+
+    // Draw image in cliped area
+    draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()

@@ -13,6 +13,7 @@ class ImageProcessorViewController: UIViewController {
   private static var index = 3
   private let imageView = UIImageView(image: ImageProcessorViewController.cover)
   private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+  private let candidate = UIImageView(image: UIImage(named: "Head1"))
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -22,6 +23,12 @@ class ImageProcessorViewController: UIViewController {
     imageView.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.height - 200)
     imageView.clipsToBounds = true
     view.addSubview(imageView)
+
+    candidate.contentMode = .scaleAspectFit
+    let candidateHeight = UIScreen.main.bounds.size.height - imageView.frame.maxY - 20
+    candidate.frame = CGRect(x: 10, y: imageView.frame.maxY + 10, width: candidateHeight * 0.7, height: candidateHeight)
+    candidate.clipsToBounds = true
+    view.addSubview(candidate)
 
     indicator.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 20)
     view.addSubview(indicator)
@@ -61,7 +68,7 @@ class ImageProcessorViewController: UIViewController {
       sself.indicator.stopAnimating()
 
       guard let landmarksTuples = landmarksTuples else { return }
-      sself.imageView.image = image.draw(landmarksTuples)
+      sself.imageView.image = image.getClippedImage(from: landmarksTuples)
     }
   }
 
