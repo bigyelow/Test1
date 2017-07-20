@@ -13,9 +13,15 @@ extension UIImage {
   // MARK: Draw
 
   @available(iOS 11, *)
-  func draw(_ image: UIImage, to landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
-    
-    return nil
+  func draw(_ image: UIImage, to landmarks: (CGRect, VNFaceLandmarks2D)) -> UIImage? {
+    let frame = ImageProcessor.convertToFrame(withScaledFrame: landmarks.0, containerFrame: CGRect(origin: .zero, size: size))
+
+    UIGraphicsBeginImageContext(size)
+    image.draw(in: frame)
+
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
   }
 
   @available(iOS 11, *)

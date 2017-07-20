@@ -11,7 +11,7 @@ import Foundation
 
 class ImageProcessorViewController: UIViewController {
   private static var index = 3
-  private let imageView = UIImageView(image: ImageProcessorViewController.cover)
+  private let container = UIImageView(image: ImageProcessorViewController.cover)
   private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
   private let candidate = UIImageView(image: UIImage(named: "Head1"))
 
@@ -19,14 +19,14 @@ class ImageProcessorViewController: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = UIColor.white
 
-    imageView.contentMode = .scaleAspectFit
-    imageView.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.height - 200)
-    imageView.clipsToBounds = true
-    view.addSubview(imageView)
+    container.contentMode = .scaleAspectFit
+    container.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.height - 200)
+    container.clipsToBounds = true
+    view.addSubview(container)
 
     candidate.contentMode = .scaleAspectFit
-    let candidateHeight = UIScreen.main.bounds.size.height - imageView.frame.maxY - 20
-    candidate.frame = CGRect(x: 10, y: imageView.frame.maxY + 10, width: candidateHeight * 0.7, height: candidateHeight)
+    let candidateHeight = UIScreen.main.bounds.size.height - container.frame.maxY - 20
+    candidate.frame = CGRect(x: 10, y: container.frame.maxY + 10, width: candidateHeight * 0.7, height: candidateHeight)
     candidate.clipsToBounds = true
     view.addSubview(candidate)
 
@@ -48,32 +48,42 @@ class ImageProcessorViewController: UIViewController {
 
   @available(iOS 11, *)
   @objc private func detectFace() {
-    guard let image = imageView.image else { return }
+    guard let image = container.image else { return }
     indicator.startAnimating()
     ImageProcessor.detectFace(of: image) { [weak self] (rects) in
       guard let sself = self else { return }
       sself.indicator.stopAnimating()
 
       guard let rects = rects else { return }
-      sself.imageView.image = image.drawRectangles(withBoundingBoxes: rects)
+      sself.container.image = image.drawRectangles(withBoundingBoxes: rects)
     }
   }
 
   @available(iOS 11, *)
   @objc private func detectFaceLandmarks() {
-    guard let image = imageView.image else { return }
+    guard let candidateImage = candidate.image else { return }
     indicator.startAnimating()
-    ImageProcessor.detectFaceLandmarks(of: image) { [weak self] (landmarksTuples) in
-      guard let sself = self else { return }
-      sself.indicator.stopAnimating()
 
+    // Get face
+    ImageProcessor.detectFaceLandmarks(of: candidateImage) { [weak self] (landmarksTuples) in
+      guard let sself = self else { return }
       guard let landmarksTuples = landmarksTuples else { return }
-      sself.imageView.image = image.getClippedImage(from: landmarksTuples)
+      sself.candidate.image = candidateImage.getClippedImage(from: landmarksTuples)
+
+      // Draw face to container
+      guard let image = sself.container.image else { return }
+      ImageProcessor.detectFaceLandmarks(of: image) { [weak sself] (landmarksTuples) in
+        guard let wself = sself else { return }
+        wself.indicator.stopAnimating()
+
+        guard let landmarksTuples = landmarksTuples, landmarksTuples.count > 0, let face = wself.candidate.image else { return }
+        wself.container.image = image.draw(face, to: landmarksTuples[0])
+      }
     }
   }
 
   @objc private func changeCover() {
-    imageView.image = ImageProcessorViewController.cover
+    container.image = ImageProcessorViewController.cover
   }
 
   @available(iOS 11, *)

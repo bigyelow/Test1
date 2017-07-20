@@ -23,6 +23,9 @@ class ImageProcessor {
     }
   }
 
+
+  /// - Parameters:
+  ///   - completion: CGRect - BoundingBox of a face
   static func detectFaceLandmarks(of image: UIImage, completion: @escaping ([(CGRect, VNFaceLandmarks2D)]?) -> Void) {
     getFaceObservations(of: image) { (observations) in
       guard let observations = observations else {
