@@ -25,36 +25,12 @@ extension UIImage {
   }
 
   @available(iOS 11, *)
-func getClippedImage(from landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
-  guard landmarksTuples.count > 0 else { return nil }
+  func getClippedImage(from landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
+    guard landmarksTuples.count > 0 else { return nil }
+    UIGraphicsBeginImageContext(size)
+    guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
-  UIGraphicsBeginImageContext(size)
-  guard let context = UIGraphicsGetCurrentContext() else { return nil}
-
-  // Clip face between points
-  for tuple in landmarksTuples {
-    let containerFrame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-
-    // Face contour
-    var points = [CGPoint]()
-    if let faceContourPoints = tuple.1.faceContour?.points, let count = tuple.1.faceContour?.pointCount {
-      points.append(contentsOf: ImageProcessor.convertToCGPoints(from: faceContourPoints, count: count).reversed())
-    }
-
-    // Left eyebrow
-    if let leftEyebrowPoints = tuple.1.leftEyebrow?.points, let count = tuple.1.leftEyebrow?.pointCount {
-      points.append(contentsOf: ImageProcessor.convertToCGPoints(from: leftEyebrowPoints, count: count))
-    }
-
-    // Right eyebrow
-    if let rightEyebrowPoints = tuple.1.rightEyebrow?.points, let count = tuple.1.rightEyebrow?.pointCount {
-      points.append(contentsOf: ImageProcessor.convertToCGPoints(from: rightEyebrowPoints, count: count))
-    }
-
-    context.clip(with: points, scaledFrame: tuple.0, containerFrame: containerFrame)
-  }
-
-    // Draw image in cliped area
+    context.clip(with: landmarksTuples, containerSize: size)
     draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 
     let image = UIGraphicsGetImageFromCurrentImageContext()
