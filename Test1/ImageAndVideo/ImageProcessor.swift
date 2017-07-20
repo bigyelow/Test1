@@ -9,10 +9,10 @@
 import Vision
 import UIKit
 
-@available(iOS 11, *)
 class ImageProcessor {
   // MARK: Detection
-  
+
+  @available(iOS 11, *)
   static func detectFace(of image: UIImage, completion: @escaping ([CGRect]?) -> Void) {
     getFaceObservations(of: image) { (observations) in
       guard let observations = observations else {
@@ -23,9 +23,9 @@ class ImageProcessor {
     }
   }
 
-
   /// - Parameters:
   ///   - completion: CGRect - BoundingBox of a face
+  @available(iOS 11, *)
   static func detectFaceLandmarks(of image: UIImage, completion: @escaping ([(CGRect, VNFaceLandmarks2D)]?) -> Void) {
     getFaceObservations(of: image) { (observations) in
       guard let observations = observations else {
@@ -54,6 +54,7 @@ class ImageProcessor {
     }
   }
 
+  @available(iOS 11, *)
   private static func getFaceObservations(of image: UIImage, completion: @escaping ([VNFaceObservation]?) -> Void) {
     guard let cgImage = image.convertToCGImage() else { return }
 

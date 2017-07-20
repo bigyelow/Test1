@@ -14,10 +14,16 @@ extension UIImage {
 
   @available(iOS 11, *)
   func draw(_ image: UIImage, to landmarks: (CGRect, VNFaceLandmarks2D)) -> UIImage? {
-    let frame = ImageProcessor.convertToFrame(withScaledFrame: landmarks.0, containerFrame: CGRect(origin: .zero, size: size))
-
     UIGraphicsBeginImageContext(size)
-    image.draw(in: frame)
+    guard let context = UIGraphicsGetCurrentContext() else { return nil}
+
+    // 1. Draw original image
+    draw(in: CGRect(origin: .zero, size: size))
+
+    // 2. Replace image
+    context.strokeLines(with: [landmarks], containerSize: size)
+    context.clip(with: [landmarks], containerSize: size)
+    image.draw(in: CGRect(origin: .zero, size: size))
 
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
@@ -66,5 +72,12 @@ extension UIImage {
     guard let ciImage = CIImage(image: self) else { return nil }
     let context = CIContext(options: nil)
     return context.createCGImage(ciImage, from: ciImage.extent)
+  }
+
+  func saveToDocument(withFileName fileName: String) throws {
+    let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+    let filePath = paths[0] + "/" + fileName
+    let filePathURL = URL(fileURLWithPath: filePath) 
+    try UIImagePNGRepresentation(self)?.write(to: filePathURL)
   }
 }
