@@ -21,9 +21,9 @@ extension UIImage {
     draw(in: CGRect(origin: .zero, size: size))
 
     // 2. Replace image
-    context.strokeLines(with: [landmarks], containerSize: size)
-    context.clip(with: [landmarks], containerSize: size)
-    image.draw(in: CGRect(origin: .zero, size: size))
+    let containerFaceFrame = ImageProcessor.convertToFrame(withScaledFrame: landmarks.0,
+                                                           containerFrame: CGRect(origin: .zero, size: size))
+    image.draw(in: containerFaceFrame)
 
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
@@ -42,6 +42,21 @@ extension UIImage {
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     return image
+  }
+
+  @available(iOS 11, *)
+  func getClippedImage(from landmarksTuple: (CGRect, VNFaceLandmarks2D)) -> UIImage? {
+    UIGraphicsBeginImageContext(size)
+    guard let context = UIGraphicsGetCurrentContext() else { return nil}
+
+    context.clip(with: landmarksTuple, containerSize: size)
+    draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    let cgImage = context.boundingImage(image?.convertToCGImage(), with: landmarksTuple, containerSize: size)
+
+    UIGraphicsEndImageContext()
+    return cgImage != nil ? UIImage(cgImage: cgImage!) : nil
   }
 
   /// - Parameter boundingBoxes: see `VNFaceObservation.boundingBox`

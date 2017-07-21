@@ -15,21 +15,59 @@ extension CGContext {
   @available(iOS 11, *)
   func clip(with landmarksTuples: [(CGRect, VNFaceLandmarks2D)], containerSize size: CGSize) {
     for tuple in landmarksTuples {
-      let points = createPoints(with: tuple, containerSize: size)
-      clip(with: points, scaledFrame: tuple.0, containerFrame: CGRect(origin: .zero, size: size))
+      clip(with: tuple, containerSize: size)
     }
+  }
+
+  @available(iOS 11, *)
+  func clip(with landmarksTuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) {
+    let points = createCGPoints(with: landmarksTuple)
+    clip(with: points, scaledFrame: landmarksTuple.0, containerFrame: CGRect(origin: .zero, size: size))
   }
 
   @available(iOS 11, *)
   func strokeLines(with landmarksTuples: [(CGRect, VNFaceLandmarks2D)], containerSize size: CGSize) {
     for tuple in landmarksTuples {
-      let points = createPoints(with: tuple, containerSize: size)
-      strokeLines(with: points, scaledFrame: tuple.0, containerFrame: CGRect(origin: .zero, size: size))
+      strokeLines(with: tuple, containerSize: size)
     }
   }
 
   @available(iOS 11, *)
-  private func createPoints(with tuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) -> [CGPoint] {
+  func strokeLines(with landmarksTuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) {
+    let points = createCGPoints(with: landmarksTuple)
+    strokeLines(with: points, scaledFrame: landmarksTuple.0, containerFrame: CGRect(origin: .zero, size: size))
+  }
+
+  @available(iOS 11, *)
+  func boundingImage(_ image: CGImage?, with landmarksTuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) -> CGImage? {
+    var points = createCGPoints(with: landmarksTuple)
+    let frame = ImageProcessor.convertToFrame(withScaledFrame: landmarksTuple.0, containerFrame: CGRect(origin: .zero, size: size))
+    points = points.map { ImageProcessor.convertToPoint(withScaledPoint: $0, containerFrame: frame) }
+
+    var minX: CGFloat = size.width, minY: CGFloat = size.height, maxX: CGFloat = 0, maxY: CGFloat = 0
+    for point in points {
+      if point.x < minX {
+        minX = point.x
+      }
+      if point.y < minY {
+        minY = point.y
+      }
+      if point.x > maxX {
+        maxX = point.x
+      }
+      if point.y > maxY {
+        maxY = point.y
+      }
+    }
+
+    let boundingFrame = CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
+    return image?.cropping(to: boundingFrame)
+  }
+
+  // MARK: Private
+
+  @available(iOS 11, *)
+  private func createCGPoints(with tuple: (CGRect, VNFaceLandmarks2D)) -> [CGPoint] {
     // Face contour
     var points = [CGPoint]()
     if let faceContourPoints = tuple.1.faceContour?.points, let count = tuple.1.faceContour?.pointCount {

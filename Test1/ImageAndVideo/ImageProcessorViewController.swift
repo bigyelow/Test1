@@ -67,8 +67,8 @@ class ImageProcessorViewController: UIViewController {
     // Get face
     ImageProcessor.detectFaceLandmarks(of: candidateImage) { [weak self] (landmarksTuples) in
       guard let sself = self else { return }
-      guard let landmarksTuples = landmarksTuples else { return }
-      sself.candidate.image = candidateImage.getClippedImage(from: landmarksTuples)
+      guard let landmarksTuples = landmarksTuples, landmarksTuples.count > 0 else { return }
+      sself.candidate.image = candidateImage.getClippedImage(from: landmarksTuples[0])
 
       // Draw face to container
       guard let image = sself.container.image else { return }
