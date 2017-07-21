@@ -78,6 +78,7 @@ class ImageProcessorViewController: UIViewController {
 
         guard let landmarksTuples = landmarksTuples, landmarksTuples.count > 0, let face = wself.candidate.image else { return }
         wself.container.image = image.draw(face, to: landmarksTuples[0])
+        //        wself.container.image = image.strokeLines(with: landmarksTuples)
       }
     }
   }
@@ -112,4 +113,5 @@ class ImageProcessorViewController: UIViewController {
     return image
   }
 }
+
 

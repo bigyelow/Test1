@@ -39,6 +39,7 @@ extension CGContext {
   }
 
   @available(iOS 11, *)
+  /// 生成包含人脸的最小矩形图
   func boundingImage(_ image: CGImage?, with landmarksTuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) -> CGImage? {
     var points = createCGPoints(with: landmarksTuple)
     let frame = ImageProcessor.convertToFrame(withScaledFrame: landmarksTuple.0, containerFrame: CGRect(origin: .zero, size: size))
@@ -90,22 +91,27 @@ extension CGContext {
   private func strokeLines(with points: [CGPoint], scaledFrame: CGRect, containerFrame: CGRect) {
     setStrokeColor(UIColor.yellow.cgColor)
     setLineWidth(4)
-    closePath(with: points, scaledFrame: scaledFrame, containerFrame: containerFrame)
+    closePath(withScaledPoints: points, scaledFrame: scaledFrame, containerFrame: containerFrame)
     strokePath()
   }
 
   private func clip(with points: [CGPoint], scaledFrame: CGRect, containerFrame: CGRect) {
-    closePath(with: points, scaledFrame: scaledFrame, containerFrame: containerFrame)
+    closePath(withScaledPoints: points, scaledFrame: scaledFrame, containerFrame: containerFrame)
     clip()
   }
 
-  private func closePath(with points: [CGPoint], scaledFrame: CGRect, containerFrame: CGRect) {
+  /// - Parameters:
+  ///   - points: `points` is in the `scaledFrame`.
+  ///   - scaledFrame: is relative to containerFrame
+  private func closePath(withScaledPoints points: [CGPoint], scaledFrame: CGRect, containerFrame: CGRect) {
     guard points.count > 0 else { return }
 
-    let frame = ImageProcessor.convertToFrame(withScaledFrame: scaledFrame, containerFrame: containerFrame)
-    let cgPoints = points.map { ImageProcessor.convertToPoint(withScaledPoint: $0, containerFrame: frame) }
+    let cgPoints = points.map { ImageProcessor.convertToPoint(withScaledPoint: $0,
+                                                              scaledFrame: scaledFrame,
+                                                              containerFrame: containerFrame) }
 
     addLines(between: cgPoints)
     closePath()
   }
 }
+

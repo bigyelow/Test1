@@ -71,20 +71,21 @@ class ImageProcessor {
     }
 
     let handler = VNImageRequestHandler(cgImage: cgImage)
-      DispatchQueue.global().async {
-        do {
-          try handler.perform([request])
-        } catch {
-          print(error)
-        }
+    DispatchQueue.global().async {
+      do {
+        try handler.perform([request])
+      } catch {
+        print(error)
       }
+    }
   }
 
   // MARK: Utils
 
   /// - Parameters:
-  ///   - scaledPoint: uses lower-left corner.
-  ///   - containerFrame: uses upper-left corner.
+  ///   - scaledPoint: uses lower-left corner. scaledPoint 坐标是相对 containerFrame 的，均是 0-1 正则化了的。
+  ///   - containerFrame: uses upper-left corner. `containerFrame` 为 `scaledPoint` 所在的 frame. `containerFrame` 的 point
+  ///   是真实位置（不一定是 (0, 0)）
   static func convertToPoint(withScaledPoint scaledPoint: CGPoint, containerFrame: CGRect) -> CGPoint {
     return CGPoint(x: containerFrame.size.width * scaledPoint.x + containerFrame.origin.x,
                    y: containerFrame.size.height * (1 - scaledPoint.y) + containerFrame.origin.y)
@@ -92,14 +93,26 @@ class ImageProcessor {
 
   /// - Parameters:
   ///   - scaledFrame: scaledFrame uses lower-left corner.
-  ///   - containerFrame: uses upper-left corner.
+  ///   - containerFrame: uses upper-left corner. 同 convertToPoint() 中的 `containerFrame` 参数。
   static func convertToFrame(withScaledFrame scaledFrame: CGRect, containerFrame: CGRect) -> CGRect {
     let aSize = CGSize(width: containerFrame.size.width * scaledFrame.size.width,
                        height: containerFrame.size.height * scaledFrame.size.height)
-    let aPoint = CGPoint(x: containerFrame.size.width * scaledFrame.origin.x,
-                         y: containerFrame.size.height * (1 - scaledFrame.origin.y) - aSize.height)
+    let aPoint = CGPoint(x: containerFrame.size.width * scaledFrame.origin.x + containerFrame.origin.x,
+                         y: containerFrame.size.height * (1 - scaledFrame.origin.y) - aSize.height + containerFrame.origin.y)
 
     return CGRect(origin: aPoint, size: aSize)
+  }
+
+
+  /// - Parameters:
+  ///   - scaledPoint: `scaledPoint` related to `scaledFrame`
+  ///
+  /// - Note: this method just combines `convertToPoint(withScaledPoint:containerFrame)` with `convertToFrame(withScaledFrame:containerFrame)`
+  static func convertToPoint(withScaledPoint scaledPoint: CGPoint,
+                             scaledFrame: CGRect,
+                             containerFrame: CGRect) -> CGPoint {
+    let frame = convertToFrame(withScaledFrame: scaledFrame, containerFrame: containerFrame)
+    return convertToPoint(withScaledPoint: scaledPoint, containerFrame: frame)
   }
 
   static func convertToCGPoints(from points: UnsafePointer<vector_float2>, count: Int) -> [CGPoint] {
@@ -110,3 +123,4 @@ class ImageProcessor {
     return cgPoints
   }
 }
+

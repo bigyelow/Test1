@@ -15,12 +15,8 @@ extension UIImage {
   @available(iOS 11, *)
   func draw(_ image: UIImage, to landmarks: (CGRect, VNFaceLandmarks2D)) -> UIImage? {
     UIGraphicsBeginImageContext(size)
-    guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
-    // 1. Draw original image
     draw(in: CGRect(origin: .zero, size: size))
-
-    // 2. Replace image
     let containerFaceFrame = ImageProcessor.convertToFrame(withScaledFrame: landmarks.0,
                                                            containerFrame: CGRect(origin: .zero, size: size))
     image.draw(in: containerFaceFrame)
@@ -29,6 +25,24 @@ extension UIImage {
     UIGraphicsEndImageContext()
     return image
   }
+
+  // MARK: Stroke
+
+  @available(iOS 11, *)
+  func strokeLines(with landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
+    guard landmarksTuples.count > 0 else { return nil }
+    UIGraphicsBeginImageContext(size)
+    guard let context = UIGraphicsGetCurrentContext() else { return nil}
+
+    draw(in: CGRect(origin: .zero, size: size))
+    context.strokeLines(with: landmarksTuples, containerSize: size)
+
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
+  }
+
+  // MARK: Clip
 
   @available(iOS 11, *)
   func getClippedImage(from landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
@@ -45,18 +59,23 @@ extension UIImage {
   }
 
   @available(iOS 11, *)
-  func getClippedImage(from landmarksTuple: (CGRect, VNFaceLandmarks2D)) -> UIImage? {
+  /// - Parameters:
+  ///   - minimizeBounding: 是否要返回包含人脸的最小矩形图
+  func getClippedImage(from landmarksTuple: (CGRect, VNFaceLandmarks2D), minimizeBounding: Bool = true) -> UIImage? {
     UIGraphicsBeginImageContext(size)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
     context.clip(with: landmarksTuple, containerSize: size)
     draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 
-    let image = UIGraphicsGetImageFromCurrentImageContext()
-    let cgImage = context.boundingImage(image?.convertToCGImage(), with: landmarksTuple, containerSize: size)
+    var image = UIGraphicsGetImageFromCurrentImageContext()
+    if minimizeBounding {
+      let cgImage = context.boundingImage(image?.convertToCGImage(), with: landmarksTuple, containerSize: size)
+      image = cgImage != nil ? UIImage(cgImage: cgImage!) : nil
+    }
 
     UIGraphicsEndImageContext()
-    return cgImage != nil ? UIImage(cgImage: cgImage!) : nil
+    return image
   }
 
   /// - Parameter boundingBoxes: see `VNFaceObservation.boundingBox`
@@ -92,7 +111,8 @@ extension UIImage {
   func saveToDocument(withFileName fileName: String) throws {
     let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
     let filePath = paths[0] + "/" + fileName
-    let filePathURL = URL(fileURLWithPath: filePath) 
+    let filePathURL = URL(fileURLWithPath: filePath)
     try UIImagePNGRepresentation(self)?.write(to: filePathURL)
   }
 }
+
