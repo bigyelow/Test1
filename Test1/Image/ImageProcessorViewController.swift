@@ -61,6 +61,21 @@ class ImageProcessorViewController: UIViewController {
 
   @available(iOS 11, *)
   @objc private func detectFaceLandmarks() {
+    guard let image = container.image else { return }
+    indicator.startAnimating()
+
+    ImageProcessor.detectFaceLandmarks(of: image) { [weak self] (landmarksTuples) in
+      guard let sself = self else { return }
+      sself.indicator.stopAnimating()
+
+      guard let tuples = landmarksTuples else { return }
+      sself.container.image = image.strokeLines(with: tuples)
+    }
+  }
+
+  @available(iOS 11, *)
+  /// Change face of the first detected one.
+  @objc private func swapFace() {
     guard let candidateImage = candidate.image else { return }
     indicator.startAnimating()
 
@@ -77,10 +92,10 @@ class ImageProcessorViewController: UIViewController {
         wself.indicator.stopAnimating()
 
         guard let landmarksTuples = landmarksTuples, landmarksTuples.count > 0, let face = wself.candidate.image else { return }
-        wself.container.image = image.draw(face, to: landmarksTuples[0])
-        //        wself.container.image = image.strokeLines(with: landmarksTuples)
+        wself.container.image = image.draw(face, to: landmarksTuples[0])  // change first one
       }
     }
+
   }
 
   @objc private func changeCover() {
@@ -96,12 +111,16 @@ class ImageProcessorViewController: UIViewController {
     let action2 = UIAlertAction(title: "Detect Face Landmarks", style: .default) { (_) in
       self.detectFaceLandmarks()
     }
+    let action3 = UIAlertAction(title: "Swap Face", style: .default) { (_) in
+      self.swapFace()
+    }
     let cancel = UIAlertAction(title: "Cancel", style: .default) { [weak controller] (_) in
       guard let ctr = controller else { return }
       ctr.dismiss(animated: true, completion: nil)
     }
     controller.addAction(action1)
     controller.addAction(action2)
+    controller.addAction(action3)
     controller.addAction(cancel)
 
     present(controller, animated: true, completion: nil)
