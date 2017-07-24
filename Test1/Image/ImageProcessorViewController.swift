@@ -86,16 +86,17 @@ class ImageProcessorViewController: UIViewController {
       sself.candidate.image = candidateImage.getClippedImage(from: landmarksTuples[0])
 
       // Draw face to container
-      guard let image = sself.container.image else { return }
-      ImageProcessor.detectFaceLandmarks(of: image) { [weak sself] (landmarksTuples) in
+      guard let containerImage = sself.container.image else { return }
+      ImageProcessor.detectFaceLandmarks(of: containerImage) { [weak sself] (containerLandmarksTuples) in
         guard let wself = sself else { return }
         wself.indicator.stopAnimating()
 
-        guard let landmarksTuples = landmarksTuples, landmarksTuples.count > 0, let face = wself.candidate.image else { return }
-        wself.container.image = image.draw(face, to: landmarksTuples[0])  // change first one
+        guard let containerLandmarksTuples = containerLandmarksTuples,
+          containerLandmarksTuples.count > 0,
+          let face = wself.candidate.image else { return }
+        wself.container.image = containerImage.draw(face, to: containerLandmarksTuples[0])  // change first one
       }
     }
-
   }
 
   @objc private func changeCover() {
