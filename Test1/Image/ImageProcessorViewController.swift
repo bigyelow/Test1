@@ -60,6 +60,20 @@ class ImageProcessorViewController: UIViewController {
   }
 
   @available(iOS 11, *)
+  @objc private func detectFaceBounding() {
+    guard let image = container.image else { return }
+    indicator.startAnimating()
+
+    ImageProcessor.detectFaceLandmarks(of: image) { [weak self] (landmarksTuples) in
+      guard let sself = self else { return }
+      sself.indicator.stopAnimating()
+
+      guard let tuples = landmarksTuples else { return }
+      sself.container.image = image.drawBoundingRectangles(with: tuples)
+    }
+  }
+
+  @available(iOS 11, *)
   @objc private func detectFaceLandmarks() {
     guard let image = container.image else { return }
     indicator.startAnimating()
@@ -109,10 +123,13 @@ class ImageProcessorViewController: UIViewController {
     let action1 = UIAlertAction(title: "Detect Face", style: .default) { (_) in
       self.detectFace()
     }
-    let action2 = UIAlertAction(title: "Detect Face Landmarks", style: .default) { (_) in
+    let action2 = UIAlertAction(title: "Detect Face Bounding", style: .default) { (_) in
+      self.detectFaceBounding()
+    }
+    let action3 = UIAlertAction(title: "Detect Face Landmarks", style: .default) { (_) in
       self.detectFaceLandmarks()
     }
-    let action3 = UIAlertAction(title: "Swap Face", style: .default) { (_) in
+    let action4 = UIAlertAction(title: "Swap Face", style: .default) { (_) in
       self.swapFace()
     }
     let cancel = UIAlertAction(title: "Cancel", style: .default) { [weak controller] (_) in
@@ -122,6 +139,7 @@ class ImageProcessorViewController: UIViewController {
     controller.addAction(action1)
     controller.addAction(action2)
     controller.addAction(action3)
+    controller.addAction(action4)
     controller.addAction(cancel)
 
     present(controller, animated: true, completion: nil)

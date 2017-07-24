@@ -17,9 +17,8 @@ extension UIImage {
     UIGraphicsBeginImageContext(size)
 
     draw(in: CGRect(origin: .zero, size: size))
-    let containerFaceFrame = ImageProcessor.convertToFrame(withScaledFrame: landmarks.0,
-                                                           containerFrame: CGRect(origin: .zero, size: size))
-    image.draw(in: containerFaceFrame)
+    let boundingFrame = ImageProcessor.boundingBox(for: landmarks, containerSize: size)
+    image.draw(in: boundingFrame)
 
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
@@ -36,6 +35,49 @@ extension UIImage {
 
     draw(in: CGRect(origin: .zero, size: size))
     context.strokeLines(with: landmarksTuples, containerSize: size)
+
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
+  }
+
+  @available(iOS 11, *)
+  func drawBoundingRectangles(with landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
+    UIGraphicsBeginImageContext(size)
+    guard let context = UIGraphicsGetCurrentContext() else { return nil}
+
+    // 1. Draw original image
+    draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+
+    // 2. Draw rectangle
+    context.setStrokeColor(UIColor.yellow.cgColor)
+    context.setLineWidth(4)
+    for tuple in landmarksTuples {
+      let boundingFrame = ImageProcessor.boundingBox(for: tuple, containerSize: size)
+      context.addRect(boundingFrame)
+      context.strokePath()
+    }
+
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
+  }
+
+  /// - Parameter boundingBoxes: see `VNFaceObservation.boundingBox`
+  func drawRectangles(withBoundingBoxes boundingBoxes: [CGRect]) -> UIImage? {
+    UIGraphicsBeginImageContext(size)
+    guard let context = UIGraphicsGetCurrentContext() else { return nil}
+
+    // 1. Draw original image
+    draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+
+    // 2. Draw rectangle
+    context.setStrokeColor(UIColor.yellow.cgColor)
+    context.setLineWidth(4)
+    for boundingBox in boundingBoxes {
+      context.stroke(ImageProcessor.convertToFrame(withScaledFrame: boundingBox,
+                                                   containerFrame: CGRect(origin: .zero, size: size)))
+    }
 
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
@@ -74,27 +116,6 @@ extension UIImage {
       image = cgImage != nil ? UIImage(cgImage: cgImage!) : nil
     }
 
-    UIGraphicsEndImageContext()
-    return image
-  }
-
-  /// - Parameter boundingBoxes: see `VNFaceObservation.boundingBox`
-  func drawRectangles(withBoundingBoxes boundingBoxes: [CGRect]) -> UIImage? {
-    UIGraphicsBeginImageContext(size)
-    guard let context = UIGraphicsGetCurrentContext() else { return nil}
-
-    // 1. Draw original image
-    draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-
-    // 2. Draw rectangle
-    context.setStrokeColor(UIColor.yellow.cgColor)
-    context.setLineWidth(4)
-    for boundingBox in boundingBoxes {
-      context.stroke(ImageProcessor.convertToFrame(withScaledFrame: boundingBox,
-                                                   containerFrame: CGRect(origin: .zero, size: size)))
-    }
-
-    let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     return image
   }
