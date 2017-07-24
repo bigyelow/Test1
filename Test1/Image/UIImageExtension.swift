@@ -79,7 +79,6 @@ extension UIImage {
   }
 
   /// - Parameter boundingBoxes: see `VNFaceObservation.boundingBox`
-  @available(iOS 11, *)
   func drawRectangles(withBoundingBoxes boundingBoxes: [CGRect]) -> UIImage? {
     UIGraphicsBeginImageContext(size)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}

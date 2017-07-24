@@ -41,6 +41,13 @@ extension CGContext {
   @available(iOS 11, *)
   /// 生成包含人脸的最小矩形图
   func boundingImage(_ image: CGImage?, with landmarksTuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) -> CGImage? {
+    let boundingFrame = boundingBox(for: landmarksTuple, containerSize: size)
+    return image?.cropping(to: boundingFrame)
+  }
+
+  @available(iOS 11, *)
+  /// 生成包含人脸的最小矩形
+  func boundingBox(for landmarksTuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) -> CGRect {
     var points = createCGPoints(with: landmarksTuple)
     let frame = ImageProcessor.convertToFrame(withScaledFrame: landmarksTuple.0, containerFrame: CGRect(origin: .zero, size: size))
     points = points.map { ImageProcessor.convertToPoint(withScaledPoint: $0, containerFrame: frame) }
@@ -61,8 +68,7 @@ extension CGContext {
       }
     }
 
-    let boundingFrame = CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
-    return image?.cropping(to: boundingFrame)
+    return CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
   }
 
   // MARK: Private
