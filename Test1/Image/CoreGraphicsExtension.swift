@@ -21,7 +21,7 @@ extension CGContext {
 
   @available(iOS 11, *)
   func clip(with landmarksTuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) {
-    let points = createCGPoints(with: landmarksTuple)
+    let points = ImageProcessor.createCGPoints(with: landmarksTuple)
     clip(with: points, scaledFrame: landmarksTuple.0, containerFrame: CGRect(origin: .zero, size: size))
   }
 
@@ -34,65 +34,11 @@ extension CGContext {
 
   @available(iOS 11, *)
   func strokeLines(with landmarksTuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) {
-    let points = createCGPoints(with: landmarksTuple)
+    let points = ImageProcessor.createCGPoints(with: landmarksTuple)
     strokeLines(with: points, scaledFrame: landmarksTuple.0, containerFrame: CGRect(origin: .zero, size: size))
   }
 
-  @available(iOS 11, *)
-  /// 生成包含人脸的最小矩形图
-  func boundingImage(_ image: CGImage?, with landmarksTuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) -> CGImage? {
-    let boundingFrame = boundingBox(for: landmarksTuple, containerSize: size)
-    return image?.cropping(to: boundingFrame)
-  }
-
-  @available(iOS 11, *)
-  /// 生成包含人脸的最小矩形
-  func boundingBox(for landmarksTuple: (CGRect, VNFaceLandmarks2D), containerSize size: CGSize) -> CGRect {
-    var points = createCGPoints(with: landmarksTuple)
-    let frame = ImageProcessor.convertToFrame(withScaledFrame: landmarksTuple.0, containerFrame: CGRect(origin: .zero, size: size))
-    points = points.map { ImageProcessor.convertToPoint(withScaledPoint: $0, containerFrame: frame) }
-
-    var minX: CGFloat = size.width, minY: CGFloat = size.height, maxX: CGFloat = 0, maxY: CGFloat = 0
-    for point in points {
-      if point.x < minX {
-        minX = point.x
-      }
-      if point.y < minY {
-        minY = point.y
-      }
-      if point.x > maxX {
-        maxX = point.x
-      }
-      if point.y > maxY {
-        maxY = point.y
-      }
-    }
-
-    return CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
-  }
-
   // MARK: Private
-
-  @available(iOS 11, *)
-  private func createCGPoints(with tuple: (CGRect, VNFaceLandmarks2D)) -> [CGPoint] {
-    // Face contour
-    var points = [CGPoint]()
-    if let faceContourPoints = tuple.1.faceContour?.points, let count = tuple.1.faceContour?.pointCount {
-      points.append(contentsOf: ImageProcessor.convertToCGPoints(from: faceContourPoints, count: count).reversed())
-    }
-
-    // Left eyebrow
-    if let leftEyebrowPoints = tuple.1.leftEyebrow?.points, let count = tuple.1.leftEyebrow?.pointCount {
-      points.append(contentsOf: ImageProcessor.convertToCGPoints(from: leftEyebrowPoints, count: count))
-    }
-
-    // Right eyebrow
-    if let rightEyebrowPoints = tuple.1.rightEyebrow?.points, let count = tuple.1.rightEyebrow?.pointCount {
-      points.append(contentsOf: ImageProcessor.convertToCGPoints(from: rightEyebrowPoints, count: count))
-    }
-
-    return points
-  }
 
   private func strokeLines(with points: [CGPoint], scaledFrame: CGRect, containerFrame: CGRect) {
     setStrokeColor(UIColor.yellow.cgColor)

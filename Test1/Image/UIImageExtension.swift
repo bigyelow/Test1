@@ -70,7 +70,7 @@ extension UIImage {
 
     var image = UIGraphicsGetImageFromCurrentImageContext()
     if minimizeBounding {
-      let cgImage = context.boundingImage(image?.convertToCGImage(), with: landmarksTuple, containerSize: size)
+      let cgImage = ImageProcessor.boundingImage(image?.convertToCGImage(), with: landmarksTuple, containerSize: size)
       image = cgImage != nil ? UIImage(cgImage: cgImage!) : nil
     }
 
