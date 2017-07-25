@@ -21,6 +21,8 @@ static NSString * const NSURLSessionStr = @"NSURLSession";
 static NSString * const URLEncodingStr = @"NSURLEncoding";
 static NSString * const PresentingStr = @"Presenting";
 static NSString * const Nullability = @"Nullability";
+static NSString * const OpenURL = @"OpenURL";
+static NSInteger OpenURLCount = 0;
 
 @interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -29,6 +31,11 @@ static NSString * const Nullability = @"Nullability";
 @property (nonatomic, assign) BOOL tag;
 @property (nonatomic, strong) UITableView *tableView;
 
+@property (nonatomic, assign) NSInteger resignCount;
+@property (nonatomic, assign) NSInteger becomeActiveCount;
+@property (nonatomic, assign) NSInteger enterBackgroundCount;
+@property (nonatomic, assign) NSInteger enterForegroundCount;
+
 @end
 
 @implementation ViewController
@@ -36,7 +43,8 @@ static NSString * const Nullability = @"Nullability";
 - (instancetype)init
 {
   if (self = [super init]) {
-    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability];
+    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL];
+    _becomeActiveCount = -1;
   }
   return self;
 }
@@ -69,6 +77,21 @@ static NSString * const Nullability = @"Nullability";
                                                                    target:self
                                                                    action:@selector(_te_startToLoad)];
   self.navigationItem.rightBarButtonItems = @[startLoadItem, switchItem];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(_te_UIApplicationWillResignActiveNotification)
+                                               name:UIApplicationWillResignActiveNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(_te_UIApplicationDidBecomeActiveNotification)
+                                               name:UIApplicationDidBecomeActiveNotification
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(_te_UIApplicationDidEnterBackgroundNotification) name:UIApplicationDidEnterBackgroundNotification
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(_te_UIApplicationWillEnterForegroundNotification)
+                                               name:UIApplicationWillEnterForegroundNotification
+                                             object:nil];
 }
 
 - (void)viewDidLayoutSubviews
@@ -129,6 +152,14 @@ static NSString * const Nullability = @"Nullability";
     TestNullabilityViewController *ctr = [[TestNullabilityViewController alloc] initWithCommond:commond];
     [self.navigationController pushViewController:ctr animated:YES];
   }
+  else if ([_demos[indexPath.row] isEqualToString:OpenURL]) {
+    NSURL *url = OpenURLCount++ % 2 == 0 ? [NSURL URLWithString:@"weixin://douban.com/music/11"] : [NSURL URLWithString:@"douban://douban.com/music/11"];
+    [UIApplication.sharedApplication openURL:url
+                                     options:@{}
+                           completionHandler:^(BOOL success) {
+                             NSLog(success ? @"success" : @"failure");
+                           }];
+  }
 }
 
 #pragma mark - Test
@@ -188,6 +219,31 @@ static NSString * const Nullability = @"Nullability";
 - (void)_te_hiddenWebView
 {
   _webView.hidden = !_webView.hidden;
+}
+
+#pragma mark - Notifications
+- (void)_te_UIApplicationWillResignActiveNotification
+{
+  NSLog(@"resign active: %@", @(++_resignCount));
+  NSLog(@"UIApplicationWillResignActiveNotification");
+}
+
+- (void)_te_UIApplicationDidEnterBackgroundNotification
+{
+  NSLog(@"enter background: %@", @(++_enterBackgroundCount));
+  NSLog(@"UIApplicationDidEnterBackgroundNotification");
+}
+
+- (void)_te_UIApplicationWillEnterForegroundNotification
+{
+  NSLog(@"enter foreground: %@", @(++_enterForegroundCount));
+  NSLog(@"UIApplicationWillEnterForegroundNotification");
+}
+
+- (void)_te_UIApplicationDidBecomeActiveNotification
+{
+  NSLog(@"become active: %@", @(++_becomeActiveCount));
+  NSLog(@"UIApplicationDidBecomeActiveNotification");
 }
 
 #pragma mark - URLSession delegate
