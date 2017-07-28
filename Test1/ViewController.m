@@ -13,6 +13,7 @@
 #import "PresentingViewController.h"
 #import "TCommond.h"
 #import "Test1-Swift.h"
+#import "TestBlockObject.h"
 
 static NSString * const WKWebViewStr = @"WKWebView";
 static NSString * const ImageStr = @"Image";
@@ -22,6 +23,7 @@ static NSString * const URLEncodingStr = @"NSURLEncoding";
 static NSString * const PresentingStr = @"Presenting";
 static NSString * const Nullability = @"Nullability";
 static NSString * const OpenURL = @"OpenURL";
+static NSString * const Block = @"Block";
 static NSInteger OpenURLCount = 0;
 
 @interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -35,6 +37,7 @@ static NSInteger OpenURLCount = 0;
 @property (nonatomic, assign) NSInteger becomeActiveCount;
 @property (nonatomic, assign) NSInteger enterBackgroundCount;
 @property (nonatomic, assign) NSInteger enterForegroundCount;
+@property (nonatomic, strong) TestBlockObject *blockObject;
 
 @end
 
@@ -43,8 +46,20 @@ static NSInteger OpenURLCount = 0;
 - (instancetype)init
 {
   if (self = [super init]) {
-    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL];
+    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block];
     _becomeActiveCount = -1;
+    _blockObject = [TestBlockObject new];
+    _blockObject.block = ^{
+      NSMutableArray *array = [@[@"1", @"2"] mutableCopy];
+      [array addObject:@"3"];
+      [array addObject:@"4"];
+
+      NSLog(@"Begin\n");
+
+      for (NSString *obj in array) {
+        NSLog(@"%@", obj);
+      }
+    };
   }
   return self;
 }
@@ -159,6 +174,9 @@ static NSInteger OpenURLCount = 0;
                            completionHandler:^(BOOL success) {
                              NSLog(success ? @"success" : @"failure");
                            }];
+  }
+  else if ([_demos[indexPath.row] isEqualToString:Block]) {
+    [_blockObject doBlock];
   }
 }
 
