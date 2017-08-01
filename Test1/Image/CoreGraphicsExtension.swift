@@ -42,7 +42,6 @@ extension CGContext {
 
   private func strokeLines(with points: [CGPoint], scaledFrame: CGRect, containerFrame: CGRect) {
     setStrokeColor(UIColor.yellow.cgColor)
-    setLineWidth(4)
     closePath(withScaledPoints: points, scaledFrame: scaledFrame, containerFrame: containerFrame)
     strokePath()
   }

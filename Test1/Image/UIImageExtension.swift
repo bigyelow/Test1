@@ -14,7 +14,7 @@ extension UIImage {
 
   @available(iOS 11, *)
   func draw(_ image: UIImage, to landmarks: (CGRect, VNFaceLandmarks2D)) -> UIImage? {
-    UIGraphicsBeginImageContext(size)
+    UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
 
     draw(in: CGRect(origin: .zero, size: size))
     let boundingFrame = ImageProcessor.boundingBox(for: landmarks, containerSize: size)
@@ -30,10 +30,11 @@ extension UIImage {
   @available(iOS 11, *)
   func strokeLines(with landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
     guard landmarksTuples.count > 0 else { return nil }
-    UIGraphicsBeginImageContext(size)
+    UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
     draw(in: CGRect(origin: .zero, size: size))
+    context.setLineWidth(4)
     context.strokeLines(with: landmarksTuples, containerSize: size)
 
     let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -43,7 +44,7 @@ extension UIImage {
 
   @available(iOS 11, *)
   func drawBoundingRectangles(with landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
-    UIGraphicsBeginImageContext(size)
+    UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
     // 1. Draw original image
@@ -65,7 +66,7 @@ extension UIImage {
 
   /// - Parameter boundingBoxes: see `VNFaceObservation.boundingBox`
   func drawRectangles(withBoundingBoxes boundingBoxes: [CGRect]) -> UIImage? {
-    UIGraphicsBeginImageContext(size)
+    UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
     // 1. Draw original image
@@ -89,7 +90,7 @@ extension UIImage {
   @available(iOS 11, *)
   func getClippedImage(from landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
     guard landmarksTuples.count > 0 else { return nil }
-    UIGraphicsBeginImageContext(size)
+    UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
     context.clip(with: landmarksTuples, containerSize: size)
@@ -104,7 +105,7 @@ extension UIImage {
   /// - Parameters:
   ///   - minimizeBounding: 是否要返回包含人脸的最小矩形图
   func getClippedImage(from landmarksTuple: (CGRect, VNFaceLandmarks2D), minimizeBounding: Bool = true) -> UIImage? {
-    UIGraphicsBeginImageContext(size)
+    UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
     context.clip(with: landmarksTuple, containerSize: size)
