@@ -8,26 +8,30 @@
 
 import UIKit
 import Foundation
+import MobileCoreServices
 
-class ImageProcessorViewController: UIViewController {
+class ImageProcessorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   private static var index = 3
   private let container = UIImageView(image: ImageProcessorViewController.cover)
   private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-  private let candidate = UIImageView(image: UIImage(named: "Head1"))
+  fileprivate let candidate = UIImageView()
 
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = UIColor.white
 
+    // Container
     container.contentMode = .scaleAspectFit
     container.frame = CGRect(x: 0, y: 100, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.height - 200)
     container.clipsToBounds = true
     view.addSubview(container)
 
+    // Candidate
     candidate.contentMode = .scaleAspectFit
     let candidateHeight = UIScreen.main.bounds.size.height - container.frame.maxY - 20
     candidate.frame = CGRect(x: 10, y: container.frame.maxY + 10, width: candidateHeight * 0.7, height: candidateHeight)
     candidate.clipsToBounds = true
+    candidate.backgroundColor = UIColor.lightGray
     view.addSubview(candidate)
 
     indicator.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 20)
@@ -42,6 +46,10 @@ class ImageProcessorViewController: UIViewController {
                                  style: .plain,
                                  target: self,
                                  action: #selector(changeCover)))
+    items.append(UIBarButtonItem(title: "Camera",
+                                 style: .plain,
+                                 target: self,
+                                 action: #selector(takePicture)))
 
     navigationItem.rightBarButtonItems = items
   }
@@ -117,6 +125,15 @@ class ImageProcessorViewController: UIViewController {
     container.image = ImageProcessorViewController.cover
   }
 
+  @objc private func takePicture() {
+    guard UIImagePickerController.isSourceTypeAvailable(.camera) else { return }
+    let pickerController = UIImagePickerController()
+    pickerController.sourceType = .camera
+    pickerController.allowsEditing = true
+    pickerController.delegate = self
+    present(pickerController, animated: true, completion: nil)
+  }
+
   @available(iOS 11, *)
   @objc private func openActionSheet() {
     let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -152,4 +169,20 @@ class ImageProcessorViewController: UIViewController {
   }
 }
 
+// MARK: - UIImagePickerControllerDelegate
+extension ImageProcessorViewController {
+  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    picker.dismiss(animated: true, completion: nil)
+  }
+
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    guard let mediaType = info[UIImagePickerControllerMediaType] as? NSString else { return }
+    guard mediaType.isEqual(kUTTypeImage) else { return }
+    if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+      picker.dismiss(animated: true) {
+        self.candidate.image = editedImage
+      }
+    }
+  }
+}
 
