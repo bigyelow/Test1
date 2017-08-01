@@ -50,6 +50,10 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
                                  style: .plain,
                                  target: self,
                                  action: #selector(takePicture)))
+    items.append(UIBarButtonItem(title: "Library",
+                                 style: .plain,
+                                 target: self,
+                                 action: #selector(openLibrary)))
 
     navigationItem.rightBarButtonItems = items
   }
@@ -129,6 +133,15 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
     guard UIImagePickerController.isSourceTypeAvailable(.camera) else { return }
     let pickerController = UIImagePickerController()
     pickerController.sourceType = .camera
+    pickerController.allowsEditing = true
+    pickerController.delegate = self
+    present(pickerController, animated: true, completion: nil)
+  }
+
+  @objc private func openLibrary() {
+    guard UIImagePickerController.isSourceTypeAvailable(.photoLibrary) else { return }
+    let pickerController = UIImagePickerController()
+    pickerController.sourceType = .photoLibrary
     pickerController.allowsEditing = true
     pickerController.delegate = self
     present(pickerController, animated: true, completion: nil)
