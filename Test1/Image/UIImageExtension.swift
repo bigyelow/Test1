@@ -34,7 +34,7 @@ extension UIImage {
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
     draw(in: CGRect(origin: .zero, size: size))
-    context.setLineWidth(4)
+    context.setLineWidth(2)
     context.strokeLines(with: landmarksTuples, containerSize: size)
 
     let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -52,7 +52,7 @@ extension UIImage {
 
     // 2. Draw rectangle
     context.setStrokeColor(UIColor.yellow.cgColor)
-    context.setLineWidth(4)
+    context.setLineWidth(2)
     for tuple in landmarksTuples {
       let boundingFrame = ImageProcessor.boundingBox(for: tuple, containerSize: size)
       context.addRect(boundingFrame)
@@ -74,7 +74,7 @@ extension UIImage {
 
     // 2. Draw rectangle
     context.setStrokeColor(UIColor.yellow.cgColor)
-    context.setLineWidth(4)
+    context.setLineWidth(2)
     for boundingBox in boundingBoxes {
       context.stroke(ImageProcessor.convertToFrame(withScaledFrame: boundingBox,
                                                    containerFrame: CGRect(origin: .zero, size: size)))
@@ -90,7 +90,7 @@ extension UIImage {
   @available(iOS 11, *)
   func getClippedImage(from landmarksTuples: [(CGRect, VNFaceLandmarks2D)]) -> UIImage? {
     guard landmarksTuples.count > 0 else { return nil }
-    UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+    UIGraphicsBeginImageContext(size)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
     context.clip(with: landmarksTuples, containerSize: size)
@@ -105,7 +105,7 @@ extension UIImage {
   /// - Parameters:
   ///   - minimizeBounding: 是否要返回包含人脸的最小矩形图
   func getClippedImage(from landmarksTuple: (CGRect, VNFaceLandmarks2D), minimizeBounding: Bool = true) -> UIImage? {
-    UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+    UIGraphicsBeginImageContext(size)
     guard let context = UIGraphicsGetCurrentContext() else { return nil}
 
     context.clip(with: landmarksTuple, containerSize: size)

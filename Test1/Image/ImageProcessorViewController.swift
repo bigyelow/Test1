@@ -11,7 +11,7 @@ import Foundation
 import MobileCoreServices
 
 class ImageProcessorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-  private static var index = 3
+  private static var index = 4
   private let container = UIImageView(image: ImageProcessorViewController.cover)
   private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
   fileprivate let candidate = UIImageView()
@@ -31,7 +31,6 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
     let candidateHeight = UIScreen.main.bounds.size.height - container.frame.maxY - 20
     candidate.frame = CGRect(x: 10, y: container.frame.maxY + 10, width: candidateHeight * 0.7, height: candidateHeight)
     candidate.clipsToBounds = true
-    candidate.backgroundColor = UIColor.lightGray
     view.addSubview(candidate)
 
     indicator.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 20)
@@ -176,8 +175,9 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
   }
 
   static var cover: UIImage? {
-    let image = UIImage(named: "Cover\(index % 8)")
+    let image = UIImage(named: "Cover\(index)")
     index += 1
+    if index == 7 { index = 4 }
     return image
   }
 }
