@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreImage
 import Vision
 
 extension UIImage {
@@ -123,6 +124,10 @@ extension UIImage {
 
   // MARK: Utils
 
+  var ciImage: CIImage? {
+    return CIImage(image: self)
+  }
+
   func convertToCGImage() -> CGImage? {
     guard let ciImage = CIImage(image: self) else { return nil }
     let context = CIContext(options: nil)
@@ -134,6 +139,43 @@ extension UIImage {
     let filePath = paths[0] + "/" + fileName
     let filePathURL = URL(fileURLWithPath: filePath)
     try UIImagePNGRepresentation(self)?.write(to: filePathURL)
+  }
+
+  // MARK: CIImage
+  var autoEnhanced: UIImage? {
+    guard let ciImage = ciImage else { return nil }
+
+    var options = [String: Any]()
+    if let orientation = ciImage.properties[kCGImagePropertyOrientation.string] {
+      options[CIDetectorImageOrientation] = orientation
+    }
+    let addjustments = ciImage.autoAdjustmentFilters(options: options)
+    var inputImage = ciImage
+
+    for filter in addjustments {
+      filter.setValue(inputImage, forKey: kCIInputImageKey)
+      if let outputImage = filter.outputImage {
+        inputImage = outputImage
+      } else {
+        break
+      }
+    }
+
+    return inputImage.convertToUIImage(withOriginalImage: ciImage)
+  }
+}
+
+extension CIImage {
+  func convertToUIImage(withOriginalImage originalImage: CIImage) -> UIImage? {
+    let context = CIContext(options: nil)
+    guard let cgImage = context.createCGImage(self, from: originalImage.extent) else { return nil }
+    return UIImage(cgImage: cgImage)
+  }
+}
+
+extension CFString {
+  var string: String {
+    return  (self as NSString) as String
   }
 }
 

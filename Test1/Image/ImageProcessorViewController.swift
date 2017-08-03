@@ -14,7 +14,7 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
   private static var index = 4
   private let container = UIImageView(image: ImageProcessorViewController.cover)
   private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-  fileprivate let candidate = UIImageView()
+  fileprivate let candidate = UIImageView(image: UIImage(named: "Head1"))
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -119,7 +119,7 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
         guard let containerLandmarksTuples = containerLandmarksTuples,
           containerLandmarksTuples.count > 0,
           let face = wself.candidate.image else { return }
-        wself.container.image = containerImage.draw(face, to: containerLandmarksTuples[0])  // change first one
+        wself.container.image = containerImage.draw(face, to: containerLandmarksTuples[0])
       }
     }
   }
