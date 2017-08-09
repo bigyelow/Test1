@@ -15,6 +15,8 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
   private let container = UIImageView(image: ImageProcessorViewController.cover)
   private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
   fileprivate let candidate = UIImageView(image: UIImage(named: "Head1"))
+  fileprivate let backgroundFaceView = UIImageView()
+  fileprivate let addjustFaceView = UIImageView()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -32,6 +34,20 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
     candidate.frame = CGRect(x: 10, y: container.frame.maxY + 10, width: candidateHeight * 0.7, height: candidateHeight)
     candidate.clipsToBounds = true
     view.addSubview(candidate)
+
+    // backgroundFace
+    backgroundFaceView.contentMode = .scaleAspectFit
+    var backFrame = candidate.frame
+    backFrame.origin.x = candidate.frame.maxX + 10
+    backgroundFaceView.frame = backFrame
+    view.addSubview(backgroundFaceView)
+
+    // addjustFace
+    addjustFaceView.contentMode = .scaleAspectFit
+    var addjustFrame = backgroundFaceView.frame
+    addjustFrame.origin.x = backgroundFaceView.frame.maxX + 10
+    addjustFaceView.frame = addjustFrame
+    view.addSubview(addjustFaceView)
 
     indicator.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 20)
     view.addSubview(indicator)
@@ -132,12 +148,22 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
         guard let containerLandmarksTuples = containerLandmarksTuples,
           containerLandmarksTuples.count > 0,
           let face = wself.candidate.image else { return }
-        wself.container.image = containerImage.draw(face, to: containerLandmarksTuples[0])
+
+        // Addjust face with filters
+        guard let backFace = containerImage.getClippedImage(from: containerLandmarksTuples[0]) else { return }
+        wself.backgroundFaceView.image = backFace
+
+//        guard let addjustFace = ImageProcessor.addjustFace(withBackgroundFace: backFace, topFace: face) else { return }
+//        wself.addjustFaceView.image = addjustFace
+//        wself.container.image = containerImage.draw(topFace, to: containerLandmarksTuples[0])
       }
     }
   }
 
   @objc private func changeCover() {
+    candidate.image = UIImage(named: "Head1")
+    backgroundFaceView.image = nil
+    addjustFaceView.image = nil
     container.image = ImageProcessorViewController.cover
   }
 
