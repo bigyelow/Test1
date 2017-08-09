@@ -23,6 +23,17 @@ class ImageProcessor {
     }
   }
 
+  @available(iOS 11, *)
+  static func detectText(of image: UIImage, completion: @escaping ([CGRect]?) -> Void) {
+    getTextObservations(of: image) { (observations) in
+      guard let observations = observations else {
+        completion(nil)
+        return
+      }
+      completion(observations.map { $0.boundingBox })
+    }
+  }
+
   /// - Parameters:
   ///   - completion: CGRect - BoundingBox of a face
   @available(iOS 11, *)
@@ -60,6 +71,32 @@ class ImageProcessor {
 
     let request = VNDetectFaceRectanglesRequest { (request, error) in
       guard error == nil, var results = request.results as? [VNFaceObservation] else {
+        completion(nil)
+        return
+      }
+      results = results.filter { $0.confidence > 0.9 }
+
+      DispatchQueue.main.sync {
+        completion(results)
+      }
+    }
+
+    let handler = VNImageRequestHandler(cgImage: cgImage)
+    DispatchQueue.global().async {
+      do {
+        try handler.perform([request])
+      } catch {
+        print(error)
+      }
+    }
+  }
+
+  @available(iOS 11, *)
+  static func getTextObservations(of image: UIImage, completion: @escaping ([VNTextObservation]?) -> Void) {
+    guard let cgImage = image.convertToCGImage() else { return }
+
+    let request = VNDetectTextRectanglesRequest { (request, error) in
+      guard error == nil, var results = request.results as? [VNTextObservation] else {
         completion(nil)
         return
       }

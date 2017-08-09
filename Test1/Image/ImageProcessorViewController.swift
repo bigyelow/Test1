@@ -71,6 +71,19 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
   }
 
   @available(iOS 11, *)
+  @objc private func detectText() {
+    guard let image = container.image else { return }
+    indicator.startAnimating()
+    ImageProcessor.detectText(of: image) { [weak self] (rects) in
+      guard let sself = self else { return }
+      sself.indicator.stopAnimating()
+
+      guard let rects = rects else { return }
+      sself.container.image = image.drawRectangles(withBoundingBoxes: rects)
+    }
+  }
+
+  @available(iOS 11, *)
   @objc private func detectFaceBounding() {
     guard let image = container.image else { return }
     indicator.startAnimating()
@@ -161,6 +174,9 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
     let action4 = UIAlertAction(title: "Swap Face", style: .default) { (_) in
       self.swapFace()
     }
+    let action5 = UIAlertAction(title: "Detect Text", style: .default) { (_) in
+      self.detectText()
+    }
     let cancel = UIAlertAction(title: "Cancel", style: .default) { [weak controller] (_) in
       guard let ctr = controller else { return }
       ctr.dismiss(animated: true, completion: nil)
@@ -169,6 +185,7 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
     controller.addAction(action2)
     controller.addAction(action3)
     controller.addAction(action4)
+    controller.addAction(action5)
     controller.addAction(cancel)
 
     present(controller, animated: true, completion: nil)
@@ -177,7 +194,11 @@ class ImageProcessorViewController: UIViewController, UIImagePickerControllerDel
   static var cover: UIImage? {
     let image = UIImage(named: "Cover\(index)")
     index += 1
-    if index == 7 { index = 4 }
+    if index == 7 {
+      index = 12
+    } else if index == 13 {
+      index = 4
+    }
     return image
   }
 }
