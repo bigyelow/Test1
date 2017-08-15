@@ -16,6 +16,7 @@
 		717ECBC51F220A0300089421 /* CoreGraphicsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717ECBC41F220A0300089421 /* CoreGraphicsExtension.swift */; };
 		717ECBC71F220A1A00089421 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717ECBC61F220A1A00089421 /* UIImageExtension.swift */; };
 		71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A6C6761EF1461900E13CA3 /* PresentingViewController.m */; };
+		71AEF3531F3B145100B7202A /* CuteMap.c in Sources */ = {isa = PBXBuildFile; fileRef = 71AEF3511F3B145100B7202A /* CuteMap.c */; };
 		71B12A2A1EE1063500622A2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A291EE1063500622A2E /* main.m */; };
 		71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A2C1EE1063500622A2E /* AppDelegate.m */; };
 		71B12A301EE1063500622A2E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A2F1EE1063500622A2E /* ViewController.m */; };
@@ -60,6 +61,8 @@
 		717ECBC61F220A1A00089421 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		71A6C6751EF1461900E13CA3 /* PresentingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresentingViewController.h; sourceTree = "<group>"; };
 		71A6C6761EF1461900E13CA3 /* PresentingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentingViewController.m; sourceTree = "<group>"; };
+		71AEF3511F3B145100B7202A /* CuteMap.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = CuteMap.c; sourceTree = "<group>"; };
+		71AEF3521F3B145100B7202A /* CuteMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CuteMap.h; sourceTree = "<group>"; };
 		71B12A251EE1063500622A2E /* Test1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71B12A291EE1063500622A2E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		71B12A2B1EE1063500622A2E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -115,6 +118,8 @@
 				717ECBC21F2209ED00089421 /* ImageProcessor.swift */,
 				717ECBC41F220A0300089421 /* CoreGraphicsExtension.swift */,
 				717ECBC61F220A1A00089421 /* UIImageExtension.swift */,
+				71AEF3511F3B145100B7202A /* CuteMap.c */,
+				71AEF3521F3B145100B7202A /* CuteMap.h */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -342,6 +347,7 @@
 				71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */,
 				71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */,
 				71B12A2A1EE1063500622A2E /* main.m in Sources */,
+				71AEF3531F3B145100B7202A /* CuteMap.c in Sources */,
 				71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */,
 				717ECBC71F220A1A00089421 /* UIImageExtension.swift in Sources */,
 				715C51461F1C8E730049D1E9 /* TestNullabilityViewController.swift in Sources */,

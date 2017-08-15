@@ -117,6 +117,23 @@ class ImageProcessor {
     }
   }
 
+  // MARK: Filters
+  static func addjustFace(withBackgroundFace backgroundFace: UIImage, topFace: UIImage) -> UIImage? {
+    guard let inputImage = topFace.ciImage, let inputBackgroundImage = backgroundFace.ciImage else { return nil }
+    let cubeMap = createCubeMap(50, 70)
+    let data = NSData(bytesNoCopy: cubeMap.data, length: Int(cubeMap.length), freeWhenDone: true)
+
+    let context = CIContext(options: nil)
+    let colorCubeFilter = CIFilter(name: "CIColorCube")!
+    colorCubeFilter.setValue(cubeMap.dimension, forKey: "inputCubeDimension")
+    colorCubeFilter.setValue(data, forKey: "inputCubeData")
+    colorCubeFilter.setValue(inputImage, forKey: kCIInputImageKey)
+    guard let outputImage = colorCubeFilter.outputImage else { return nil }
+
+    guard let cgImage = context.createCGImage(outputImage, from: inputImage.extent) else { return nil }
+    return UIImage(cgImage: cgImage)
+  }
+
   // MARK: Utils
 
   /// - Parameters:
