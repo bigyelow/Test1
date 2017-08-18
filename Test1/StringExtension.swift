@@ -22,18 +22,18 @@ public extension NSString {
     /// 1. Decode first
     guard let decodedStr = removingPercentEncoding else { return nil }
 
-    /// 2. Begin to parse, sample: http://foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz
-    let sep0: [String] = decodedStr.components(separatedBy: "://")  // [http, foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz]
-    guard sep0.count > 1 && sep0[1] != "" && sep0[0] != "" else { return nil }
-    var str0 = sep0[1]  // foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz
+    /// 2. Begin to parse, sample: http://foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar&redir=http://xxx?ee=xx#baz
+    let sep0: [String] = decodedStr.components(separatedBy: "://")  // [http, foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar&redir=http, douban.com/movie/222#baz]
+    guard sep0.count > 1 && sep0[0] != "" && sep0[1] != "" else { return nil }
+    var str0 = sep0[1]  // foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar&redir=http://xxx?ee=xx#baz
     for comp in sep0 {
-      if comp != sep0[1] && comp != sep0[0] {
+      if comp != sep0[0] && comp != sep0[1] {
         str0.append("://" + comp) // query 里可能有重定向
       }
     }
 
     // Host, user, password
-    var sep1: [String] = str0.components(separatedBy: "/") // [foobar:nicate@example.com:8080, some, path, file.html;params-here?foo=bar#baz]
+    var sep1: [String] = str0.components(separatedBy: "/") // [foobar:nicate@example.com:8080, some, path, file.html;params-here?foo=bar&redir=http:]
     guard sep1.count > 0 else { return nil }
     sep1 = sep1[0].components(separatedBy: "?")
     let userHost = sep1[0]  // foobar:nicate@example.com:8080
