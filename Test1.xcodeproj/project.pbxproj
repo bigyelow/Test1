@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		710DDFBA1F46B57800D52E6B /* URLEncode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710DDFB91F46B57800D52E6B /* URLEncode.swift */; };
 		713BC5EB1F2B2C5C001E4D10 /* TestBlockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 713BC5EA1F2B2C5C001E4D10 /* TestBlockObject.m */; };
 		715C51441F1C8DCF0049D1E9 /* TCommond.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C51431F1C8DCF0049D1E9 /* TCommond.m */; };
 		715C51461F1C8E730049D1E9 /* TestNullabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715C51451F1C8E730049D1E9 /* TestNullabilityViewController.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		710DDFB91F46B57800D52E6B /* URLEncode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLEncode.swift; sourceTree = "<group>"; };
 		713BC5E91F2B2C5C001E4D10 /* TestBlockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestBlockObject.h; sourceTree = "<group>"; };
 		713BC5EA1F2B2C5C001E4D10 /* TestBlockObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestBlockObject.m; sourceTree = "<group>"; };
 		715C51421F1C8DCF0049D1E9 /* TCommond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCommond.h; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				715C51451F1C8E730049D1E9 /* TestNullabilityViewController.swift */,
 				713BC5E91F2B2C5C001E4D10 /* TestBlockObject.h */,
 				713BC5EA1F2B2C5C001E4D10 /* TestBlockObject.m */,
+				710DDFB91F46B57800D52E6B /* URLEncode.swift */,
 			);
 			path = Test1;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				715C51441F1C8DCF0049D1E9 /* TCommond.m in Sources */,
 				71B12A301EE1063500622A2E /* ViewController.m in Sources */,
 				7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */,
+				710DDFBA1F46B57800D52E6B /* URLEncode.swift in Sources */,
 				713BC5EB1F2B2C5C001E4D10 /* TestBlockObject.m in Sources */,
 				71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */,
 				71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */,

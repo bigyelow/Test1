@@ -24,6 +24,7 @@ static NSString * const PresentingStr = @"Presenting";
 static NSString * const Nullability = @"Nullability";
 static NSString * const OpenURL = @"OpenURL";
 static NSString * const Block = @"Block";
+static NSString * const URLEncode = @"URLEncode";
 static NSInteger OpenURLCount = 0;
 
 @interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -46,7 +47,7 @@ static NSInteger OpenURLCount = 0;
 - (instancetype)init
 {
   if (self = [super init]) {
-    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block];
+    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block, URLEncode];
     _becomeActiveCount = -1;
     _blockObject = [TestBlockObject new];
     _blockObject.block = ^{
@@ -177,6 +178,9 @@ static NSInteger OpenURLCount = 0;
   }
   else if ([_demos[indexPath.row] isEqualToString:Block]) {
     [_blockObject doBlock];
+  }
+  else if ([_demos[indexPath.row] isEqualToString:URLEncode]) {
+    [URLEncoder test];
   }
 }
 
