@@ -1,15 +1,17 @@
 //
 //  StringExtension.swift
-//  Test1
+//  Frodo
 //
-//  Created by bigyelow on 05/07/2017.
-//  Copyright © 2017 huangduyu. All rights reserved.
+//  Created by XueMing on 3/30/16.
+//  Copyright © 2016 Douban Inc. All rights reserved.
 //
 
-import Foundation
-
-extension String {
-  var urlEncoded: String {
+public extension NSString {
+  /// 使用 String 初始化 URL 对象的时候需要 String 是 url-encoded 的，否则无法生成 URL 或者 URLComponents 对象。
+  /// 使用下面的属性可以解析 String 并分别对 user, password, host, path, query, fragment 进行 url encoding.
+  ///
+  /// -Note: 如果不是合法的 url 则返回 nil
+  var urlEncoded: String? {
     var user: String?
     var password: String?
     var host: String?
@@ -18,11 +20,11 @@ extension String {
     var fragment: String?
 
     /// 1. Decode first
-    guard let decodedStr = removingPercentEncoding else { return self }
+    guard let decodedStr = removingPercentEncoding else { return nil }
 
     /// 2. Begin to parse, sample: http://foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz
     let sep0: [String] = decodedStr.components(separatedBy: "://")  // [http, foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz]
-    guard sep0.count > 1 else { return self }
+    guard sep0.count > 1 && sep0[1] != "" && sep0[0] != "" else { return nil }
     var str0 = sep0[1]  // foobar:nicate@example.com:8080/some/path/file.html;params-here?foo=bar#baz
     for comp in sep0 {
       if comp != sep0[1] && comp != sep0[0] {
@@ -32,7 +34,7 @@ extension String {
 
     // Host, user, password
     var sep1: [String] = str0.components(separatedBy: "/") // [foobar:nicate@example.com:8080, some, path, file.html;params-here?foo=bar#baz]
-    guard sep1.count > 0 else { return self }
+    guard sep1.count > 0 else { return nil }
     sep1 = sep1[0].components(separatedBy: "?")
     let userHost = sep1[0]  // foobar:nicate@example.com:8080
     let sepUserHost = userHost.components(separatedBy: "@") // [foobar:nicate, example.com:8080]
@@ -49,7 +51,7 @@ extension String {
       host = sepUserHost[0]
     } else {
       assert(false)
-      return self
+      return nil
     }
 
     // Query, path
@@ -114,10 +116,10 @@ extension String {
     if let query = query, query.characters.count > 0 {
       urlString += ("?" + query)
     }
-    if let fragment = fragment,fragment.characters.count > 0 {
+    if let fragment = fragment, fragment.characters.count > 0 {
       urlString += ("#" + fragment)
     }
-    
+
     return urlString
   }
 }
