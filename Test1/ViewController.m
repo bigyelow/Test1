@@ -147,9 +147,9 @@ static NSInteger OpenURLCount = 0;
   if ([_demos[indexPath.row] isEqualToString:WKWebViewStr]) {
     [self _te_startToLoad];
   }
-  else if ([_demos[indexPath.row] isEqualToString:ImageStr]) {
-    [self.navigationController pushViewController:[ImageProcessorViewController new] animated:YES];
-  }
+//  else if ([_demos[indexPath.row] isEqualToString:ImageStr]) {
+//    [self.navigationController pushViewController:[ImageProcessorViewController new] animated:YES];
+//  }
   else if ([_demos[indexPath.row] isEqualToString:VideoStr]) {
 
   }

@@ -12,11 +12,7 @@
 		715C51461F1C8E730049D1E9 /* TestNullabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715C51451F1C8E730049D1E9 /* TestNullabilityViewController.swift */; };
 		7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC891F0CB125006D3EA8 /* StringExtension.swift */; };
 		7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */; };
-		717ECBC31F2209ED00089421 /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717ECBC21F2209ED00089421 /* ImageProcessor.swift */; };
-		717ECBC51F220A0300089421 /* CoreGraphicsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717ECBC41F220A0300089421 /* CoreGraphicsExtension.swift */; };
-		717ECBC71F220A1A00089421 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717ECBC61F220A1A00089421 /* UIImageExtension.swift */; };
 		71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A6C6761EF1461900E13CA3 /* PresentingViewController.m */; };
-		71AEF3531F3B145100B7202A /* CuteMap.c in Sources */ = {isa = PBXBuildFile; fileRef = 71AEF3511F3B145100B7202A /* CuteMap.c */; };
 		71B12A2A1EE1063500622A2E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A291EE1063500622A2E /* main.m */; };
 		71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A2C1EE1063500622A2E /* AppDelegate.m */; };
 		71B12A301EE1063500622A2E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A2F1EE1063500622A2E /* ViewController.m */; };
@@ -27,7 +23,6 @@
 		71B12A4E1EE1063500622A2E /* Test1UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A4D1EE1063500622A2E /* Test1UITests.m */; };
 		71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A5C1EE1065C00622A2E /* TestExtension.m */; };
 		71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A5F1EE1067000622A2E /* SubTestExtension.m */; };
-		71E393AB1F22090B0008A937 /* ImageProcessorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E393AA1F22090A0008A937 /* ImageProcessorViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,13 +51,8 @@
 		7162AC881F0CB124006D3EA8 /* Test1-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Test1-Bridging-Header.h"; sourceTree = "<group>"; };
 		7162AC891F0CB125006D3EA8 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		7162AC8B1F0CB198006D3EA8 /* TestSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSwift.swift; sourceTree = "<group>"; };
-		717ECBC21F2209ED00089421 /* ImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
-		717ECBC41F220A0300089421 /* CoreGraphicsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreGraphicsExtension.swift; sourceTree = "<group>"; };
-		717ECBC61F220A1A00089421 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		71A6C6751EF1461900E13CA3 /* PresentingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresentingViewController.h; sourceTree = "<group>"; };
 		71A6C6761EF1461900E13CA3 /* PresentingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentingViewController.m; sourceTree = "<group>"; };
-		71AEF3511F3B145100B7202A /* CuteMap.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = CuteMap.c; sourceTree = "<group>"; };
-		71AEF3521F3B145100B7202A /* CuteMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CuteMap.h; sourceTree = "<group>"; };
 		71B12A251EE1063500622A2E /* Test1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71B12A291EE1063500622A2E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		71B12A2B1EE1063500622A2E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -83,7 +73,6 @@
 		71B12A5C1EE1065C00622A2E /* TestExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestExtension.m; sourceTree = "<group>"; };
 		71B12A5E1EE1067000622A2E /* SubTestExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubTestExtension.h; sourceTree = "<group>"; };
 		71B12A5F1EE1067000622A2E /* SubTestExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubTestExtension.m; sourceTree = "<group>"; };
-		71E393AA1F22090A0008A937 /* ImageProcessorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,19 +100,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7183608A1F2207B50058C142 /* Image */ = {
-			isa = PBXGroup;
-			children = (
-				71E393AA1F22090A0008A937 /* ImageProcessorViewController.swift */,
-				717ECBC21F2209ED00089421 /* ImageProcessor.swift */,
-				717ECBC41F220A0300089421 /* CoreGraphicsExtension.swift */,
-				717ECBC61F220A1A00089421 /* UIImageExtension.swift */,
-				71AEF3511F3B145100B7202A /* CuteMap.c */,
-				71AEF3521F3B145100B7202A /* CuteMap.h */,
-			);
-			path = Image;
-			sourceTree = "<group>";
-		};
 		71B12A1C1EE1063500622A2E = {
 			isa = PBXGroup;
 			children = (
@@ -147,7 +123,6 @@
 		71B12A271EE1063500622A2E /* Test1 */ = {
 			isa = PBXGroup;
 			children = (
-				7183608A1F2207B50058C142 /* Image */,
 				71B12A2B1EE1063500622A2E /* AppDelegate.h */,
 				71B12A2C1EE1063500622A2E /* AppDelegate.m */,
 				71B12A2E1EE1063500622A2E /* ViewController.h */,
@@ -340,19 +315,14 @@
 			files = (
 				715C51441F1C8DCF0049D1E9 /* TCommond.m in Sources */,
 				71B12A301EE1063500622A2E /* ViewController.m in Sources */,
-				71E393AB1F22090B0008A937 /* ImageProcessorViewController.swift in Sources */,
 				7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */,
 				713BC5EB1F2B2C5C001E4D10 /* TestBlockObject.m in Sources */,
 				71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */,
 				71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */,
 				71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */,
 				71B12A2A1EE1063500622A2E /* main.m in Sources */,
-				71AEF3531F3B145100B7202A /* CuteMap.c in Sources */,
 				71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */,
-				717ECBC71F220A1A00089421 /* UIImageExtension.swift in Sources */,
 				715C51461F1C8E730049D1E9 /* TestNullabilityViewController.swift in Sources */,
-				717ECBC51F220A0300089421 /* CoreGraphicsExtension.swift in Sources */,
-				717ECBC31F2209ED00089421 /* ImageProcessor.swift in Sources */,
 				7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
