@@ -8,12 +8,6 @@
 
 import Foundation
 
-class URLEncoder: NSObject {
-  static func test() {
-
-  }
-}
-
 /// 目前只考虑 path 和 query 是否 encode 的情况，`originalString` 的 baseURL 的合法性依赖外部调用者。
 public class URLStringEncoder: NSObject {
   let pathEncoded: Bool
