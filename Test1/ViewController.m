@@ -168,7 +168,7 @@ static NSInteger OpenURLCount = 0;
     [self.navigationController pushViewController:ctr animated:YES];
   }
   else if ([_demos[indexPath.row] isEqualToString:OpenURL]) {
-    NSURL *url = OpenURLCount++ % 2 == 0 ? [NSURL URLWithString:@"weixin://douban.com/music/11"] : [NSURL URLWithString:@"douban://douban.com/music/11"];
+    NSURL *url = OpenURLCount++ % 2 == 0 ? [NSURL URLWithString:@"weixin://douban.com/music/11"] : [NSURL URLWithString:@"letvclient://douban.com/music/11"];
     if ([UIApplication.sharedApplication canOpenURL:url]) {
       [UIApplication.sharedApplication openURL:url
                                        options:@{}
