@@ -7,5 +7,4 @@ inhibit_all_warnings!
 
 target 'Test1' do
   pod 'OpenCV'
-  pod 'AudioKit', '~> 3.7'
 end

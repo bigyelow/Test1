@@ -1,17 +1,14 @@
 PODS:
-  - AudioKit (3.7.1)
   - OpenCV (3.2.0):
     - OpenCV/Dynamic (= 3.2.0)
   - OpenCV/Dynamic (3.2.0)
 
 DEPENDENCIES:
-  - AudioKit (~> 3.7)
   - OpenCV
 
 SPEC CHECKSUMS:
-  AudioKit: e04d3282bf904cdf7121965edb067177c6d1c7d1
   OpenCV: 0f7ab403d1e81769bc6f4f524c3c6928ecb1fdb8
 
-PODFILE CHECKSUM: 00df2b5badaec8f70ea757f42e81f26862713c52
+PODFILE CHECKSUM: ee0aa7f99b19d8583bff2ec70ceecda21655febf
 
 COCOAPODS: 1.2.1

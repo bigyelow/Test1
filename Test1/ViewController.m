@@ -169,11 +169,13 @@ static NSInteger OpenURLCount = 0;
   }
   else if ([_demos[indexPath.row] isEqualToString:OpenURL]) {
     NSURL *url = OpenURLCount++ % 2 == 0 ? [NSURL URLWithString:@"weixin://douban.com/music/11"] : [NSURL URLWithString:@"douban://douban.com/music/11"];
-    [UIApplication.sharedApplication openURL:url
-                                     options:@{}
-                           completionHandler:^(BOOL success) {
-                             NSLog(success ? @"success" : @"failure");
-                           }];
+    if ([UIApplication.sharedApplication canOpenURL:url]) {
+      [UIApplication.sharedApplication openURL:url
+                                       options:@{}
+                             completionHandler:^(BOOL success) {
+                               NSLog(success ? @"success" : @"failure");
+                             }];
+    }
   }
   else if ([_demos[indexPath.row] isEqualToString:Block]) {
     [_blockObject doBlock];
