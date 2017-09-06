@@ -38,6 +38,7 @@ static NSInteger OpenURLCount = 0;
 @property (nonatomic, assign) NSInteger enterBackgroundCount;
 @property (nonatomic, assign) NSInteger enterForegroundCount;
 @property (nonatomic, strong) TestBlockObject *blockObject;
+@property (nonatomic, copy) NSArray<NSString *>* appURLs;
 
 @end
 
@@ -47,6 +48,8 @@ static NSInteger OpenURLCount = 0;
 {
   if (self = [super init]) {
     _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block];
+    _appURLs = @[@"weixin://weixin.com/", @"letvclient://letvclient.com/xxx", @"pptv://pptv.com/ddd", @"sohuvideo://xxx.com/", @"iqiyi://iqiyi.com/"];
+    OpenURLCount = _appURLs.count - 1;
     _becomeActiveCount = -1;
     _blockObject = [TestBlockObject new];
     _blockObject.block = ^{
@@ -168,7 +171,8 @@ static NSInteger OpenURLCount = 0;
     [self.navigationController pushViewController:ctr animated:YES];
   }
   else if ([_demos[indexPath.row] isEqualToString:OpenURL]) {
-    NSURL *url = OpenURLCount++ % 2 == 0 ? [NSURL URLWithString:@"weixin://douban.com/music/11"] : [NSURL URLWithString:@"letvclient://douban.com/music/11"];
+    NSUInteger index = OpenURLCount++ % _appURLs.count;
+    NSURL *url = [NSURL URLWithString:_appURLs[index]];
     if ([UIApplication.sharedApplication canOpenURL:url]) {
       [UIApplication.sharedApplication openURL:url
                                        options:@{}
