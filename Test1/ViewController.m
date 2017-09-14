@@ -48,7 +48,7 @@ static NSInteger OpenURLCount = 0;
 {
   if (self = [super init]) {
     _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block];
-    _appURLs = @[@"weixin://weixin.com/", @"letvclient://letvclient.com/xxx", @"pptv://pptv.com/ddd", @"sohuvideo://xxx.com/", @"iqiyi://iqiyi.com/"];
+    _appURLs = @[@"weixin://weixin.com/", @"letvclient://letvclient.com/xxx", @"pptv://pptv.com/ddd", @"sohuvideo://xxx.com/", @"iqiyi://iqiyi.com/", @"pptv://page/player/halfscreen?type=vod&vid=17083193&sid=17083193"];
     OpenURLCount = _appURLs.count - 1;
     _becomeActiveCount = -1;
     _blockObject = [TestBlockObject new];
