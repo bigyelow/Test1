@@ -8,25 +8,16 @@ PODS:
   - Polymorph (1.0.7):
     - libextobjc/EXTScope (~> 0.4)
     - libextobjc/RuntimeExtensions (~> 0.4)
-  - ReactiveCocoa (2.5):
-    - ReactiveCocoa/UI (= 2.5)
-  - ReactiveCocoa/Core (2.5):
-    - ReactiveCocoa/no-arc
-  - ReactiveCocoa/no-arc (2.5)
-  - ReactiveCocoa/UI (2.5):
-    - ReactiveCocoa/Core
 
 DEPENDENCIES:
   - OpenCV
   - Polymorph (~> 1.0.7)
-  - ReactiveCocoa (~> 2.5)
 
 SPEC CHECKSUMS:
   libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
   OpenCV: 0f7ab403d1e81769bc6f4f524c3c6928ecb1fdb8
   Polymorph: 57da1d8ec0253281721b805869c638241fe9166d
-  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
 
-PODFILE CHECKSUM: 4f6c80ef1d27c3ef6867c9152cff708d8e7c1cbe
+PODFILE CHECKSUM: b168d713bbe6832f5cfd747ec19d73f9f54c5593
 
 COCOAPODS: 1.2.1

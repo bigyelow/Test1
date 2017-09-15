@@ -7,6 +7,8 @@
 //
 
 @import WebKit;
+@import Polymorph;
+@import libextobjc;
 
 #import "ViewController.h"
 #import "SubTestExtension.h"
