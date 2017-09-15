@@ -2,13 +2,22 @@ PODS:
   - OpenCV (3.2.0):
     - OpenCV/Dynamic (= 3.2.0)
   - OpenCV/Dynamic (3.2.0)
+  - ReactiveCocoa (2.5):
+    - ReactiveCocoa/UI (= 2.5)
+  - ReactiveCocoa/Core (2.5):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.5)
+  - ReactiveCocoa/UI (2.5):
+    - ReactiveCocoa/Core
 
 DEPENDENCIES:
   - OpenCV
+  - ReactiveCocoa (~> 2.5)
 
 SPEC CHECKSUMS:
   OpenCV: 0f7ab403d1e81769bc6f4f524c3c6928ecb1fdb8
+  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
 
-PODFILE CHECKSUM: ee0aa7f99b19d8583bff2ec70ceecda21655febf
+PODFILE CHECKSUM: e1ab5cee4313c07bb7ec13d4809ba444cd0c61ed
 
 COCOAPODS: 1.2.1

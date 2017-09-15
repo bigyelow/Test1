@@ -7,4 +7,5 @@ inhibit_all_warnings!
 
 target 'Test1' do
   pod 'OpenCV'
+  pod 'ReactiveCocoa',             '~> 2.5'
 end
