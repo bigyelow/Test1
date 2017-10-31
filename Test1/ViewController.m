@@ -9,6 +9,7 @@
 @import WebKit;
 @import Polymorph;
 @import libextobjc;
+@import SafariServices;
 
 #import "ViewController.h"
 #import "SubTestExtension.h"
@@ -27,6 +28,7 @@ static NSString * const Nullability = @"Nullability";
 static NSString * const OpenURL = @"OpenURL";
 static NSString * const Block = @"Block";
 static NSString * const Macro = @"Macro";
+static NSString * const AuthenticationSession = @"AuthenticationSession";
 static NSInteger OpenURLCount = 0;
 
 @interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -42,6 +44,7 @@ static NSInteger OpenURLCount = 0;
 @property (nonatomic, assign) NSInteger enterForegroundCount;
 @property (nonatomic, strong) TestBlockObject *blockObject;
 @property (nonatomic, copy) NSArray<NSString *>* appURLs;
+@property (nonatomic, strong) SFAuthenticationSession *session;
 
 @end
 
@@ -50,7 +53,7 @@ static NSInteger OpenURLCount = 0;
 - (instancetype)init
 {
   if (self = [super init]) {
-    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block, Macro];
+    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block, Macro, AuthenticationSession];
     _appURLs = @[@"weixin://weixin.com/", @"letvclient://letvclient.com/xxx", @"pptv://pptv.com/ddd", @"sohuvideo://xxx.com/", @"iqiyi://iqiyi.com/", @"pptv://page/player/halfscreen?type=vod&vid=17083193&sid=17083193",
                  @"http://link-jump.youku.com/a/b/?spm=a2hmv.20009921.m_86987.5~5~5~5~5~5~5~A&action=play&vid=755070962&source=yksmartbanner_player_1&ua=Mozilla%2F5.0%20(iPhone%3B%20CPU%20iPhone%20OS%2010_0%20like%20Mac%20OS%20X)%20AppleWebKit%2F602.1.38%20(KHTML%2C%20like%20Gecko)%20Version%2F10.0%20Mobile%2F14A300%20Safari%2F602.1&ccts=1505447052960&cookieid=1505446352536Um0qvK%7Cwve5hf&fua=safari&special=1&ts=1505447052962&position=yksmartbanner_player_1"];
     OpenURLCount = _appURLs.count - 1;
@@ -191,6 +194,9 @@ static NSInteger OpenURLCount = 0;
   else if ([_demos[indexPath.row] isEqualToString:Macro]) {
     [self _te_testMacro];
   }
+  else if ([_demos[indexPath.row] isEqualToString:AuthenticationSession]) {
+    [self _te_testAuthenticationSession];
+  }
 }
 
 #pragma mark - Test
@@ -254,6 +260,26 @@ static NSInteger OpenURLCount = 0;
 - (void)_te_testMacro
 {
 
+}
+
+- (void)_te_testAuthenticationSession
+{
+  NSURL *url = [NSURL URLWithString:@"http://192.168.1.103:8000?redirect"];
+  _session = [[SFAuthenticationSession alloc] initWithURL:url
+                                        callbackURLScheme:@"douban"
+                                        completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+                                          if (!error && callbackURL.path) {
+                                            if (callbackURL.path) {
+                                              UIAlertController *controller = [UIAlertController alertControllerWithTitle:[callbackURL.path substringFromIndex:1] message:nil preferredStyle:UIAlertControllerStyleAlert];
+
+                                              UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+                                              [controller addAction:action];
+                                              [self presentViewController:controller animated:YES completion:nil];
+                                            }
+                                          }
+                                        }];
+
+  [_session start];
 }
 
 #pragma mark - Notifications
