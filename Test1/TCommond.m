@@ -15,6 +15,7 @@
   if (self = [super init]) {
     _identifier = [ID copy];
     _name = [name copy];
+    _url = [NSURL new];
   }
   return self;
 }

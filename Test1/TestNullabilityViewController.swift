@@ -30,6 +30,7 @@ class TestNullabilityViewController: UIViewController {
   @objc private func test() {
     guard let commond = commond else { return }
     print("id = \(commond.identifier), name = \(commond.name)")
+    print(commond.url.absoluteString)
   }
 }
 
