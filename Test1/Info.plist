@@ -36,6 +36,7 @@
 		<string>pptv</string>
 		<string>sohuvideo</string>
 		<string>iqiyi</string>
+		<string>douban</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
