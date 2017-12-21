@@ -204,10 +204,11 @@ static NSInteger OpenURLCount = 0;
     [self _te_testAuthenticationSession];
   }
   else if ([_demos[indexPath.row] isEqualToString:CommonTest]) {
-    NSURLComponents *comp = [NSURLComponents componentsWithString:@"douban://douban.com/webview"];
-    NSString *query = [@"url=https://www.douban.com/doubanapp/dispatch?uri=/skyt/46283721&fallback=https://movie.douban.com" stringByAddingPercentEncodingWithAllowedCharacters: [NSCharacterSet URLQueryAllowedCharacterSet]];
-    comp.query = query;
-    NSLog(comp.URL.absoluteString);
+    NSString *key = @"key";
+    NSString *value = @"value=&21%da";
+
+    NSString *encodedValue = [value stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSLog(encodedValue);
   }
 }
 
