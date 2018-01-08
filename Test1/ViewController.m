@@ -60,8 +60,7 @@ static NSInteger OpenURLCount = 0;
                  @"pptv://pptv.com/ddd", @"sohuvideo://xxx.com/",
                  @"iqiyi://iqiyi.com/", @"pptv://page/player/halfscreen?type=vod&vid=17083193&sid=17083193",
                  @"http://link-jump.youku.com/a/b/?spm=a2hmv.20009921.m_86987.5~5~5~5~5~5~5~A&action=play&vid=755070962&source=yksmartbanner_player_1&ua=Mozilla%2F5.0%20(iPhone%3B%20CPU%20iPhone%20OS%2010_0%20like%20Mac%20OS%20X)%20AppleWebKit%2F602.1.38%20(KHTML%2C%20like%20Gecko)%20Version%2F10.0%20Mobile%2F14A300%20Safari%2F602.1&ccts=1505447052960&cookieid=1505446352536Um0qvK%7Cwve5hf&fua=safari&special=1&ts=1505447052962&position=yksmartbanner_player_1"];
-    _appURLs = @[@"douban://douban.com/webview?url=https://www.douban.com/doubanapp/dispatch?uri=/skynet/46283721%26fallback%3dhttps%3a%2f%2fm.douban.com%2fpage%2fouy7i2r+",
-                 @"douban://douban.com/webview?url=https://www.douban.com/doubanapp/dispatch?uri=/skyt/46283721%26fallback%3dhttps%3a%2f%2fm.douban.com%2fpage%2fouy7i2r+"];
+    _appURLs = @[@"douban://douban.com/webview?url=https://www.douban.com/doubanapp/dispatch?uri=/skynet/playlist/46283721%26fallback%3dhttps%3a%2f%2fm.douban.com%2fpage%2fouy7i2r+"];
     OpenURLCount = _appURLs.count - 1;
     _becomeActiveCount = -1;
     _blockObject = [TestBlockObject new];
