@@ -217,7 +217,7 @@ static NSInteger OpenURLCount = 0;
 {
   NSURLRequest *request;
   if (_tag) {
-    NSURL *url = [NSURL URLWithString:@"https://erebor.douban.com/redirect/?ad=185609&uid=&bid=c13147858ac7e0c759bc194402c04bfaea7d2193&unit=dale_feed_today_fifth&crtr=&mark=&hn=dis4&sig=690a8833c1fc9b1a9cc91af982bce043b469fe6fa236c49bb88811f81ec3a9895c7421eec35ee5e645976080dabc83eb5e525bafcd013e33b498d1bc2e1332d7&pid=debug_bcc04c2100b7567cbfaf86c98443252a4db7751d&target=https%3A%2F%2Fclick.gridsumdissector.com%2Ftrack.ashx%3Fgsadid%3Dgad_158_vbn837cv"];
+    NSURL *url = [NSURL URLWithString:@"http://product.m.dangdang.com/25204457.html?unionid=P-330022m&dt_dapp=1&dt_dapp=1"];
     request = [NSURLRequest requestWithURL:url];
 
     self.tag = NO;
