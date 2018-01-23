@@ -8,4 +8,5 @@ inhibit_all_warnings!
 target 'Test1' do
   pod 'OpenCV'
   pod 'Polymorph',                 '~> 1.0.7'
+  pod 'FRDFangorn/BaseComponents/Cache',                :git => 'https://github.intra.douban.com/huangduyu/FRDFangorn.git', :commit => '2c41032c5227957cb696909913188c3fcb8e751c'
 end
