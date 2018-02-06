@@ -7,6 +7,17 @@ inhibit_all_warnings!
 
 target 'Test1' do
   pod 'OpenCV'
-  pod 'Polymorph',                 '~> 1.0.7'
-  pod 'FRDFangorn/BaseComponents/Cache',                :git => 'https://github.intra.douban.com/huangduyu/FRDFangorn.git', :commit => '2c41032c5227957cb696909913188c3fcb8e751c'
+  pod 'DOUFoundation',             :git => 'https://github.intra.douban.com/iOS/DOUFoundation.git', :commit => 'a40451618d35fe59087eafbb04a5f1a62a8df29f'
+  pod 'Polymorph',                 :git => 'https://github.com/douban/Polymorph.git', :commit => 'ec503cfe3fcf9e18f8c675175273d5cde608d1e2'
+  pod 'DoubanObjCClient',       :git => 'https://github.intra.douban.com/iOS/DoubanObjCClient.git', :commit => 'd267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0'
+  
+  pod 'FRDFangorn/Applications/AppCommon',                :git => 'https://github.intra.douban.com/iOS/FRDFangorn.git', :commit => 'ca0f02d33771491782221b3ff777309077501de0'
+end
+
+post_install do | installer |
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['SWIFT_VERSION'] = '4.0'
+    end
+  end
 end

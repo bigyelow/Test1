@@ -1,46 +1,390 @@
 PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - AmonsulIOS (2.0.7):
+    - AmonsulIOS/Rohan (= 2.0.7)
+    - DOUFoundation (~> 0.2.9)
+  - AmonsulIOS/Reachability (2.0.7):
+    - DOUFoundation (~> 0.2.9)
+  - AmonsulIOS/Rohan (2.0.7):
+    - AmonsulIOS/Reachability
+    - DOUFoundation (~> 0.2.9)
+  - APIKit (3.1.1):
+    - Result (~> 3.0)
+  - BlocksKit/Core (2.2.5)
+  - BlocksKit/DynamicDelegate (2.2.5)
+  - BlocksKit/UIKit (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - CocoaLumberjack (2.3.0):
+    - CocoaLumberjack/Default (= 2.3.0)
+    - CocoaLumberjack/Extensions (= 2.3.0)
+  - CocoaLumberjack/Core (2.3.0)
+  - CocoaLumberjack/Default (2.3.0):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.3.0):
+    - CocoaLumberjack/Default
+  - DeviceKit (1.4.0)
+  - DeviceUtils (1.4.1):
+    - DeviceKit (~> 1.4.0)
+  - DoubanObjCClient (3.1.12):
+    - DoubanObjCClient/ALL (= 3.1.12)
+  - DoubanObjCClient/ALL (3.1.12):
+    - DoubanObjCClient/DOUAPIClient
+    - DoubanObjCClient/Help
+    - DoubanObjCClient/Model
+    - DoubanObjCClient/OAuth
+    - DoubanObjCClient/PushRegister
+  - DoubanObjCClient/DOUAPIClient (3.1.12):
+    - AFNetworking (~> 3.0)
+    - DoubanObjCClient/Model
+    - DOUFoundation/Extend (~> 0.2.13)
+    - DOUFoundation/Logger (~> 0.2.13)
+    - DOUFoundation/Reachability (~> 0.2.13)
+    - DOUFoundation/UDID (~> 0.2.13)
+    - FRDCryptology (~> 0.1.1)
+  - DoubanObjCClient/Help (3.1.12):
+    - DoubanObjCClient/DOUAPIClient
+  - DoubanObjCClient/Model (3.1.12)
+  - DoubanObjCClient/OAuth (3.1.12):
+    - DoubanObjCClient/DOUAPIClient
+    - DOUFoundation/UDID (~> 0.2.13)
+  - DoubanObjCClient/PushRegister (3.1.12):
+    - DoubanObjCClient/DOUAPIClient
+    - DOUFoundation/Digest (~> 0.2.13)
+  - DOUEmoji (1.0.3)
+  - DOUFoundation (0.2.15):
+    - DOUFoundation/ALL (= 0.2.15)
+  - DOUFoundation/ALL (0.2.15):
+    - DOUFoundation/DebugUtilities
+    - DOUFoundation/Digest
+    - DOUFoundation/Extend
+    - DOUFoundation/JSON
+    - DOUFoundation/Logger
+    - DOUFoundation/Reachability
+    - DOUFoundation/Runtime
+    - DOUFoundation/ThreadSpecificData
+    - DOUFoundation/UDID
+  - DOUFoundation/DebugUtilities (0.2.15):
+    - DOUFoundation/Logger
+  - DOUFoundation/Digest (0.2.15)
+  - DOUFoundation/Extend (0.2.15)
+  - DOUFoundation/JSON (0.2.15)
+  - DOUFoundation/Logger (0.2.15)
+  - DOUFoundation/Reachability (0.2.15):
+    - Reachability-DoubanInternal (~> 5.0.0)
+  - DOUFoundation/Runtime (0.2.15)
+  - DOUFoundation/ThreadSpecificData (0.2.15)
+  - DOUFoundation/UDID (0.2.15)
+  - DOUSNSSharingDoubanInternal (2.3.8)
+  - DOUUserManager (1.1.3):
+    - SAMKeychain (~> 1.5.2)
+  - FLAnimatedImage-DoubanInternal/Core (1.0.16)
+  - FLAnimatedImage-DoubanInternal/WebP (1.0.16):
+    - FLAnimatedImage-DoubanInternal/Core
+    - libwebp
   - FMDB (2.7.2):
     - FMDB/standard (= 2.7.2)
   - FMDB/standard (2.7.2)
+  - FormatterKit/Resources (1.8.2)
+  - FormatterKit/TimeIntervalFormatter (1.8.2):
+    - FormatterKit/Resources
+  - FRDCryptology (0.1.1)
+  - FRDFangorn/Applications/AppCommon (0.3.0):
+    - BlocksKit/UIKit (~> 2.2.5)
+    - DoubanObjCClient (~> 3.1.12)
+    - DOUFoundation/Extend (~> 0.2.13)
+    - DOUSNSSharingDoubanInternal (~> 2.3.8)
+    - DOUUserManager (~> 1.1.2)
+    - FRDFangorn/BaseComponents
+    - FRDFangorn/CommonBusiness
+    - FRDFangorn/ConcretBusiness/FRDShareKit
+    - FRDFangorn/ConcretBusiness/Photo
+    - FRDFangorn/Core
+    - FRDFangorn/Umbrella
+    - FRDIntent (~> 0.10.3)
+    - FRDToast (~> 0.1.5)
+    - lottie-ios (~> 2.0.5)
+    - NMPEditor (~> 0.1.8)
+    - PureLayout (~> 3.0)
+    - ReactiveObjC (~> 3.0)
+    - Rexxar (~> 0.3.0)
+    - SDWebImage
+    - SDWebImage/WebP
+    - TTTAttributedLabel (~> 1.13.0)
+    - VIMediaCache
+    - YAUIKit/Extend (~> 1.2.1)
+  - FRDFangorn/BaseComponents (0.3.0):
+    - FRDFangorn/BaseComponents/BCommon (= 0.3.0)
+    - FRDFangorn/BaseComponents/Cache (= 0.3.0)
+    - FRDFangorn/BaseComponents/DoubanObjCFileManager (= 0.3.0)
+    - FRDFangorn/BaseComponents/JYRefreshController (= 0.3.0)
+    - FRDFangorn/BaseComponents/Model (= 0.3.0)
+  - FRDFangorn/BaseComponents/BCommon (0.3.0):
+    - AmonsulIOS (~> 2.0.5)
+    - BlocksKit/UIKit (~> 2.2.5)
+    - DeviceUtils (~> 1.4.1)
+    - DoubanObjCClient (~> 3.1.12)
+    - DOUEmoji (~> 1.0.3)
+    - DOUFoundation (~> 0.2.13)
+    - DOUUserManager (~> 1.1.2)
+    - FormatterKit/TimeIntervalFormatter (~> 1.8.0)
+    - FRDCryptology (~> 0.1.1)
+    - FRDFangorn/Core
+    - FRDIntent (~> 0.10.3)
+    - FRDNetwork (~> 0.2.5)
+    - FRDToast (~> 0.1.5)
+    - JRSwizzle (~> 1.0)
+    - Polymorph (~> 1.0.7)
+    - PureLayout (~> 3.0)
+    - ReactiveObjC (~> 3.0)
+    - Rexxar (~> 0.3.0)
+    - SDWebImage
+    - SDWebImage/WebP
+    - SZTextView (~> 1.2.1)
+    - TTTAttributedLabel (~> 1.13.0)
+    - YAUIKit/Extend (~> 1.2.1)
   - FRDFangorn/BaseComponents/Cache (0.3.0):
     - FMDB (~> 2.5)
     - FRDFangorn/Core
     - YYCache (~> 1.0.4)
+  - FRDFangorn/BaseComponents/DoubanObjCFileManager (0.3.0)
+  - FRDFangorn/BaseComponents/JYRefreshController (0.3.0)
+  - FRDFangorn/BaseComponents/Model (0.3.0):
+    - DoubanObjCClient (~> 3.1.12)
+    - DOUEmoji (~> 1.0.3)
+    - DOUFoundation (~> 0.2.13)
+    - FRDFangorn/Core
+    - Polymorph (~> 1.0.7)
+    - YAUIKit/Extend (~> 1.2.1)
+  - FRDFangorn/CommonBusiness (0.3.0):
+    - FRDFangorn/CommonBusiness/Common (= 0.3.0)
+    - FRDFangorn/CommonBusiness/DOUChatClient (= 0.3.0)
+    - FRDFangorn/CommonBusiness/UI (= 0.3.0)
+  - FRDFangorn/CommonBusiness/Common (0.3.0):
+    - APIKit (~> 3.0)
+    - DoubanObjCClient (~> 3.1.12)
+    - DOUEmoji (~> 1.0.3)
+    - DOUFoundation (~> 0.2.8)
+    - DOUUserManager (~> 1.1.2)
+    - FMDB (~> 2.5)
+    - FRDCryptology (~> 0.1.1)
+    - FRDFangorn/BaseComponents/BCommon
+    - FRDFangorn/BaseComponents/Cache
+    - FRDFangorn/BaseComponents/JYRefreshController
+    - FRDFangorn/BaseComponents/Model
+    - FRDFangorn/Core
+    - FRDNetwork (~> 0.2.5)
+    - FRDToast (~> 0.1.5)
+    - Himotoki (~> 3.0)
+    - Polymorph (~> 1.0.7)
+    - ReactiveObjC (~> 3.0)
+    - SDWebImage
+    - YAUIKit/Extend (~> 1.2.1)
+  - FRDFangorn/CommonBusiness/DOUChatClient (0.3.0):
+    - DoubanObjCClient (~> 3.1.12)
+    - DOUFoundation
+    - FMDB (~> 2.5)
+    - FRDFangorn/BaseComponents/BCommon
+    - FRDFangorn/BaseComponents/DoubanObjCFileManager
+    - MQTTClientDoubanInternal (~> 0.9.0)
+    - Polymorph
+    - Reachability-DoubanInternal (= 5.0.0)
+  - FRDFangorn/CommonBusiness/UI (0.3.0):
+    - BlocksKit/UIKit (~> 2.2.5)
+    - DOUEmoji (~> 1.0.3)
+    - FRDFangorn/BaseComponents/BCommon
+    - FRDFangorn/BaseComponents/Cache
+    - FRDFangorn/BaseComponents/Model
+    - FSQCollectionViewAlignedLayout (~> 1.1.1)
+    - JRSwizzle (~> 1.0)
+    - PureLayout (~> 3.0)
+    - ReactiveObjC (~> 3.0)
+    - SZTextView (~> 1.2.1)
+    - YAUIKit/Extend (~> 1.2.1)
+  - FRDFangorn/ConcretBusiness/FRDShareKit (0.3.0):
+    - DOUFoundation (~> 0.2.8)
+    - FRDToast
+    - PureLayout (~> 3.0)
+    - YAUIKit/Extend (~> 1.2.1)
+  - FRDFangorn/ConcretBusiness/Photo (0.3.0):
+    - DOUFoundation (~> 0.2.8)
+    - FLAnimatedImage-DoubanInternal/WebP (~> 1.0.15)
+    - FRDFangorn/BaseComponents/BCommon
+    - FRDToast
+    - PureLayout (~> 3.0)
+    - ReactiveObjC (~> 3.0)
+    - SDWebImage
   - FRDFangorn/Core (0.3.0)
+  - FRDFangorn/Umbrella (0.3.0)
+  - FRDIntent (0.10.3):
+    - FRDIntent/URLRoutes (= 0.10.3)
+  - FRDIntent/Intent (0.10.3)
+  - FRDIntent/URLRoutes (0.10.3):
+    - FRDIntent/Intent
+  - FRDNetwork (0.2.5):
+    - DOUFoundation/Reachability (~> 0.2.13)
+    - FRDCryptology (~> 0.1.0)
+  - FRDToast (0.1.5)
+  - FSQCollectionViewAlignedLayout (1.1.1)
+  - Himotoki (3.1.0)
+  - JRSwizzle (1.0)
   - libextobjc/EXTScope (0.4.1):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4.1)
+  - libwebp (0.6.0):
+    - libwebp/core (= 0.6.0)
+    - libwebp/dec (= 0.6.0)
+    - libwebp/demux (= 0.6.0)
+    - libwebp/dsp (= 0.6.0)
+    - libwebp/enc (= 0.6.0)
+    - libwebp/mux (= 0.6.0)
+    - libwebp/utils (= 0.6.0)
+    - libwebp/webp (= 0.6.0)
+  - libwebp/core (0.6.0):
+    - libwebp/webp
+  - libwebp/dec (0.6.0):
+    - libwebp/core
+  - libwebp/demux (0.6.0):
+    - libwebp/core
+  - libwebp/dsp (0.6.0):
+    - libwebp/core
+  - libwebp/enc (0.6.0):
+    - libwebp/core
+  - libwebp/mux (0.6.0):
+    - libwebp/core
+  - libwebp/utils (0.6.0):
+    - libwebp/core
+  - libwebp/webp (0.6.0)
+  - lottie-ios (2.0.6)
+  - MQTTClientDoubanInternal (0.9.0):
+    - MQTTClientDoubanInternal/Core (= 0.9.0)
+  - MQTTClientDoubanInternal/Core (0.9.0):
+    - CocoaLumberjack (~> 2.3.0)
+  - NMPEditor (0.1.8):
+    - SZTextView (~> 1.2.0)
   - OpenCV (3.2.0):
     - OpenCV/Dynamic (= 3.2.0)
   - OpenCV/Dynamic (3.2.0)
   - Polymorph (1.0.7):
     - libextobjc/EXTScope (~> 0.4)
     - libextobjc/RuntimeExtensions (~> 0.4)
+  - PureLayout (3.0.2)
+  - Reachability-DoubanInternal (5.0.0)
+  - ReactiveObjC (3.1.0)
+  - Result (3.2.4)
+  - Rexxar (0.3.0):
+    - Rexxar/Widget (= 0.3.0)
+  - Rexxar/Core (0.3.0)
+  - Rexxar/Widget (0.3.0):
+    - Rexxar/Core
+  - SAMKeychain (1.5.3)
+  - SDWebImage (4.2.3):
+    - SDWebImage/Core (= 4.2.3)
+  - SDWebImage/Core (4.2.3)
+  - SDWebImage/WebP (4.2.3):
+    - libwebp
+    - SDWebImage/Core
+  - SZTextView (1.2.2)
+  - TTTAttributedLabel (1.13.4)
+  - VIMediaCache (0.3)
+  - YAUIKit/Extend (1.2.1):
+    - YAUIKit/Header
+  - YAUIKit/Header (1.2.1)
   - YYCache (1.0.4)
 
 DEPENDENCIES:
-  - FRDFangorn/BaseComponents/Cache (from `https://github.intra.douban.com/huangduyu/FRDFangorn.git`, commit `2c41032c5227957cb696909913188c3fcb8e751c`)
+  - DoubanObjCClient (from `https://github.intra.douban.com/iOS/DoubanObjCClient.git`, commit `d267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0`)
+  - DOUFoundation (from `https://github.intra.douban.com/iOS/DOUFoundation.git`, commit `a40451618d35fe59087eafbb04a5f1a62a8df29f`)
+  - FRDFangorn/Applications/AppCommon (from `https://github.intra.douban.com/iOS/FRDFangorn.git`, commit `ca0f02d33771491782221b3ff777309077501de0`)
   - OpenCV
-  - Polymorph (~> 1.0.7)
+  - Polymorph (from `https://github.com/douban/Polymorph.git`, commit `ec503cfe3fcf9e18f8c675175273d5cde608d1e2`)
 
 EXTERNAL SOURCES:
+  DoubanObjCClient:
+    :commit: d267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0
+    :git: https://github.intra.douban.com/iOS/DoubanObjCClient.git
+  DOUFoundation:
+    :commit: a40451618d35fe59087eafbb04a5f1a62a8df29f
+    :git: https://github.intra.douban.com/iOS/DOUFoundation.git
   FRDFangorn:
-    :commit: 2c41032c5227957cb696909913188c3fcb8e751c
-    :git: https://github.intra.douban.com/huangduyu/FRDFangorn.git
+    :commit: ca0f02d33771491782221b3ff777309077501de0
+    :git: https://github.intra.douban.com/iOS/FRDFangorn.git
+  Polymorph:
+    :commit: ec503cfe3fcf9e18f8c675175273d5cde608d1e2
+    :git: https://github.com/douban/Polymorph.git
 
 CHECKOUT OPTIONS:
+  DoubanObjCClient:
+    :commit: d267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0
+    :git: https://github.intra.douban.com/iOS/DoubanObjCClient.git
+  DOUFoundation:
+    :commit: a40451618d35fe59087eafbb04a5f1a62a8df29f
+    :git: https://github.intra.douban.com/iOS/DOUFoundation.git
   FRDFangorn:
-    :commit: 2c41032c5227957cb696909913188c3fcb8e751c
-    :git: https://github.intra.douban.com/huangduyu/FRDFangorn.git
+    :commit: ca0f02d33771491782221b3ff777309077501de0
+    :git: https://github.intra.douban.com/iOS/FRDFangorn.git
+  Polymorph:
+    :commit: ec503cfe3fcf9e18f8c675175273d5cde608d1e2
+    :git: https://github.com/douban/Polymorph.git
 
 SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  AmonsulIOS: b083bdc94a28454d2590382cd7e115f0dde11672
+  APIKit: 7460983f490d3bde6aaaaa4164d18c9865a6f91d
+  BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
+  CocoaLumberjack: 97fab7ee5f507fe54445cca7ea80f926729cfd15
+  DeviceKit: fa74d97499660e88081718b16688e19217595dba
+  DeviceUtils: 1abe1b916bd1a92109f024c447c3e455bab395d2
+  DoubanObjCClient: 59fd9659f168c335f54358c8d9cc26d10314cc97
+  DOUEmoji: bd4886df9e9c76eae55f47ffa4e786a7dd4bbc09
+  DOUFoundation: a00405534d6acecf50ea2a7a838e0e2cce0bd4b3
+  DOUSNSSharingDoubanInternal: 797f7589de3152e6d8ebe4ec2f2782377e3804bb
+  DOUUserManager: 431f25d6ae51890503dcfe361419ce8a2564df6a
+  FLAnimatedImage-DoubanInternal: 253816002fe9c77891d1fff9b5476a4b0e0eb026
   FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
-  FRDFangorn: bb8309094553b76073fd86f37ec075de9ada893d
+  FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
+  FRDCryptology: b26c95144171438ad5e5ef18ca2512ec48a79b62
+  FRDFangorn: 01fd4b303b114dda5a5dc9bbba6bc2a6db6273c4
+  FRDIntent: 6cce87a34a64707d7397c7e30e0147947ee411c4
+  FRDNetwork: 76f77b04f7fbf490dea458f4b5bf8fb7aec30759
+  FRDToast: 5a8d08e3109b3bdf4488dfb1a98e63bff1583eb5
+  FSQCollectionViewAlignedLayout: 122006b230bf5635ae159f1ad1eaa9b5ef11391e
+  Himotoki: b09643fa5456d49bda43d0fb4e30dfa79e37f72f
+  JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
+  libwebp: 1d5a07c2eb97f9c31bd5f154bb82efc0ea67c6a2
+  lottie-ios: 601c75ad9b5f27857f6221c5e7f4a12d23f5e779
+  MQTTClientDoubanInternal: 3a848a75cad72dbaad809a8c20a12bb678bbe4e0
+  NMPEditor: d5898b8e5cec33f20fe7fd4b75548a4ded284a5d
   OpenCV: 0f7ab403d1e81769bc6f4f524c3c6928ecb1fdb8
   Polymorph: 57da1d8ec0253281721b805869c638241fe9166d
+  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
+  Reachability-DoubanInternal: 1f6f2603a866d13dabe51ce27309ab9103901b0d
+  ReactiveObjC: 2a38ea15335de4119d8b17caf1db1484f61db902
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
+  Rexxar: 43c951140df4125ca35e873d410de50c396b3aa4
+  SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
+  SDWebImage: 791bb72962b3492327ddcac4b1880bd1b5458431
+  SZTextView: 3a81174dce0710a9ab069bc73a813e6df53b9c82
+  TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
+  VIMediaCache: 02c03af2adf2526eddc8ee3b06e41f26e9546f38
+  YAUIKit: ca94ae20e32fdb390e9a3840bb415b0ccc0f421f
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
 
-PODFILE CHECKSUM: 32d4fa15165da35b417e920131586f7b11dc237c
+PODFILE CHECKSUM: e3c7254c1f9fd1c1da033b5826185ab4bd91bc72
 
 COCOAPODS: 1.4.0
