@@ -10,8 +10,6 @@ target 'Test1' do
   pod 'DOUFoundation',             :git => 'https://github.intra.douban.com/iOS/DOUFoundation.git', :commit => 'a40451618d35fe59087eafbb04a5f1a62a8df29f'
   pod 'Polymorph',                 :git => 'https://github.com/douban/Polymorph.git', :commit => 'ec503cfe3fcf9e18f8c675175273d5cde608d1e2'
   pod 'DoubanObjCClient',       :git => 'https://github.intra.douban.com/iOS/DoubanObjCClient.git', :commit => 'd267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0'
-  
-  pod 'FRDFangorn/Applications/AppCommon',                :git => 'https://github.intra.douban.com/iOS/FRDFangorn.git', :commit => 'ca0f02d33771491782221b3ff777309077501de0'
 end
 
 post_install do | installer |
