@@ -8,15 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#ifdef __cplusplus
-#undef NO
-#undef YES
-#import <opencv2/opencv.hpp>
-#endif
-
 @interface UIImage (OpenCV)
 
-- (cv::Mat)cvMatFromUIImage:(UIImage *)image;
-- (UIImage *)UIImageFromCVMat:(cv::Mat)cvMat;
+- (UIImage *)te_processImageThroughMat;
 
 @end

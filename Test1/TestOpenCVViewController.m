@@ -7,6 +7,7 @@
 //
 
 #import "TestOpenCVViewController.h"
+#import "UIImage+OpenCV.h"
 
 @interface TestOpenCVViewController ()
 
@@ -22,8 +23,14 @@
   if (self = [super init]) {
     self.title = @"Test OpenCV";
 
-    _imageView1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LongImage1"]];
-    _imageView2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LongImage2"]];
+    UIImage *img1 = [UIImage imageNamed:@"LongImage1"];
+    UIImage *img2 = [UIImage imageNamed:@"LongImage2"];
+
+    img1 = [img1 te_processImageThroughMat];
+    img2 = [img2 te_processImageThroughMat];
+
+    _imageView1 = [[UIImageView alloc] initWithImage:img1];
+    _imageView2 = [[UIImageView alloc] initWithImage:img2];
 
     [self _te_configImageView:_imageView1];
     [self _te_configImageView:_imageView2];

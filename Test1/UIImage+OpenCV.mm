@@ -6,12 +6,26 @@
 //  Copyright © 2018 huangduyu. All rights reserved.
 //
 
+#ifdef __cplusplus
+#undef NO
+#undef YES
+#import <opencv2/opencv.hpp>
+#endif
+
 #import "UIImage+OpenCV.h"
 
 @implementation UIImage (OpenCV)
 
-- (cv::Mat)cvMatFromUIImage:(UIImage *)image
+- (UIImage *)te_processImageThroughMat
 {
+  cv::Mat mat = [self cvMat];
+  return [self UIImageFromCVMat:mat];
+}
+
+- (cv::Mat)cvMat
+{
+  UIImage *image = self;
+
   CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
   CGFloat cols = image.size.width;
   CGFloat rows = image.size.height;
