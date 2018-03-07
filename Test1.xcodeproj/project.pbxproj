@@ -24,6 +24,7 @@
 		71B12A4E1EE1063500622A2E /* Test1UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A4D1EE1063500622A2E /* Test1UITests.m */; };
 		71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A5C1EE1065C00622A2E /* TestExtension.m */; };
 		71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B12A5F1EE1067000622A2E /* SubTestExtension.m */; };
+		71EA63E52050238800295761 /* TestOpenCVViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71EA63E42050238800295761 /* TestOpenCVViewController.m */; };
 		CE6F013C78DA7BD3191780A2 /* Pods_Test1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67DA90C7545F2E1346534BBD /* Pods_Test1.framework */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +80,8 @@
 		71B12A5C1EE1065C00622A2E /* TestExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestExtension.m; sourceTree = "<group>"; };
 		71B12A5E1EE1067000622A2E /* SubTestExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubTestExtension.h; sourceTree = "<group>"; };
 		71B12A5F1EE1067000622A2E /* SubTestExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubTestExtension.m; sourceTree = "<group>"; };
+		71EA63E32050238700295761 /* TestOpenCVViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestOpenCVViewController.h; sourceTree = "<group>"; };
+		71EA63E42050238800295761 /* TestOpenCVViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestOpenCVViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +168,8 @@
 				713BC5E91F2B2C5C001E4D10 /* TestBlockObject.h */,
 				713BC5EA1F2B2C5C001E4D10 /* TestBlockObject.m */,
 				710DDFB91F46B57800D52E6B /* URLEncode.swift */,
+				71EA63E32050238700295761 /* TestOpenCVViewController.h */,
+				71EA63E42050238800295761 /* TestOpenCVViewController.m */,
 			);
 			path = Test1;
 			sourceTree = "<group>";
@@ -421,6 +426,7 @@
 				71A6C6771EF1461900E13CA3 /* PresentingViewController.m in Sources */,
 				71B12A2A1EE1063500622A2E /* main.m in Sources */,
 				71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */,
+				71EA63E52050238800295761 /* TestOpenCVViewController.m in Sources */,
 				715C51461F1C8E730049D1E9 /* TestNullabilityViewController.swift in Sources */,
 				7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */,
 			);

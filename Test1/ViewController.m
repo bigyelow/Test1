@@ -17,6 +17,7 @@
 #import "TCommond.h"
 #import "Test1-Swift.h"
 #import "TestBlockObject.h"
+#import "TestOpenCVViewController.h"
 
 static NSString * const WKWebViewStr = @"WKWebView";
 static NSString * const ImageStr = @"Image";
@@ -29,6 +30,7 @@ static NSString * const OpenURL = @"OpenURL";
 static NSString * const Block = @"Block";
 static NSString * const Macro = @"Macro";
 static NSString * const AuthenticationSession = @"AuthenticationSession";
+static NSString * const OpenCV = @"OpenCV";
 static NSString * const CommonTest = @"CommonTest";
 static NSInteger OpenURLCount = 0;
 
@@ -54,7 +56,7 @@ static NSInteger OpenURLCount = 0;
 - (instancetype)init
 {
   if (self = [super init]) {
-    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block, Macro, AuthenticationSession, CommonTest];
+    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block, Macro, AuthenticationSession, OpenCV, CommonTest];
     _appURLs = @[@"weixin://weixin.com/",
                  @"letvclient://letvclient.com/xxx",
                  @"pptv://pptv.com/ddd", @"sohuvideo://xxx.com/",
@@ -208,6 +210,9 @@ static NSInteger OpenURLCount = 0;
 
     NSString *encodedValue = [value stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSLog(encodedValue);
+  }
+  else if ([_demos[indexPath.row] isEqualToString:OpenCV]) {
+    [self.navigationController pushViewController:[[TestOpenCVViewController alloc] init] animated:YES];
   }
 }
 
