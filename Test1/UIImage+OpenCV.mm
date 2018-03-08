@@ -9,22 +9,49 @@
 #ifdef __cplusplus
 #undef NO
 #undef YES
-#import <opencv2/opencv.hpp>
+#include <opencv2/opencv.hpp>
 #endif
 
 #import "UIImage+OpenCV.h"
+
+using namespace std;
+using namespace cv;
 
 @implementation UIImage (OpenCV)
 
 - (UIImage *)te_processImageThroughMat
 {
-  cv::Mat mat = [self _te_cvMat];
-  return [self _te_UIImageFromCVMat:mat];
+  Mat mat = [self _te_cvMat];
+  return [[self class] _te_UIImageFromCVMat:mat];
+}
+
+#pragma mark - Stitching
+
++ (UIImage *)te_imageByStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2
+{
+  Mat mat1 = [image1 _te_cvMat];
+  Mat mat2 = [image2 _te_cvMat];
+
+  vector<Mat> imgs;
+  imgs.push_back(mat1);
+  imgs.push_back(mat2);
+
+  Mat pano;
+  Stitcher stitcher = Stitcher::createDefault(false);
+  Stitcher::Status status = stitcher.stitch(imgs, pano);
+
+  if (status != Stitcher::OK) {
+    NSLog(@"Wrong");
+
+    return nil;
+  }
+
+  return [self _te_UIImageFromCVMat:pano];
 }
 
 #pragma mark - Conversion
 
-- (cv::Mat)_te_cvMat
+- (Mat)_te_cvMat
 {
   UIImage *image = self;
 
@@ -32,7 +59,7 @@
   CGFloat cols = image.size.width;
   CGFloat rows = image.size.height;
 
-  cv::Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels (color channels + alpha)
+  Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels (color channels + alpha)
 
   CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to  data
                                                   cols,                       // Width of bitmap
@@ -49,7 +76,7 @@
   return cvMat;
 }
 
-- (UIImage *)_te_UIImageFromCVMat:(cv::Mat)cvMat
++ (UIImage *)_te_UIImageFromCVMat:(Mat)cvMat
 {
   NSData *data = [NSData dataWithBytes:cvMat.data length:cvMat.elemSize()*cvMat.total()];
   CGColorSpaceRef colorSpace;
@@ -62,7 +89,7 @@
 
   CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
 
-  // Creating CGImage from cv::Mat
+  // Creating CGImage from Mat
   CGImageRef imageRef = CGImageCreate(cvMat.cols,                                 //width
                                       cvMat.rows,                                 //height
                                       8,                                          //bits per component

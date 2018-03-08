@@ -11,5 +11,6 @@
 @interface UIImage (OpenCV)
 
 - (UIImage *)te_processImageThroughMat;
++ (UIImage *)te_imageByStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2;
 
 @end
