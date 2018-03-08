@@ -18,11 +18,13 @@
 
 - (UIImage *)te_processImageThroughMat
 {
-  cv::Mat mat = [self cvMat];
-  return [self UIImageFromCVMat:mat];
+  cv::Mat mat = [self _te_cvMat];
+  return [self _te_UIImageFromCVMat:mat];
 }
 
-- (cv::Mat)cvMat
+#pragma mark - Conversion
+
+- (cv::Mat)_te_cvMat
 {
   UIImage *image = self;
 
@@ -47,7 +49,7 @@
   return cvMat;
 }
 
-- (UIImage *)UIImageFromCVMat:(cv::Mat)cvMat
+- (UIImage *)_te_UIImageFromCVMat:(cv::Mat)cvMat
 {
   NSData *data = [NSData dataWithBytes:cvMat.data length:cvMat.elemSize()*cvMat.total()];
   CGColorSpaceRef colorSpace;
