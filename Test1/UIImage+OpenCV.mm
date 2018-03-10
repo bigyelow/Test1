@@ -29,8 +29,11 @@ using namespace cv;
 
 + (UIImage *)te_imageByStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2
 {
-  Mat mat1 = [image1 _te_cvMat];
-  Mat mat2 = [image2 _te_cvMat];
+  image1 = [self _te_compressedToRatio:image1 ratio:0.8];
+  image2 = [self _te_compressedToRatio:image2 ratio:0.8];
+
+  Mat mat1 = [image1 _te_cvMat3];
+  Mat mat2 = [image2 _te_cvMat3];
 
   vector<Mat> imgs;
   imgs.push_back(mat1);
@@ -49,7 +52,27 @@ using namespace cv;
   return [self _te_UIImageFromCVMat:pano];
 }
 
+#pragma mark - Compress
++ (UIImage *)_te_compressedToRatio:(UIImage *)img ratio:(float)ratio
+{
+  CGSize compressedSize;
+  compressedSize.width=img.size.width*ratio;
+  compressedSize.height=img.size.height*ratio;
+  UIGraphicsBeginImageContext(compressedSize);
+  [img drawInRect:CGRectMake(0, 0, compressedSize.width, compressedSize.height)];
+  UIImage* compressedImage = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return compressedImage;
+}
+
 #pragma mark - Conversion
+
+- (Mat)_te_cvMat3
+{
+  Mat result=[self _te_cvMat];
+  cvtColor(result, result, CV_RGBA2RGB);
+  return result;
+}
 
 - (Mat)_te_cvMat
 {
@@ -59,7 +82,7 @@ using namespace cv;
   CGFloat cols = image.size.width;
   CGFloat rows = image.size.height;
 
-  Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels (color channels + alpha)
+  cv::Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels (color channels + alpha)
 
   CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to  data
                                                   cols,                       // Width of bitmap

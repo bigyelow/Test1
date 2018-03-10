@@ -83,11 +83,11 @@
 
 - (void)_te_stitch
 {
-  _imageView3.image = [UIImage te_imageByStitchingImage:_imageView1.image withImage:_imageView2.image];
+  _imageView1.image = [UIImage te_imageByStitchingImage:_imageView1.image withImage:_imageView2.image];
 
-  _imageView1.hidden = YES;
-  _imageView2.hidden = YES;
-  _imageView3.hidden = NO;
+//  _imageView1.hidden = YES;
+//  _imageView2.hidden = YES;
+//  _imageView3.hidden = NO;
 }
 
 - (void)_te_reset
