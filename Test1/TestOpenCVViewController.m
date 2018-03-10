@@ -37,6 +37,8 @@
     [self _te_configImageView:_imageView1];
     [self _te_configImageView:_imageView2];
     [self _te_configImageView:_imageView3];
+
+    [self _te_reset];
   }
   return self;
 }
@@ -58,18 +60,20 @@
 
   [self.view addSubview:_imageView1];
   [self.view addSubview:_imageView2];
+  [self.view addSubview:_imageView3];
 }
 
 - (void)viewDidLayoutSubviews
 {
   [super viewDidLayoutSubviews];
 
+  CGFloat centerX = self.view.bounds.size.width / 2;
   CGFloat imageWidth = self.view.bounds.size.width / 2;
   CGFloat imageHeight = 400;
   CGFloat imageY = 64;
   _imageView1.frame = CGRectMake(0, imageY, imageWidth, imageHeight);
   _imageView2.frame = CGRectMake(CGRectGetMaxX(_imageView1.frame), imageY, imageWidth, imageHeight);
-  _imageView3.frame = CGRectMake(0, imageY, imageWidth * 2, imageHeight * 1.5);
+  _imageView3.frame = CGRectMake(centerX - (imageWidth / 2), imageY, imageWidth, imageHeight);
 }
 
 - (void)_te_configImageView:(UIImageView *)imageView
@@ -83,7 +87,7 @@
 
 - (void)_te_stitch
 {
-  _imageView1.image = [UIImage te_imageByStitchingImage:_imageView1.image withImage:_imageView2.image];
+  _imageView3.image = [UIImage te_imageByRawStitchingImage:_imageView1.image withImage:_imageView2.image];
 
   _imageView1.hidden = YES;
   _imageView2.hidden = YES;

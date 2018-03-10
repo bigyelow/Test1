@@ -27,6 +27,44 @@ using namespace cv;
 
 #pragma mark - Stitching
 
++ (UIImage *)te_imageByRawStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2
+{
+  Mat mat1 = [image1 _te_cvMat];
+  Mat mat2 = [image2 _te_cvMat];
+
+  Mat result = Mat(mat1.rows + mat2.rows, mat1.cols, mat1.type());
+  mat1.rowRange(0, mat1.rows).copyTo(result.rowRange(0, mat1.rows));
+  mat2.rowRange(0, mat2.rows).copyTo(result.rowRange(mat1.rows, result.rows));
+
+//  Mat singleMat1, singleMat2;
+//  cvtColor(mat1, singleMat1, CV_RGB2BGR);
+//  cvtColor(mat2, singleMat2, CV_RGB2BGR);
+
+//  return [self _te_UIImageFromCVMat:singleMat1];
+//  if (matIsEqual(singleMat1, singleMat2)) {
+//    NSLog(@"equal");
+//  }
+//
+//  Mat diff;
+//  compare(mat1, mat2, diff, CMP_EQ);
+  return [self _te_UIImageFromCVMat:result];
+}
+
+bool matIsEqual(const cv::Mat mat1, const cv::Mat mat2){
+  // treat two empty mat as identical as well
+  if (mat1.empty() && mat2.empty()) {
+    return true;
+  }
+  // if dimensionality of two mat is not identical, these two mat is not identical
+  if (mat1.cols != mat2.cols || mat1.rows != mat2.rows || mat1.dims != mat2.dims) {
+    return false;
+  }
+  cv::Mat diff;
+  cv::compare(mat1, mat2, diff, cv::CMP_NE);
+  int nz = cv::countNonZero(diff);
+  return nz==0;
+}
+
 + (UIImage *)te_imageByStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2
 {
   image1 = [self _te_compressedToRatio:image1 ratio:0.8];

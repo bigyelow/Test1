@@ -122,6 +122,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7154BE062053989E00DEDBED /* OPenCV */ = {
+			isa = PBXGroup;
+			children = (
+				71EA63E32050238700295761 /* TestOpenCVViewController.h */,
+				71EA63E42050238800295761 /* TestOpenCVViewController.m */,
+				71EA63E920502C2300295761 /* UIImage+OpenCV.h */,
+				71EA63EA20502C2300295761 /* UIImage+OpenCV.mm */,
+			);
+			name = OPenCV;
+			sourceTree = "<group>";
+		};
 		71B12A1C1EE1063500622A2E = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +158,7 @@
 		71B12A271EE1063500622A2E /* Test1 */ = {
 			isa = PBXGroup;
 			children = (
+				7154BE062053989E00DEDBED /* OPenCV */,
 				71B12A2B1EE1063500622A2E /* AppDelegate.h */,
 				71B12A2C1EE1063500622A2E /* AppDelegate.m */,
 				71B12A2E1EE1063500622A2E /* ViewController.h */,
@@ -171,10 +183,6 @@
 				713BC5E91F2B2C5C001E4D10 /* TestBlockObject.h */,
 				713BC5EA1F2B2C5C001E4D10 /* TestBlockObject.m */,
 				710DDFB91F46B57800D52E6B /* URLEncode.swift */,
-				71EA63E32050238700295761 /* TestOpenCVViewController.h */,
-				71EA63E42050238800295761 /* TestOpenCVViewController.m */,
-				71EA63E920502C2300295761 /* UIImage+OpenCV.h */,
-				71EA63EA20502C2300295761 /* UIImage+OpenCV.mm */,
 			);
 			path = Test1;
 			sourceTree = "<group>";
