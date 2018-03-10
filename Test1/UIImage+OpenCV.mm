@@ -70,17 +70,20 @@ using namespace cv;
   int maxRowsThreshold = 20;
   Mat temp = greyMat2.rowRange(top, top + maxRowsThreshold);
   for (bottom1 = bottom - maxRowsThreshold; bottom1 >= top; --bottom1) {
+//    cout << "temp = \n" << temp << "\n";
+//    cout << "sub mat1 = \n" << greyMat1.rowRange(bottom1, bottom1 + maxRowsThreshold) << "\n";
+
 //    cout << "temp rows = " << temp.rows << "\n";
 //    cout << "greymat1 sub rows = " <<
     Mat result = greyMat1.rowRange(bottom1, bottom1 + maxRowsThreshold) == temp;
     int total = greyMat1.cols * maxRowsThreshold;
     int zeroCount = total - countNonZero(result);
-    if (zeroCount <= total * 0.1) {
+    if (zeroCount <= total * 0.01) {
       break;
     }
   }
 
-  int resultRows = bottom1 + mat2.rows - top;
+  int resultRows = bottom1 + mat2.rows - top ;
   Mat result = Mat(resultRows, mat1.cols, mat1.type());
   mat1.rowRange(0, bottom1).copyTo(result.rowRange(0, bottom1));
   mat2.rowRange(top, mat2.rows).copyTo(result.rowRange(bottom1, result.rows));

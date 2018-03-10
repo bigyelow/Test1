@@ -14,6 +14,9 @@
 @property (nonatomic, strong) UIImageView *imageView1;
 @property (nonatomic, strong) UIImageView *imageView2;
 @property (nonatomic, strong) UIImageView *imageView3;
+@property (nonatomic, copy) NSArray *array1;
+@property (nonatomic, copy) NSArray *array2;
+@property (nonatomic, assign) NSInteger imageIndex;
 
 @end
 
@@ -24,8 +27,11 @@
   if (self = [super init]) {
     self.title = @"Test OpenCV";
 
-    UIImage *img1 = [UIImage imageNamed:@"LongImage3"];
-    UIImage *img2 = [UIImage imageNamed:@"LongImage4"];
+    _array1 = @[@"LongImage1", @"LongImage3", @"LongImage4"];
+    _array2 = @[@"LongImage2", @"LongImage4", @"LongImage5"];
+    _imageIndex = 0;
+    UIImage *img1 = [UIImage imageNamed:@"LongImage1"];
+    UIImage *img2 = [UIImage imageNamed:@"LongImage2"];
 
 //    img1 = [img1 te_processImageThroughMat];
 //    img2 = [img2 te_processImageThroughMat];
@@ -95,8 +101,11 @@
 
 - (void)_te_reset
 {
+  _imageIndex = (++_imageIndex % _array1.count);
   _imageView1.hidden = NO;
   _imageView2.hidden = NO;
+  _imageView1.image = [UIImage imageNamed:_array1[_imageIndex]];
+  _imageView2.image = [UIImage imageNamed:_array2[_imageIndex]];
   _imageView3.hidden = YES;
 }
 
