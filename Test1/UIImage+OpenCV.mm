@@ -10,6 +10,7 @@
 #undef NO
 #undef YES
 #include <opencv2/opencv.hpp>
+#include <opencv2/features2d/features2d.hpp>
 #endif
 
 #import "UIImage+OpenCV.h"
@@ -26,6 +27,95 @@ using namespace cv;
 }
 
 #pragma mark - Stitching
+
++ (UIImage *)te_imageByMatchingStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2
+{
+  Mat mat1 = [image1 _te_cvMat];
+  Mat mat2 = [image2 _te_cvMat];
+
+  Mat greyMat1, greyMat2;
+  cvtColor(mat1, greyMat1, CV_BGR2GRAY);
+  cvtColor(mat2, greyMat2, CV_BGR2GRAY);
+
+  // From top to bottom
+  cout << "begin top\n";
+  int top;
+  for (top = 0; top < greyMat1.rows; ++top) {
+    Mat result = greyMat1.row(top) == greyMat2.row(top);
+    int notMatch = greyMat1.cols - countNonZero(result);
+
+    cout << "notMatch = " << notMatch << "\n";
+
+    if (notMatch > greyMat1.cols * 0.1) {
+      break;
+    }
+  }
+
+  // From bottom to top
+  cout << "begin bottom\n";
+  int bottom;
+  for (bottom = greyMat1.rows - 1; bottom >= 0; --bottom) {
+    Mat result = greyMat1.row(bottom) == greyMat2.row(bottom);
+    int notMatch = greyMat1.cols - countNonZero(result);
+
+    cout << "notMatch = " << notMatch << "\n";
+
+    if (notMatch > greyMat1.cols * 0.1) {
+      break;
+    }
+  }
+
+  // Middle
+  int bottom1;
+  int maxRowsThreshold = 20;
+  Mat temp = greyMat2.rowRange(top, top + maxRowsThreshold);
+  for (bottom1 = bottom - maxRowsThreshold; bottom1 >= top; --bottom1) {
+//    cout << "temp rows = " << temp.rows << "\n";
+//    cout << "greymat1 sub rows = " <<
+    Mat result = greyMat1.rowRange(bottom1, bottom1 + maxRowsThreshold) == temp;
+    int total = greyMat1.cols * maxRowsThreshold;
+    int zeroCount = total - countNonZero(result);
+    if (zeroCount <= total * 0.1) {
+      break;
+    }
+  }
+
+  int resultRows = bottom1 + mat2.rows - top;
+  Mat result = Mat(resultRows, mat1.cols, mat1.type());
+  mat1.rowRange(0, bottom1).copyTo(result.rowRange(0, bottom1));
+  mat2.rowRange(top, mat2.rows).copyTo(result.rowRange(bottom1, result.rows));
+
+  return [self _te_UIImageFromCVMat:result];
+
+  // Middle
+//  Mat clippedMat1 = greyMat1.rowRange(top, bottom + 1);
+//  Mat clippedMat2 = greyMat2.rowRange(top, bottom + 1);
+//
+//  Mat temp = clippedMat2.rowRange(0, 20);
+//  Mat res;
+//  matchTemplate(clippedMat1, temp, res, CV_TM_CCOEFF_NORMED);
+//
+//  threshold(res, res, 0.8, 1, CV_THRESH_TOZERO);
+//  double minVal, maxVal, threshold = 0.8;
+//
+//  cv::Point minLoc, maxLoc;
+//  minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
+//
+//  // 拼接
+//  Mat temp1, result;
+//  if (maxVal >= threshold)//只有度量值大于阈值才认为是匹配
+//  {
+//    //result:拼接后的图像
+//    //temp1:原图1的非模板部分
+//    result = Mat::zeros(cvSize(maxLoc.x + clippedMat2.cols, clippedMat1.rows), clippedMat1.type());
+//    temp1 = clippedMat1(cv::Rect(0, 0, maxLoc.x, clippedMat1.rows));
+//    /*将图1的非模板部分和图2拷贝到result*/
+//    temp1.copyTo(Mat(result, cv::Rect(0, 0, maxLoc.x, clippedMat1.rows)));
+//    clippedMat2.copyTo(Mat(result, cv::Rect(maxLoc.x - 1, 0, clippedMat2.cols, clippedMat2.rows)));
+//  }
+//
+//  return [self _te_UIImageFromCVMat:result];
+}
 
 + (UIImage *)te_imageByRawStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2
 {
