@@ -46,96 +46,210 @@ static const float topBottomOverlapThreshold = 0.1;
   cvtColor(mat1, greyMat1, CV_BGR2GRAY);
   cvtColor(mat2, greyMat2, CV_BGR2GRAY);
 
-//  cout << "greyMat1: \n " << greyMat1.row(0) << "\n";
-//  cout << "greyMat2: \n " << greyMat2.row(0) << "\n";
+  // Begin to match
+  int tempHeight = 40;
 
-  // Detect top overlapping region
-  cout << "Detect top overlapping region\n";
-  int top;
-  for (top = 0; top < greyMat1.rows; ++top) {
-    bool matching = compareMatMatching(greyMat1.row(top), greyMat2.row(top), topBottomOverlapThreshold);
-    if (!matching) {
-      break;
-    }
+  Mat temp = greyMat2.rowRange(0, tempHeight);
+  Mat source = greyMat1;
+  Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
+
+  float thresh = 0.8;
+  matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
+  threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
+
+  double minVal, maxVal;
+  cv::Point minLoc, maxLoc;
+  minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
+
+  if (maxVal < thresh) {
+    NSLog(@"no overlap");
+    return nil;
   }
+  else {
+    if (maxLoc.y > 0) { // 匹配到第一张图的中部
+      int resultRows = maxLoc.y + mat2.rows;
+      Mat result = Mat(resultRows, mat1.cols, mat1.type());
+      mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
+      mat2.rowRange(0, mat2.rows).copyTo(result.rowRange(maxLoc.y, result.rows));
 
-  // Detect bottom overlapping region
-  cout << "Detect bottom overlapping region\n";
-  int bottom;
-  for (bottom = greyMat1.rows - 1; bottom >= 0; --bottom) {
-    bool matching = compareMatMatching(greyMat1.row(bottom), greyMat2.row(bottom), topBottomOverlapThreshold);
-    if (!matching) {
-      break;
+      return [self _te_UIImageFromCVMat:result];
     }
-  }
+    else {  // 匹配到头部，需要找出头部最大匹配范围
+      int matchingTopRow = -1;
+      bool findMatching = false;
 
-  // Try to compare mat1's bottom to mat2's top
+      for (int row = tempHeight + 20; row < greyMat2.rows; row += 20) {
+        Mat temp = greyMat2.rowRange(0, row);
+        Mat source = greyMat1;
+        Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
 
-  int bottom1 = -1;  // bottom of mat1
-  int compareRowsCountArray[] = {128, 88, 40, 20};  // comapre rows specification every time
-  float thresholdArray[] = {0.01, 0.03, 0.05, 0.07, 0.1}; // Try different thresholds
-  bool matching = false;
+        float thresh = 0.8;
+        matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
+        threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
 
-  // Use matchTemplate()
-  {
-    Mat temp = greyMat2.rowRange(top, top + 40);  // template mat
-    Mat source = greyMat1.rowRange(top, bottom + 1);
-    Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
+        double minVal, maxVal;
+        cv::Point minLoc, maxLoc;
+        minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
 
-    float thresh = 0.8;
-    matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
-    threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
+        if (maxVal >= thresh) { // 继续匹配
+          matchingTopRow = row;
+        }
+        else {
+          // 回溯，往回找最大匹配
+          for (int row2 = matchingTopRow + 1; row2 < row; ++row2) {
+            Mat temp = greyMat2.rowRange(0, row2);
+            Mat source = greyMat1;
+            Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
 
-    double minVal, maxVal;
-    cv::Point minLoc, maxLoc;
-    minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
+            float thresh = 0.8;
+            matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
+            threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
 
-    int firstLoc = top + maxLoc.y;
-    int resultRows = firstLoc + mat2.rows - top;
-    Mat result = Mat(resultRows, mat1.cols, mat1.type());
-    if (maxVal >= thresh)
-    {
-      mat1.rowRange(0, firstLoc).copyTo(result.rowRange(0, firstLoc));
-      mat2.rowRange(top, mat2.rows).copyTo(result.rowRange(firstLoc, result.rows));
-    }
-
-    return [self _te_UIImageFromCVMat:result];
-  }
-
-  for (int j = 0; j < 4; ++j) {
-    int compareRowsCount = compareRowsCountArray[j];
-    Mat temp = greyMat2.rowRange(top, top + compareRowsCount);  // template mat
-
-//    return [self _te_UIImageFromCVMat:temp];
-
-    for (int i = 0; i < 5; ++i) {
-      float threshold = thresholdArray[i];
-      for (bottom1 = bottom - compareRowsCount + 1; bottom1 >= top; --bottom1) {
-        matching = compareMatMatching(greyMat1.rowRange(bottom1, bottom1 + compareRowsCount), temp, threshold);
-        if (matching) {
-//          return [self _te_UIImageFromCVMat:greyMat1.rowRange(bottom1, bottom1 + compareRowsCount)];
-          break;
+            double minVal, maxVal;
+            cv::Point minLoc, maxLoc;
+            minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
+            if (maxVal < thresh) {
+              matchingTopRow = row2 - 1;
+              findMatching = true;
+              break;
+            }
+          }
+          if (findMatching) {
+            break;
+          }
         }
       }
-      if (matching) {
-        break;
+
+      if (!findMatching) {
+        NSLog(@"Two pictures are the same");
+        return nil;
+      }
+
+      // 开始匹配第二张图去掉头部的部分
+      Mat temp = greyMat2.rowRange(matchingTopRow, matchingTopRow + tempHeight);
+      Mat source = greyMat1;
+      Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
+
+      float thresh = 0.8;
+      matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
+      threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
+
+      double minVal, maxVal;
+      cv::Point minLoc, maxLoc;
+      minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
+
+      if (maxLoc.y > 0) {
+        int resultRows = maxLoc.y + mat2.rows - matchingTopRow;
+        Mat result = Mat(resultRows, mat1.cols, mat1.type());
+        mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
+        mat2.rowRange(matchingTopRow, mat2.rows).copyTo(result.rowRange(maxLoc.y, result.rows));
+
+        return [self _te_UIImageFromCVMat:result];
       }
     }
-    if (matching) {
-      break;
-    }
   }
+  return nil;
 
-  if (bottom1 < top) {  // No matching
-    bottom1 = bottom + 1;
-  }
-
-  int resultRows = bottom1 + mat2.rows - top ;
-  Mat result = Mat(resultRows, mat1.cols, mat1.type());
-  mat1.rowRange(0, bottom1).copyTo(result.rowRange(0, bottom1));
-  mat2.rowRange(top, mat2.rows).copyTo(result.rowRange(bottom1, result.rows));
-
-  return [self _te_UIImageFromCVMat:result];
+//  // Detect top overlapping region
+//  cout << "Detect top overlapping region\n";
+////
+////    int firstLoc = top + maxLoc.y;
+////    int resultRows = firstLoc + mat2.rows - top;
+////    Mat result = Mat(resultRows, mat1.cols, mat1.type());
+////    if (maxVal >= thresh)
+////    {
+////      mat1.rowRange(0, firstLoc).copyTo(result.rowRange(0, firstLoc));
+////      mat2.rowRange(top, mat2.rows).copyTo(result.rowRange(firstLoc, result.rows));
+////    }
+////
+////    return [self _te_UIImageFromCVMat:result];
+//  }
+//
+//  int top;
+//  for (top = 0; top < greyMat1.rows; ++top) {
+//    bool matching = compareMatMatching(greyMat1.row(top), greyMat2.row(top), topBottomOverlapThreshold);
+//    if (!matching) {
+//      break;
+//    }
+//  }
+//
+//  // Detect bottom overlapping region
+//  cout << "Detect bottom overlapping region\n";
+//  int bottom;
+//  for (bottom = greyMat1.rows - 1; bottom >= 0; --bottom) {
+//    bool matching = compareMatMatching(greyMat1.row(bottom), greyMat2.row(bottom), topBottomOverlapThreshold);
+//    if (!matching) {
+//      break;
+//    }
+//  }
+//
+//  // Try to compare mat1's bottom to mat2's top
+//
+//  int bottom1 = -1;  // bottom of mat1
+//  int compareRowsCountArray[] = {128, 88, 40, 20};  // comapre rows specification every time
+//  float thresholdArray[] = {0.01, 0.03, 0.05, 0.07, 0.1}; // Try different thresholds
+//  bool matching = false;
+//
+//  // Use matchTemplate()
+//  {
+//    Mat temp = greyMat2.rowRange(top, top + 40);  // template mat
+//    Mat source = greyMat1.rowRange(top, bottom + 1);
+//    Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
+//
+//    float thresh = 0.8;
+//    matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
+//    threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
+//
+//    double minVal, maxVal;
+//    cv::Point minLoc, maxLoc;
+//    minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
+//
+//    int firstLoc = top + maxLoc.y;
+//    int resultRows = firstLoc + mat2.rows - top;
+//    Mat result = Mat(resultRows, mat1.cols, mat1.type());
+//    if (maxVal >= thresh)
+//    {
+//      mat1.rowRange(0, firstLoc).copyTo(result.rowRange(0, firstLoc));
+//      mat2.rowRange(top, mat2.rows).copyTo(result.rowRange(firstLoc, result.rows));
+//    }
+//
+//    return [self _te_UIImageFromCVMat:result];
+//  }
+//
+//  for (int j = 0; j < 4; ++j) {
+//    int compareRowsCount = compareRowsCountArray[j];
+//    Mat temp = greyMat2.rowRange(top, top + compareRowsCount);  // template mat
+//
+////    return [self _te_UIImageFromCVMat:temp];
+//
+//    for (int i = 0; i < 5; ++i) {
+//      float threshold = thresholdArray[i];
+//      for (bottom1 = bottom - compareRowsCount + 1; bottom1 >= top; --bottom1) {
+//        matching = compareMatMatching(greyMat1.rowRange(bottom1, bottom1 + compareRowsCount), temp, threshold);
+//        if (matching) {
+////          return [self _te_UIImageFromCVMat:greyMat1.rowRange(bottom1, bottom1 + compareRowsCount)];
+//          break;
+//        }
+//      }
+//      if (matching) {
+//        break;
+//      }
+//    }
+//    if (matching) {
+//      break;
+//    }
+//  }
+//
+//  if (bottom1 < top) {  // No matching
+//    bottom1 = bottom + 1;
+//  }
+//
+//  int resultRows = bottom1 + mat2.rows - top ;
+//  Mat result = Mat(resultRows, mat1.cols, mat1.type());
+//  mat1.rowRange(0, bottom1).copyTo(result.rowRange(0, bottom1));
+//  mat2.rowRange(top, mat2.rows).copyTo(result.rowRange(bottom1, result.rows));
+//
+//  return [self _te_UIImageFromCVMat:result];
 }
 
 + (UIImage *)te_imageByRawStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2
