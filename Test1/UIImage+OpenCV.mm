@@ -19,7 +19,7 @@
 using namespace std;
 using namespace cv;
 
-static const float topBottomOverlapThreshold = 0.08;
+static const float topBottomOverlapThreshold = 0.1;
 
 @implementation UIImage (OpenCV)
 
@@ -56,8 +56,8 @@ static const float topBottomOverlapThreshold = 0.08;
     }
   }
 
-  // From bottom to top
-  cout << "begin bottom\n";
+  // Detect bottom overlapping region
+  cout << "Detect bottom overlapping region\n";
   int bottom;
   for (bottom = greyMat1.rows - 1; bottom >= 0; --bottom) {
     bool matching = compareMatMatching(greyMat1.row(bottom), greyMat2.row(bottom), topBottomOverlapThreshold);
@@ -66,27 +66,29 @@ static const float topBottomOverlapThreshold = 0.08;
     }
   }
 
-  // Middle
-  int bottom1;  // bottom of mat1
-  int maxRowsThreshold = 20;
-  Mat temp = greyMat2.rowRange(top, top + maxRowsThreshold);
+  // Try to compare mat1's bottom to mat2's top
+  int bottom1 = -1;  // bottom of mat1
+  int compareRowsCountArray[] = {128, 88, 40, 20};  // comapre rows specification every time
+  float thresholdArray[] = {0.01, 0.03, 0.05, 0.07, 0.1}; // Try different thresholds
+  bool matching = false;
 
-  float limitationArray[] = {0.01, 0.03, 0.05, 0.07, 0.1};
-  for (int i = 0; i < 5; ++i) {
-    float limitation = limitationArray[i];
-    BOOL limited = NO;
+  for (int j = 0; j < 4; ++j) {
+    int compareRowsCount = compareRowsCountArray[j];
+    Mat temp = greyMat2.rowRange(top, top + compareRowsCount);  // template mat
 
-    for (bottom1 = bottom - maxRowsThreshold; bottom1 >= top; --bottom1) {
-      Mat result = greyMat1.rowRange(bottom1, bottom1 + maxRowsThreshold) == temp;
-      int total = greyMat1.cols * maxRowsThreshold;
-      int zeroCount = total - countNonZero(result);
-      if (zeroCount <= total * limitation) {
-        limited = YES;
+    for (int i = 0; i < 5; ++i) {
+      float threshold = thresholdArray[i];
+      for (bottom1 = bottom - compareRowsCount + 1; bottom1 >= top; --bottom1) {
+        matching = compareMatMatching(greyMat1.rowRange(bottom1, bottom1 + compareRowsCount), temp, threshold);
+        if (matching) {
+          break;
+        }
+      }
+      if (matching) {
         break;
       }
     }
-
-    if (limited) {
+    if (matching) {
       break;
     }
   }
