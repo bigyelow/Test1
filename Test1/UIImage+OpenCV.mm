@@ -19,7 +19,8 @@
 using namespace std;
 using namespace cv;
 
-static const float topBottomOverlapThreshold = 0.1;
+static const float tempMatchingThresholdForTop = 0.9;
+static const float tempMatchingThresholdForMiddle = 0.95;
 
 @implementation UIImage (OpenCV)
 
@@ -47,13 +48,13 @@ static const float topBottomOverlapThreshold = 0.1;
   cvtColor(mat2, greyMat2, CV_BGR2GRAY);
 
   // Begin to match
-  int tempHeight = 40;
+  int tempHeight = 88;
 
   Mat temp = greyMat2.rowRange(0, tempHeight);
   Mat source = greyMat1;
   Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
 
-  float thresh = 0.8;
+  float thresh = tempMatchingThresholdForTop;
   matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
   threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
 
@@ -83,9 +84,8 @@ static const float topBottomOverlapThreshold = 0.1;
         Mat source = greyMat1;
         Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
 
-        float thresh = 0.8;
+        float thresh = tempMatchingThresholdForTop;
         matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
-        threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
 
         double minVal, maxVal;
         cv::Point minLoc, maxLoc;
@@ -96,12 +96,14 @@ static const float topBottomOverlapThreshold = 0.1;
         }
         else {
           // 回溯，往回找最大匹配
+//          return [self _te_UIImageFromCVMat:mat2.rowRange(0, matchingTopRow)];
+
           for (int row2 = matchingTopRow + 1; row2 < row; ++row2) {
             Mat temp = greyMat2.rowRange(0, row2);
             Mat source = greyMat1;
             Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
 
-            float thresh = 0.8;
+            float thresh = tempMatchingThresholdForTop;
             matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
             threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
 
@@ -111,10 +113,13 @@ static const float topBottomOverlapThreshold = 0.1;
             if (maxVal < thresh) {
               matchingTopRow = row2 - 1;
               findMatching = true;
+
               break;
             }
           }
           if (findMatching) {
+//            return [self _te_UIImageFromCVMat:greyMat2.rowRange(0, matchingTopRow)];
+
             break;
           }
         }
@@ -126,11 +131,13 @@ static const float topBottomOverlapThreshold = 0.1;
       }
 
       // 开始匹配第二张图去掉头部的部分
-      Mat temp = greyMat2.rowRange(matchingTopRow, matchingTopRow + tempHeight);
+      Mat temp = greyMat2.rowRange(matchingTopRow, matchingTopRow + 20);
+//      return [self _te_UIImageFromCVMat:temp];
+
       Mat source = greyMat1;
       Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
 
-      float thresh = 0.8;
+      float thresh = tempMatchingThresholdForMiddle;
       matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
       threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
 
@@ -138,7 +145,7 @@ static const float topBottomOverlapThreshold = 0.1;
       cv::Point minLoc, maxLoc;
       minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
 
-      if (maxLoc.y > 0) {
+      if (maxVal >= thresh) {
         int resultRows = maxLoc.y + mat2.rows - matchingTopRow;
         Mat result = Mat(resultRows, mat1.cols, mat1.type());
         mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
@@ -196,7 +203,7 @@ static const float topBottomOverlapThreshold = 0.1;
 //    Mat source = greyMat1.rowRange(top, bottom + 1);
 //    Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
 //
-//    float thresh = 0.8;
+//    float thresh = tempMatchingThresholdForMiddle;
 //    matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
 //    threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
 //
@@ -387,6 +394,56 @@ bool compareMatMatching(const Mat mat1, const Mat mat2, float notMatchingThresho
   else {
     return true;
   }
+}
+
+bool compareMatHist(const Mat mat1, const Mat mat2)
+{
+
+  double errorL2 = norm(mat1, mat2, CV_L2);
+  // Convert to a reasonable scale, since L2 error is summed across all pixels of the image.
+  double similarity = errorL2 / (double)(mat1.rows * mat1.cols );
+  cout << "similarity = " << similarity;
+  cout << " row = " << mat1.rows << endl;
+  return similarity;
+
+  Mat srcHsvImage;
+  Mat compareHsvImage;
+  cvtColor(mat1, srcHsvImage, CV_BGR2HSV);
+  cvtColor(mat2, compareHsvImage, CV_BGR2HSV);
+
+  //采用H-S直方图进行处理
+  //首先得配置直方图的参数
+  MatND srcHist, compHist;
+
+  //H、S通道
+  int channels[] = { 0, 1 };
+  int histSize[] = { 30, 32 };
+  float HRanges[] = { 0, 180 };
+  float SRanges[] = { 0, 256 };
+  const float *ranges[] = { HRanges, SRanges };
+
+  //进行原图直方图的计算
+  calcHist(&srcHsvImage, 1, channels, Mat(), srcHist, 2, histSize, ranges, true, false);
+  //对需要比较的图进行直方图的计算
+  calcHist(&compareHsvImage, 1, channels, Mat(), compHist, 2, histSize, ranges, true, false);
+
+  //注意：这里需要对两个直方图进行归一化操作
+  normalize(srcHist, srcHist, 0, 1, NORM_MINMAX);
+  normalize(compHist, compHist, 0, 1, NORM_MINMAX);
+
+  double g_dCompareRecult = compareHist(srcHist, compHist, 0);
+  cout << "方法一：两幅图像比较的结果为：" << g_dCompareRecult << endl;
+
+  g_dCompareRecult = compareHist(srcHist, compHist, 1);
+  cout << "方法二：两幅图像比较的结果为：" << g_dCompareRecult << endl;
+
+  g_dCompareRecult = compareHist(srcHist, compHist, 2);
+  cout << "方法三：两幅图像比较的结果为：" << g_dCompareRecult << endl;
+
+  g_dCompareRecult = compareHist(srcHist, compHist, 3);
+  cout << "方法四：两幅图像比较的结果为：" << g_dCompareRecult << endl;
+
+  return false;
 }
 
 bool compareMatDimension(const cv::Mat mat1, const cv::Mat mat2){
