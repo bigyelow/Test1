@@ -27,17 +27,17 @@
   if (self = [super init]) {
     self.title = @"Test OpenCV";
 
-    _array1 = @[@"LongImage1", @"LongImage3", @"LongImage4", @"LongImage6", @"LongImage8", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage13", @"LongImage14", @"LongImage15"];
-    _array2 = @[@"LongImage2", @"LongImage4", @"LongImage5", @"LongImage7", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage12", @"LongImage14", @"LongImage15", @"LongImage16"];
-    _imageIndex = 0;
-    UIImage *img1 = [UIImage imageNamed:@"LongImage1"];
-    UIImage *img2 = [UIImage imageNamed:@"LongImage2"];
+    _array1 = @[@"LongImage18", @"LongImage1", @"LongImage3", @"LongImage4", @"LongImage6", @"LongImage8", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage13", @"LongImage14", @"LongImage15"];
+    _array2 = @[@"LongImage19", @"LongImage2", @"LongImage4", @"LongImage5", @"LongImage7", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage12", @"LongImage14", @"LongImage15", @"LongImage16"];
+    _imageIndex = -1;
 
+//    UIImage *img1 = [UIImage imageNamed:@"LongImage1"];
+//    UIImage *img2 = [UIImage imageNamed:@"LongImage2"];
 //    img1 = [img1 te_processImageThroughMat];
 //    img2 = [img2 te_processImageThroughMat];
 
-    _imageView1 = [[UIImageView alloc] initWithImage:img1];
-    _imageView2 = [[UIImageView alloc] initWithImage:img2];
+    _imageView1 = [[UIImageView alloc] init];
+    _imageView2 = [[UIImageView alloc] init];
     _imageView3 = [[UIImageView alloc] init];
 
     [self _te_configImageView:_imageView1];

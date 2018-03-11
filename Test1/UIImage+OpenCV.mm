@@ -46,6 +46,9 @@ static const float topBottomOverlapThreshold = 0.1;
   cvtColor(mat1, greyMat1, CV_BGR2GRAY);
   cvtColor(mat2, greyMat2, CV_BGR2GRAY);
 
+//  cout << "greyMat1: \n " << greyMat1.row(0) << "\n";
+//  cout << "greyMat2: \n " << greyMat2.row(0) << "\n";
+
   // Detect top overlapping region
   cout << "Detect top overlapping region\n";
   int top;
