@@ -70,20 +70,50 @@ static const float topBottomOverlapThreshold = 0.1;
   }
 
   // Try to compare mat1's bottom to mat2's top
+
   int bottom1 = -1;  // bottom of mat1
   int compareRowsCountArray[] = {128, 88, 40, 20};  // comapre rows specification every time
   float thresholdArray[] = {0.01, 0.03, 0.05, 0.07, 0.1}; // Try different thresholds
   bool matching = false;
 
+  // Use matchTemplate()
+  {
+    Mat temp = greyMat2.rowRange(top, top + 40);  // template mat
+    Mat source = greyMat1.rowRange(top, bottom + 1);
+    Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
+
+    float thresh = 0.8;
+    matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
+    threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
+
+    double minVal, maxVal;
+    cv::Point minLoc, maxLoc;
+    minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
+
+    int firstLoc = top + maxLoc.y;
+    int resultRows = firstLoc + mat2.rows - top;
+    Mat result = Mat(resultRows, mat1.cols, mat1.type());
+    if (maxVal >= thresh)
+    {
+      mat1.rowRange(0, firstLoc).copyTo(result.rowRange(0, firstLoc));
+      mat2.rowRange(top, mat2.rows).copyTo(result.rowRange(firstLoc, result.rows));
+    }
+
+    return [self _te_UIImageFromCVMat:result];
+  }
+
   for (int j = 0; j < 4; ++j) {
     int compareRowsCount = compareRowsCountArray[j];
     Mat temp = greyMat2.rowRange(top, top + compareRowsCount);  // template mat
+
+//    return [self _te_UIImageFromCVMat:temp];
 
     for (int i = 0; i < 5; ++i) {
       float threshold = thresholdArray[i];
       for (bottom1 = bottom - compareRowsCount + 1; bottom1 >= top; --bottom1) {
         matching = compareMatMatching(greyMat1.rowRange(bottom1, bottom1 + compareRowsCount), temp, threshold);
         if (matching) {
+//          return [self _te_UIImageFromCVMat:greyMat1.rowRange(bottom1, bottom1 + compareRowsCount)];
           break;
         }
       }
