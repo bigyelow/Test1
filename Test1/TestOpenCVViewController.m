@@ -27,8 +27,8 @@
   if (self = [super init]) {
     self.title = @"Test OpenCV";
 
-    _array1 = @[@"LongImage1", @"LongImage3", @"LongImage4"];
-    _array2 = @[@"LongImage2", @"LongImage4", @"LongImage5"];
+    _array1 = @[@"LongImage1", @"LongImage3", @"LongImage4", @"LongImage6", @"LongImage8", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage13", @"LongImage14", @"LongImage15"];
+    _array2 = @[@"LongImage2", @"LongImage4", @"LongImage5", @"LongImage7", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage12", @"LongImage14", @"LongImage15", @"LongImage16"];
     _imageIndex = 0;
     UIImage *img1 = [UIImage imageNamed:@"LongImage1"];
     UIImage *img2 = [UIImage imageNamed:@"LongImage2"];

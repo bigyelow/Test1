@@ -93,6 +93,10 @@ static const float topBottomOverlapThreshold = 0.1;
     }
   }
 
+  if (bottom1 < top) {  // No matching
+    bottom1 = bottom + 1;
+  }
+
   int resultRows = bottom1 + mat2.rows - top ;
   Mat result = Mat(resultRows, mat1.cols, mat1.type());
   mat1.rowRange(0, bottom1).copyTo(result.rowRange(0, bottom1));
