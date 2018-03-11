@@ -92,7 +92,8 @@
 
 - (void)_te_stitch
 {
-  _imageView3.image = [UIImage te_imageByMatchingStitchingImage:_imageView1.image withImage:_imageView2.image];
+  NSError *error;
+  _imageView3.image = [UIImage te_imageByNoOverlapStitchingImage:_imageView1.image withImage:_imageView2.image error:&error];
 
   _imageView1.hidden = YES;
   _imageView2.hidden = YES;

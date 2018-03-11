@@ -13,6 +13,6 @@
 - (UIImage *)te_processImageThroughMat;
 + (UIImage *)te_imageByStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2;
 + (UIImage *)te_imageByRawStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2;
-+ (UIImage *)te_imageByMatchingStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2;
++ (UIImage *)te_imageByNoOverlapStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2 error:(NSError **)error;
 
 @end

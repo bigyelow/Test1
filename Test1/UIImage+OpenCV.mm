@@ -14,9 +14,12 @@
 #endif
 
 #import "UIImage+OpenCV.h"
+#import "StitchingConstants.h"
 
 using namespace std;
 using namespace cv;
+
+static const int TopBottomOverlapThreshold = 0.05;
 
 @implementation UIImage (OpenCV)
 
@@ -28,17 +31,23 @@ using namespace cv;
 
 #pragma mark - Stitching
 
-+ (UIImage *)te_imageByMatchingStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2
++ (UIImage *)te_imageByNoOverlapStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2 error:(NSError **)error
 {
   Mat mat1 = [image1 _te_cvMat];
   Mat mat2 = [image2 _te_cvMat];
+
+  // Detect if dimensions are equal
+  if (compareMatDimension(mat1, mat2) == false) {
+    *error = [NSError errorWithDomain:teErrorDomainStitching code:teErrorCodeStitchingMatNotEqual userInfo:nil];
+    return nil;
+  }
 
   Mat greyMat1, greyMat2;
   cvtColor(mat1, greyMat1, CV_BGR2GRAY);
   cvtColor(mat2, greyMat2, CV_BGR2GRAY);
 
-  // From top to bottom
-  cout << "begin top\n";
+  // Detect top overlapping region
+  cout << "Detect top overlapping region\n";
   int top;
   for (top = 0; top < greyMat1.rows; ++top) {
     Mat result = greyMat1.row(top) == greyMat2.row(top);
@@ -46,7 +55,7 @@ using namespace cv;
 
     cout << "notMatch = " << notMatch << "\n";
 
-    if (notMatch > greyMat1.cols * 0.1) {
+    if (notMatch > greyMat1.cols * 0.05) {
       break;
     }
   }
@@ -60,7 +69,7 @@ using namespace cv;
 
     cout << "notMatch = " << notMatch << "\n";
 
-    if (notMatch > greyMat1.cols * 0.1) {
+    if (notMatch > greyMat1.cols * 0.05) {
       break;
     }
   }
@@ -69,16 +78,23 @@ using namespace cv;
   int bottom1;
   int maxRowsThreshold = 20;
   Mat temp = greyMat2.rowRange(top, top + maxRowsThreshold);
-  for (bottom1 = bottom - maxRowsThreshold; bottom1 >= top; --bottom1) {
-//    cout << "temp = \n" << temp << "\n";
-//    cout << "sub mat1 = \n" << greyMat1.rowRange(bottom1, bottom1 + maxRowsThreshold) << "\n";
 
-//    cout << "temp rows = " << temp.rows << "\n";
-//    cout << "greymat1 sub rows = " <<
-    Mat result = greyMat1.rowRange(bottom1, bottom1 + maxRowsThreshold) == temp;
-    int total = greyMat1.cols * maxRowsThreshold;
-    int zeroCount = total - countNonZero(result);
-    if (zeroCount <= total * 0.01) {
+  float limitationArray[] = {0.01, 0.03, 0.05, 0.07, 0.1};
+  for (int i = 0; i < 5; ++i) {
+    float limitation = limitationArray[i];
+    BOOL limited = NO;
+
+    for (bottom1 = bottom - maxRowsThreshold; bottom1 >= top; --bottom1) {
+      Mat result = greyMat1.rowRange(bottom1, bottom1 + maxRowsThreshold) == temp;
+      int total = greyMat1.cols * maxRowsThreshold;
+      int zeroCount = total - countNonZero(result);
+      if (zeroCount <= total * limitation) {
+        limited = YES;
+        break;
+      }
+    }
+
+    if (limited) {
       break;
     }
   }
@@ -129,33 +145,7 @@ using namespace cv;
   mat1.rowRange(0, mat1.rows).copyTo(result.rowRange(0, mat1.rows));
   mat2.rowRange(0, mat2.rows).copyTo(result.rowRange(mat1.rows, result.rows));
 
-//  Mat singleMat1, singleMat2;
-//  cvtColor(mat1, singleMat1, CV_RGB2BGR);
-//  cvtColor(mat2, singleMat2, CV_RGB2BGR);
-
-//  return [self _te_UIImageFromCVMat:singleMat1];
-//  if (matIsEqual(singleMat1, singleMat2)) {
-//    NSLog(@"equal");
-//  }
-//
-//  Mat diff;
-//  compare(mat1, mat2, diff, CMP_EQ);
   return [self _te_UIImageFromCVMat:result];
-}
-
-bool matIsEqual(const cv::Mat mat1, const cv::Mat mat2){
-  // treat two empty mat as identical as well
-  if (mat1.empty() && mat2.empty()) {
-    return true;
-  }
-  // if dimensionality of two mat is not identical, these two mat is not identical
-  if (mat1.cols != mat2.cols || mat1.rows != mat2.rows || mat1.dims != mat2.dims) {
-    return false;
-  }
-  cv::Mat diff;
-  cv::compare(mat1, mat2, diff, cv::CMP_NE);
-  int nz = cv::countNonZero(diff);
-  return nz==0;
 }
 
 + (UIImage *)te_imageByStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2
@@ -265,6 +255,20 @@ bool matIsEqual(const cv::Mat mat1, const cv::Mat mat2){
   CGColorSpaceRelease(colorSpace);
 
   return finalImage;
+}
+
+#pragma mark - Helper
+bool compareMatDimension(const cv::Mat mat1, const cv::Mat mat2){
+  if (mat1.empty() && mat2.empty()) {
+    return true;
+  }
+
+  if (mat1.cols != mat2.cols || mat1.rows != mat2.rows || mat1.dims != mat2.dims) {
+    return false;
+  }
+  else {
+    return true;
+  }
 }
 
 @end
