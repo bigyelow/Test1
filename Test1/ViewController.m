@@ -10,6 +10,7 @@
 @import Polymorph;
 @import libextobjc;
 @import SafariServices;
+@import DOUFoundation;
 
 #import "ViewController.h"
 #import "SubTestExtension.h"
@@ -205,11 +206,7 @@ static NSInteger OpenURLCount = 0;
     [self _te_testAuthenticationSession];
   }
   else if ([_demos[indexPath.row] isEqualToString:CommonTest]) {
-    NSString *key = @"key";
-    NSString *value = @"value=&21%da";
-
-    NSString *encodedValue = [value stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSLog(encodedValue);
+    [self _te_commonTest];
   }
   else if ([_demos[indexPath.row] isEqualToString:OpenCV]) {
     [self.navigationController pushViewController:[[TestOpenCVViewController alloc] init] animated:YES];
@@ -297,6 +294,20 @@ static NSInteger OpenURLCount = 0;
                                         }];
 
   [_session start];
+}
+
+- (void)_te_commonTest
+{
+  NSString *frag = @"?tags=1";
+  NSURL *fragURL = [NSURL URLWithString:frag];
+  NSDictionary *dict = fragURL.queryDictionary;
+
+  if ([dict[@"tags"] isKindOfClass:[NSArray class]]) {
+    NSArray *array = dict[@"tags"];
+    NSLog(array[0]);
+    NSLog(array[1]);
+  }
+  NSLog(dict);
 }
 
 #pragma mark - Notifications
