@@ -49,20 +49,14 @@ static const float tempMatchingThresholdForMiddle = 0.97;
 
   // Begin to match
   int tempHeight = 88;
-
   Mat temp = greyMat2.rowRange(0, tempHeight);
   Mat source = greyMat1;
-  Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
-
-  float thresh = tempMatchingThresholdForTop;
-  matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
-  threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
-
   double minVal, maxVal;
   cv::Point minLoc, maxLoc;
-  minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
+  float thresh = tempMatchingThresholdForTop;
+  bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal, &minLoc, &maxLoc);
 
-  if (maxVal < thresh) {
+  if (!matched) {
     NSLog(@"no overlap");
     return nil;
   }
@@ -82,16 +76,11 @@ static const float tempMatchingThresholdForMiddle = 0.97;
       for (int row = tempHeight + 20; row < greyMat2.rows; row += 20) {
         Mat temp = greyMat2.rowRange(0, row);
         Mat source = greyMat1;
-        Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
-
         float thresh = tempMatchingThresholdForTop;
-        matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
-
         double minVal, maxVal;
-        cv::Point minLoc, maxLoc;
-        minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
+        bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
 
-        if (maxVal >= thresh) { // 继续匹配
+        if (matched) { // 继续匹配
           matchingTopRow = row;
         }
         else {
@@ -101,16 +90,11 @@ static const float tempMatchingThresholdForMiddle = 0.97;
           for (int row2 = matchingTopRow + 1; row2 < row; ++row2) {
             Mat temp = greyMat2.rowRange(0, row2);
             Mat source = greyMat1;
-            Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
-
             float thresh = tempMatchingThresholdForTop;
-            matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
-            threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
-
             double minVal, maxVal;
-            cv::Point minLoc, maxLoc;
-            minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
-            if (maxVal < thresh) {
+            bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
+
+            if (!matched) {
               matchingTopRow = row2 - 1;
               findMatching = true;
               break;
@@ -131,20 +115,14 @@ static const float tempMatchingThresholdForMiddle = 0.97;
 
       // 开始匹配第二张图去掉头部的部分
       Mat temp = greyMat2.rowRange(matchingTopRow, matchingTopRow + 80);
-//      return [self _te_UIImageFromCVMat:temp];
-
       Mat source = greyMat1;
-      Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
-
       float thresh = tempMatchingThresholdForMiddle;
-      matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
-      threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
-
       double minVal, maxVal;
       cv::Point minLoc, maxLoc;
-      minMaxLoc(res, &minVal, &maxVal, &minLoc, &maxLoc);
+//      return [self _te_UIImageFromCVMat:temp];
+      bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal, &minLoc, &maxLoc);
 
-      if (maxVal >= thresh) {
+      if (matched) {
         int resultRows = maxLoc.y + mat2.rows - matchingTopRow;
         Mat result = Mat(resultRows, mat1.cols, mat1.type());
         mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
@@ -279,6 +257,17 @@ static const float tempMatchingThresholdForMiddle = 0.97;
 }
 
 #pragma mark - Helper
+
+bool findMatchingMat(const Mat source, const Mat temp, const float thresh,
+                  CV_OUT double* minVal, CV_OUT double* maxVal,  CV_OUT cv::Point* minLoc = 0, CV_OUT cv::Point* maxLoc = 0)
+{
+  Mat res = Mat(source.rows - temp.rows + 1, source.cols - temp.cols + 1, CV_32FC1);
+  matchTemplate(source, temp, res, CV_TM_CCOEFF_NORMED);
+  threshold(res, res, thresh, 1, CV_THRESH_TOZERO);
+  minMaxLoc(res, minVal, maxVal, minLoc, maxLoc);
+
+  return *maxVal >= thresh;
+}
 
 bool compareMatMatching(const Mat mat1, const Mat mat2, float notMatchingThreshold)
 {
