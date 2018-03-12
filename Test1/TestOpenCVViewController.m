@@ -73,12 +73,14 @@
 {
   [super viewDidLayoutSubviews];
 
-  CGFloat imageWidth = self.view.bounds.size.width / 2;
-  CGFloat imageHeight = 400;
   CGFloat imageY = 64;
-  _imageView1.frame = CGRectMake(0, imageY, imageWidth, imageHeight);
-  _imageView2.frame = CGRectMake(CGRectGetMaxX(_imageView1.frame), imageY, imageWidth, imageHeight);
-  _imageView3.frame = CGRectMake(0, imageY, self.view.bounds.size.width, self.view.bounds.size.height - imageY);
+  CGFloat imageWidth = self.view.bounds.size.width / 2;
+  CGFloat topImageHeight = (self.view.bounds.size.height - imageY) / 2 - 40;
+  CGFloat bottomImageHeight = self.view.bounds.size.height - imageY - topImageHeight;
+
+  _imageView1.frame = CGRectMake(0, imageY, imageWidth, topImageHeight);
+  _imageView2.frame = CGRectMake(CGRectGetMaxX(_imageView1.frame), imageY, imageWidth, topImageHeight);
+  _imageView3.frame = CGRectMake(0, CGRectGetMaxY(_imageView1.frame), imageWidth, bottomImageHeight);
 }
 
 - (void)_te_configImageView:(UIImageView *)imageView
@@ -94,20 +96,13 @@
 {
   NSError *error;
   _imageView3.image = [UIImage te_imageByNoOverlapStitchingImage:_imageView1.image withImage:_imageView2.image error:&error];
-
-  _imageView1.hidden = YES;
-  _imageView2.hidden = YES;
-  _imageView3.hidden = NO;
 }
 
 - (void)_te_reset
 {
   _imageIndex = (++_imageIndex % _array1.count);
-  _imageView1.hidden = NO;
-  _imageView2.hidden = NO;
   _imageView1.image = [UIImage imageNamed:_array1[_imageIndex]];
   _imageView2.image = [UIImage imageNamed:_array2[_imageIndex]];
-  _imageView3.hidden = YES;
 }
 
 @end

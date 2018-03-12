@@ -60,77 +60,73 @@ static const float tempMatchingThresholdForMiddle = 0.97;
     NSLog(@"no overlap");
     return nil;
   }
-  else {
-    if (maxLoc.y > 0) { // 匹配到第一张图的中部
-      int resultRows = maxLoc.y + mat2.rows;
-      Mat result = Mat(resultRows, mat1.cols, mat1.type());
-      mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
-      mat2.rowRange(0, mat2.rows).copyTo(result.rowRange(maxLoc.y, result.rows));
 
-      return [self _te_UIImageFromCVMat:result];
+  if (maxLoc.y > 0) { // 匹配到第一张图的中部
+    int resultRows = maxLoc.y + mat2.rows;
+    Mat result = Mat(resultRows, mat1.cols, mat1.type());
+    mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
+    mat2.rowRange(0, mat2.rows).copyTo(result.rowRange(maxLoc.y, result.rows));
+
+    return [self _te_UIImageFromCVMat:result];
+  }
+
+  // 匹配到头部，需要找出头部最大匹配范围
+  int matchingTopRow = tempHeight;
+  bool findMatching = false;
+
+  for (int row = tempHeight + 20; row < greyMat2.rows; row += 20) {
+    Mat temp = greyMat2.rowRange(0, row);
+    Mat source = greyMat1;
+    float thresh = tempMatchingThresholdForTop;
+    double minVal, maxVal;
+    bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
+
+    if (matched) { // 继续匹配
+      matchingTopRow = row;
     }
-    else {  // 匹配到头部，需要找出头部最大匹配范围
-      int matchingTopRow = tempHeight;
-      bool findMatching = false;
+    else {
+      // 回溯，往回找最大匹配
+//      return [self _te_UIImageFromCVMat:mat2.rowRange(0, matchingTopRow)];
 
-      for (int row = tempHeight + 20; row < greyMat2.rows; row += 20) {
-        Mat temp = greyMat2.rowRange(0, row);
+      for (int row2 = matchingTopRow + 1; row2 < row; ++row2) {
+        Mat temp = greyMat2.rowRange(0, row2);
         Mat source = greyMat1;
         float thresh = tempMatchingThresholdForTop;
         double minVal, maxVal;
         bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
 
-        if (matched) { // 继续匹配
-          matchingTopRow = row;
-        }
-        else {
-          // 回溯，往回找最大匹配
-//          return [self _te_UIImageFromCVMat:mat2.rowRange(0, matchingTopRow)];
-
-          for (int row2 = matchingTopRow + 1; row2 < row; ++row2) {
-            Mat temp = greyMat2.rowRange(0, row2);
-            Mat source = greyMat1;
-            float thresh = tempMatchingThresholdForTop;
-            double minVal, maxVal;
-            bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
-
-            if (!matched) {
-              matchingTopRow = row2 - 1;
-              findMatching = true;
-              break;
-            }
-          }
-          if (findMatching) {
-//            return [self _te_UIImageFromCVMat:greyMat2.rowRange(0, matchingTopRow)];
-
-            break;
-          }
+        if (!matched) {
+          matchingTopRow = row2 - 1;
+          findMatching = true;
+          break;
         }
       }
-
-      if (!findMatching) {
-        NSLog(@"Two pictures are the same");
-        return nil;
-      }
-
-      // 开始匹配第二张图去掉头部的部分
-      Mat temp = greyMat2.rowRange(matchingTopRow, matchingTopRow + 80);
-      Mat source = greyMat1;
-      float thresh = tempMatchingThresholdForMiddle;
-      double minVal, maxVal;
-      cv::Point minLoc, maxLoc;
-//      return [self _te_UIImageFromCVMat:temp];
-      bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal, &minLoc, &maxLoc);
-
-      if (matched) {
-        int resultRows = maxLoc.y + mat2.rows - matchingTopRow;
-        Mat result = Mat(resultRows, mat1.cols, mat1.type());
-        mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
-        mat2.rowRange(matchingTopRow, mat2.rows).copyTo(result.rowRange(maxLoc.y, result.rows));
-
-        return [self _te_UIImageFromCVMat:result];
+      if (findMatching) {
+//        return [self _te_UIImageFromCVMat:greyMat2.rowRange(0, matchingTopRow)];
+        break;
       }
     }
+  }
+
+  if (!findMatching) {
+    NSLog(@"Two pictures are the same");
+    return nil;
+  }
+
+  // 开始匹配第二张图去掉头部的部分
+  temp = greyMat2.rowRange(matchingTopRow, matchingTopRow + 80);
+  source = greyMat1;
+  thresh = tempMatchingThresholdForMiddle;
+//      return [self _te_UIImageFromCVMat:temp];
+  matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal, &minLoc, &maxLoc);
+
+  if (matched) {
+    int resultRows = maxLoc.y + mat2.rows - matchingTopRow;
+    Mat result = Mat(resultRows, mat1.cols, mat1.type());
+    mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
+    mat2.rowRange(matchingTopRow, mat2.rows).copyTo(result.rowRange(maxLoc.y, result.rows));
+
+    return [self _te_UIImageFromCVMat:result];
   }
   return nil;
 }
