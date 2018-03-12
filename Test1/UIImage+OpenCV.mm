@@ -19,7 +19,7 @@
 using namespace std;
 using namespace cv;
 
-static const float tempMatchingThresholdForTop = 0.92;
+static const float tempMatchingThresholdForTop = 0.94;
 static const float tempMatchingThresholdForMiddle = 0.97;
 
 @implementation UIImage (OpenCV)
@@ -43,6 +43,7 @@ static const float tempMatchingThresholdForMiddle = 0.97;
     return nil;
   }
 
+  // Convert to grey image
   Mat greyMat1, greyMat2;
   cvtColor(mat1, greyMat1, CV_BGR2GRAY);
   cvtColor(mat2, greyMat2, CV_BGR2GRAY);
@@ -56,12 +57,14 @@ static const float tempMatchingThresholdForMiddle = 0.97;
   float thresh = tempMatchingThresholdForTop;
   bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal, &minLoc, &maxLoc);
 
+  // 如果不匹配
   if (!matched) {
     NSLog(@"no overlap");
     return nil;
   }
 
-  if (maxLoc.y > 0) { // 匹配到第一张图的中部
+  // 匹配到第一张图的中部
+  if (maxLoc.y > 0) {
     int resultRows = maxLoc.y + mat2.rows;
     Mat result = Mat(resultRows, mat1.cols, mat1.type());
     mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
@@ -72,6 +75,7 @@ static const float tempMatchingThresholdForMiddle = 0.97;
 
   // 匹配到头部，需要找出头部最大匹配范围
   int matchingTopRow = maxMatchingTopRow(tempHeight, greyMat1, greyMat2);
+  return [self _te_UIImageFromCVMat:greyMat2.rowRange(0, matchingTopRow)];
 
   // 开始匹配第二张图去掉头部的部分
   temp = greyMat2.rowRange(matchingTopRow, matchingTopRow + 80);
@@ -221,12 +225,12 @@ static const float tempMatchingThresholdForMiddle = 0.97;
 int maxMatchingTopRow(const int baseRow, const Mat source, const Mat target)
 {
   int matchingTopRow = baseRow;
+  float thresh = 0.98;
 
   // 先快速找出不匹配的 row
   int row = baseRow + 20;
   for (; row < target.rows; row += 20) {
     Mat temp = target.rowRange(0, row);
-    float thresh = tempMatchingThresholdForTop;
     double minVal, maxVal;
     bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
 
@@ -246,7 +250,6 @@ int maxMatchingTopRow(const int baseRow, const Mat source, const Mat target)
   // 在 (matchingTopRow, row) 的开区间寻找最大匹配
   for (int row2 = matchingTopRow + 1; row2 < row; ++row2) {
     Mat temp = target.rowRange(0, row2);
-    float thresh = tempMatchingThresholdForTop;
     double minVal, maxVal;
     bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
 
