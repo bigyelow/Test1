@@ -71,47 +71,7 @@ static const float tempMatchingThresholdForMiddle = 0.97;
   }
 
   // 匹配到头部，需要找出头部最大匹配范围
-  int matchingTopRow = tempHeight;
-  bool findMatching = false;
-
-  for (int row = tempHeight + 20; row < greyMat2.rows; row += 20) {
-    Mat temp = greyMat2.rowRange(0, row);
-    Mat source = greyMat1;
-    float thresh = tempMatchingThresholdForTop;
-    double minVal, maxVal;
-    bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
-
-    if (matched) { // 继续匹配
-      matchingTopRow = row;
-    }
-    else {
-      // 回溯，往回找最大匹配
-//      return [self _te_UIImageFromCVMat:mat2.rowRange(0, matchingTopRow)];
-
-      for (int row2 = matchingTopRow + 1; row2 < row; ++row2) {
-        Mat temp = greyMat2.rowRange(0, row2);
-        Mat source = greyMat1;
-        float thresh = tempMatchingThresholdForTop;
-        double minVal, maxVal;
-        bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
-
-        if (!matched) {
-          matchingTopRow = row2 - 1;
-          findMatching = true;
-          break;
-        }
-      }
-      if (findMatching) {
-//        return [self _te_UIImageFromCVMat:greyMat2.rowRange(0, matchingTopRow)];
-        break;
-      }
-    }
-  }
-
-  if (!findMatching) {
-    NSLog(@"Two pictures are the same");
-    return nil;
-  }
+  int matchingTopRow = maxMatchingTopRow(tempHeight, greyMat1, greyMat2);
 
   // 开始匹配第二张图去掉头部的部分
   temp = greyMat2.rowRange(matchingTopRow, matchingTopRow + 80);
@@ -252,7 +212,52 @@ static const float tempMatchingThresholdForMiddle = 0.97;
   return finalImage;
 }
 
-#pragma mark - Helper
+#pragma mark - Helper C++ Functions
+
+/**
+ @param baseRow target's (0, baseRow) 是 match source 的头部的
+ @return 返回 targets's 在 source 中的最大顶部匹配 (0, topRow)
+ */
+int maxMatchingTopRow(const int baseRow, const Mat source, const Mat target)
+{
+  int matchingTopRow = baseRow;
+
+  // 先快速找出不匹配的 row
+  int row = baseRow + 20;
+  for (; row < target.rows; row += 20) {
+    Mat temp = target.rowRange(0, row);
+    float thresh = tempMatchingThresholdForTop;
+    double minVal, maxVal;
+    bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
+
+    if (matched) {
+      matchingTopRow = row;
+    }
+    else {
+      break;
+    }
+  }
+
+#warning need test
+  if (row >= target.rows) { // 整图都是匹配的
+    return target.rows;
+  }
+
+  // 在 (matchingTopRow, row) 的开区间寻找最大匹配
+  for (int row2 = matchingTopRow + 1; row2 < row; ++row2) {
+    Mat temp = target.rowRange(0, row2);
+    float thresh = tempMatchingThresholdForTop;
+    double minVal, maxVal;
+    bool matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal);
+
+    if (!matched) {
+      matchingTopRow = row2 - 1;
+      break;
+    }
+  }
+
+  return matchingTopRow;
+}
 
 bool findMatchingMat(const Mat source, const Mat temp, const float thresh,
                   CV_OUT double* minVal, CV_OUT double* maxVal,  CV_OUT cv::Point* minLoc = 0, CV_OUT cv::Point* maxLoc = 0)
