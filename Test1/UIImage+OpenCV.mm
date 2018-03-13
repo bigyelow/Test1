@@ -19,8 +19,8 @@
 using namespace std;
 using namespace cv;
 
-static const float tempMatchingThresholdForTop = 0.94;
-static const float tempMatchingThresholdForMiddle = 0.97;
+static const float tempMatchingThresholdForTop = 0.97;
+static const float tempMatchingThresholdForMiddle = 0.98;
 
 @implementation UIImage (OpenCV)
 
@@ -75,13 +75,13 @@ static const float tempMatchingThresholdForMiddle = 0.97;
 
   // 匹配到头部，需要找出头部最大匹配范围
   int matchingTopRow = maxMatchingTopRow(tempHeight, greyMat1, greyMat2);
-  return [self _te_UIImageFromCVMat:greyMat2.rowRange(0, matchingTopRow)];
+//  return [self _te_UIImageFromCVMat:greyMat2.rowRange(0, matchingTopRow)];
 
   // 开始匹配第二张图去掉头部的部分
   temp = greyMat2.rowRange(matchingTopRow, matchingTopRow + 80);
   source = greyMat1;
   thresh = tempMatchingThresholdForMiddle;
-//      return [self _te_UIImageFromCVMat:temp];
+//  return [self _te_UIImageFromCVMat:temp];
   matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal, &minLoc, &maxLoc);
 
   if (matched) {
@@ -225,7 +225,7 @@ static const float tempMatchingThresholdForMiddle = 0.97;
 int maxMatchingTopRow(const int baseRow, const Mat source, const Mat target)
 {
   int matchingTopRow = baseRow;
-  float thresh = 0.98;
+  float thresh = tempMatchingThresholdForTop;
 
   // 先快速找出不匹配的 row
   int row = baseRow + 20;
