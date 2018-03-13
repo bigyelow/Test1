@@ -27,8 +27,15 @@
   if (self = [super init]) {
     self.title = @"Test OpenCV";
 
-    _array1 = @[@"LongImage23", @"LongImage23", @"LongImage20", @"LongImage20", @"LongImage18", @"LongImage1", @"LongImage3", @"LongImage4", @"LongImage6", @"LongImage8", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage13", @"LongImage14", @"LongImage15"];
-    _array2 = @[@"LongImage24", @"LongImage25", @"LongImage21", @"LongImage22", @"LongImage19", @"LongImage2", @"LongImage4", @"LongImage5", @"LongImage7", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage12", @"LongImage14", @"LongImage15", @"LongImage16"];
+//    _array1 = @[@"LongImage23", @"LongImage23", @"LongImage20", @"LongImage20", @"LongImage18", @"LongImage1", @"LongImage3", @"LongImage4", @"LongImage6", @"LongImage8", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage13", @"LongImage14", @"LongImage15"];
+//    _array2 = @[@"LongImage24", @"LongImage25", @"LongImage21", @"LongImage22", @"LongImage19", @"LongImage2", @"LongImage4", @"LongImage5", @"LongImage7", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage12", @"LongImage14", @"LongImage15", @"LongImage16"];
+
+    _array1 = @[@"LongImageA", @"LongImageB", @"LongImageC", @"LongImageD", @"LongImageE",
+                @"LongImageF", @"LongImageG", @"LongImageH", @"LongImageI", @"LongImageJ",
+                @"LongImageK", @"LongImageL", @"LongImageM", @"LongImageN"];
+    _array2 = @[@"LongImageB", @"LongImageC", @"LongImageD", @"LongImageE",
+                @"LongImageF", @"LongImageG", @"LongImageH", @"LongImageI", @"LongImageJ",
+                @"LongImageK", @"LongImageL", @"LongImageM", @"LongImageN", @"LongImageO"];
     _imageIndex = -1;
 
 //    UIImage *img1 = [UIImage imageNamed:@"LongImage1"];
