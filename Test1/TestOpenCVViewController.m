@@ -113,6 +113,11 @@
 
 - (void)_te_bingo
 {
+  for (NSInteger i = 0; i < _array1.count - 1; ++i) {
+    [self _te_stitch];
+    [self _te_reset];
+  }
+
   if (_longImageArray.count == 0) {
     return;
   }
