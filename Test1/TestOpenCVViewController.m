@@ -14,9 +14,13 @@
 @property (nonatomic, strong) UIImageView *imageView1;
 @property (nonatomic, strong) UIImageView *imageView2;
 @property (nonatomic, strong) UIImageView *imageView3;
+@property (nonatomic, strong) UIImageView *imageView4;
 @property (nonatomic, copy) NSArray *array1;
 @property (nonatomic, copy) NSArray *array2;
 @property (nonatomic, assign) NSInteger imageIndex;
+
+@property (nonatomic, strong) UIImage *resultImage;
+@property (nonatomic, strong) NSMutableArray *longImageArray;
 
 @end
 
@@ -30,21 +34,25 @@
     _array1 = @[@"LongImage23", @"LongImage23", @"LongImage20", @"LongImage20", @"LongImage18", @"LongImage1", @"LongImage3", @"LongImage4", @"LongImage6", @"LongImage8", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage13", @"LongImage14", @"LongImage15"];
     _array2 = @[@"LongImage24", @"LongImage25", @"LongImage21", @"LongImage22", @"LongImage19", @"LongImage2", @"LongImage4", @"LongImage5", @"LongImage7", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage12", @"LongImage14", @"LongImage15", @"LongImage16"];
 
-//    _array1 = @[@"LongImageA", @"LongImageB", @"LongImageC", @"LongImageD", @"LongImageE",
-//                @"LongImageF", @"LongImageG", @"LongImageH", @"LongImageI", @"LongImageJ",
-//                @"LongImageK", @"LongImageL", @"LongImageM", @"LongImageN"];
-//    _array2 = @[@"LongImageB", @"LongImageC", @"LongImageD", @"LongImageE",
-//                @"LongImageF", @"LongImageG", @"LongImageH", @"LongImageI", @"LongImageJ",
-//                @"LongImageK", @"LongImageL", @"LongImageM", @"LongImageN", @"LongImageO"];
+    _array1 = @[@"LongImageA", @"LongImageB", @"LongImageC", @"LongImageD", @"LongImageE",
+                @"LongImageF", @"LongImageG", @"LongImageH", @"LongImageI", @"LongImageJ",
+                @"LongImageK", @"LongImageL", @"LongImageM", @"LongImageN"];
+    _array2 = @[@"LongImageB", @"LongImageC", @"LongImageD", @"LongImageE",
+                @"LongImageF", @"LongImageG", @"LongImageH", @"LongImageI", @"LongImageJ",
+                @"LongImageK", @"LongImageL", @"LongImageM", @"LongImageN", @"LongImageO"];
     _imageIndex = -1;
+
+    _longImageArray = [NSMutableArray array];
 
     _imageView1 = [[UIImageView alloc] init];
     _imageView2 = [[UIImageView alloc] init];
     _imageView3 = [[UIImageView alloc] init];
+    _imageView4 = [[UIImageView alloc] init];
 
     [self _te_configImageView:_imageView1];
     [self _te_configImageView:_imageView2];
     [self _te_configImageView:_imageView3];
+    [self _te_configImageView:_imageView4];
 
     [self _te_reset];
   }
@@ -54,21 +62,29 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  
   UIBarButtonItem *stitchItem = [[UIBarButtonItem alloc] initWithTitle:@"Stitch"
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:self
                                                                 action:@selector(_te_stitch)];
+  
   UIBarButtonItem *resetItem = [[UIBarButtonItem alloc] initWithTitle:@"Reset"
                                                                 style:UIBarButtonItemStylePlain
                                                                target:self
                                                                action:@selector(_te_reset)];
 
-  self.navigationItem.rightBarButtonItems = @[stitchItem, resetItem];
+  UIBarButtonItem *bingoItem = [[UIBarButtonItem alloc] initWithTitle:@"Bingo"
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:self
+                                                               action:@selector(_te_bingo)];
+
+  self.navigationItem.rightBarButtonItems = @[stitchItem, resetItem, bingoItem];
   self.view.backgroundColor = [UIColor whiteColor];
 
   [self.view addSubview:_imageView1];
   [self.view addSubview:_imageView2];
   [self.view addSubview:_imageView3];
+  [self.view addSubview:_imageView4];
 }
 
 - (void)viewDidLayoutSubviews
@@ -83,6 +99,7 @@
   _imageView1.frame = CGRectMake(0, imageY, imageWidth, topImageHeight);
   _imageView2.frame = CGRectMake(CGRectGetMaxX(_imageView1.frame), imageY, imageWidth, topImageHeight);
   _imageView3.frame = CGRectMake(0, CGRectGetMaxY(_imageView1.frame), imageWidth, bottomImageHeight);
+  _imageView4.frame = CGRectMake(0, imageY, self.view.bounds.size.width, self.view.bounds.size.height - imageY);
 }
 
 - (void)_te_configImageView:(UIImageView *)imageView
@@ -94,38 +111,60 @@
 
 #pragma mark - Private Methods
 
+- (void)_te_bingo
+{
+  if (_longImageArray.count == 0) {
+    return;
+  }
+
+  UIImage *image = _longImageArray[0];
+  for (NSInteger i = 1; i < _longImageArray.count; ++i) {
+    image = [UIImage te_imageByRawStitchingImage:image withImage:_longImageArray[i]];
+  }
+
+  _imageView4.image = image;
+
+  _imageView1.hidden = YES;
+  _imageView2.hidden = YES;
+  _imageView3.hidden = YES;
+  _imageView4.hidden = NO;
+}
+
 - (void)_te_stitch
 {
+  if (_imageIndex == 0) {
+    _imageView3.image = nil;
+  }
+  UIImage *source = _imageView3.image ?: [UIImage imageNamed:_array1[_imageIndex]];
+  UIImage *target = [UIImage imageNamed:_array1[_imageIndex + 1]];
+
+//  UIImage *source = [UIImage imageNamed:_array1[_imageIndex]];
+//  UIImage *target = [UIImage imageNamed:_array2[_imageIndex]];
+
   NSError *error;
+  _imageView3.image = [UIImage te_imageByNoOverlapStitchingImage:source withImage:target error:&error];
+  if (error) {
+    [_longImageArray addObject:_imageView3.image];
+    _imageView3.image = nil;
+    _imageIndex++;
+  }
 
-//  UIImage *stitched;
-//  for (NSInteger i = 4; i < _array1.count; ++i) {
-//    UIImage *source;
-//    if (stitched) {
-//      source = stitched;
-//    }
-//    else {
-//      source = [UIImage imageNamed:_array1[i - 1]];
-//    }
-//    UIImage *target = [UIImage imageNamed:_array1[i]];
-//    stitched = [UIImage te_imageByNoOverlapStitchingImage:source withImage:target error:nil];
-//    if (!stitched) {
-//      break;
-//    }
-//  }
-//
-//  _imageView3.image = stitched;
-
-  UIImage *source = [UIImage imageNamed:_array1[_imageIndex]];
-  UIImage *target = [UIImage imageNamed:_array2[_imageIndex]];
-  _imageView3.image = [UIImage te_imageByNoOverlapStitchingImage:source withImage:target error:nil];
+  if ((_imageIndex + 1) % (_array1.count - 1) == 0) {
+    [_longImageArray addObject:_imageView3.image];
+  }
 }
 
 - (void)_te_reset
 {
-  _imageIndex = (++_imageIndex % _array1.count);
+  _imageIndex = (++_imageIndex % (_array1.count - 1));
   _imageView1.image = [UIImage imageNamed:_array1[_imageIndex]];
   _imageView2.image = [UIImage imageNamed:_array2[_imageIndex]];
+
+  _imageView1.hidden = NO;
+  _imageView2.hidden = NO;
+  _imageView3.hidden = NO;
+  _imageView4.hidden = YES;
+
 }
 
 @end

@@ -37,12 +37,6 @@ static const float tempMatchingThresholdForMiddle = 0.98;
   Mat mat1 = [image1 _te_cvMat];
   Mat mat2 = [image2 _te_cvMat];
 
-  // Detect if dimensions are equal
-//  if (compareMatDimension(mat1, mat2) == false) {
-//    *error = [NSError errorWithDomain:teErrorDomainStitching code:teErrorCodeStitchingMatNotEqual userInfo:nil];
-//    return nil;
-//  }
-
   // Convert to grey image
   Mat greyMat1, greyMat2;
   cvtColor(mat1, greyMat1, CV_BGR2GRAY);
@@ -59,7 +53,9 @@ static const float tempMatchingThresholdForMiddle = 0.98;
 
   // 如果不匹配
   if (!matched) {
-    NSLog(@"no overlap");
+    *error = [NSError errorWithDomain:teErrorDomainStitching
+                                 code:teErrorCodeStitchingNoOverlap
+                             userInfo:nil];
     return [self _te_UIImageFromCVMat:concatenateMats(mat1, mat2)];
   }
 

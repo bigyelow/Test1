@@ -14,9 +14,7 @@
 FOUNDATION_EXPORT NSString *const teErrorDomainStitching;
 
 // Errors
-FOUNDATION_EXPORT NSString *const teErrorStitchingMatNotEqual;
-FOUNDATION_EXPORT NSInteger const teErrorCodeStitchingMatNotEqual;
-
+FOUNDATION_EXPORT NSInteger const teErrorCodeStitchingNoOverlap;
 
 @interface StitchingConstants : NSObject
 

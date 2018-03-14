@@ -14,8 +14,8 @@
 NSString *const teErrorDomainStitching = @"teErrorDomainStitching";
 
 // Errors
-NSString *const teErrorStitchingMatNotEqual = @"teErrorStitchingMatNotEqual";
-NSInteger const teErrorCodeStitchingMatNotEqual = 100;
+NSInteger const teErrorCodeStitchingNoOverlap = 101;
+
 
 @implementation StitchingConstants
 
