@@ -38,10 +38,10 @@ static const float tempMatchingThresholdForMiddle = 0.98;
   Mat mat2 = [image2 _te_cvMat];
 
   // Detect if dimensions are equal
-  if (compareMatDimension(mat1, mat2) == false) {
-    *error = [NSError errorWithDomain:teErrorDomainStitching code:teErrorCodeStitchingMatNotEqual userInfo:nil];
-    return nil;
-  }
+//  if (compareMatDimension(mat1, mat2) == false) {
+//    *error = [NSError errorWithDomain:teErrorDomainStitching code:teErrorCodeStitchingMatNotEqual userInfo:nil];
+//    return nil;
+//  }
 
   // Convert to grey image
   Mat greyMat1, greyMat2;
@@ -60,17 +60,12 @@ static const float tempMatchingThresholdForMiddle = 0.98;
   // 如果不匹配
   if (!matched) {
     NSLog(@"no overlap");
-    return nil;
+    return [self _te_UIImageFromCVMat:concatenateMats(mat1, mat2)];
   }
 
   // 匹配到第一张图的中部
   if (maxLoc.y > 0) {
-    int resultRows = maxLoc.y + mat2.rows;
-    Mat result = Mat(resultRows, mat1.cols, mat1.type());
-    mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
-    mat2.rowRange(0, mat2.rows).copyTo(result.rowRange(maxLoc.y, result.rows));
-
-    return [self _te_UIImageFromCVMat:result];
+    return [self _te_UIImageFromCVMat:concatenateMats(mat1.rowRange(0, maxLoc.y), mat2)];
   }
 
   // 匹配到头部，需要找出头部最大匹配范围
@@ -85,12 +80,7 @@ static const float tempMatchingThresholdForMiddle = 0.98;
   matched = findMatchingMat(source, temp, thresh, &minVal, &maxVal, &minLoc, &maxLoc);
 
   if (matched) {
-    int resultRows = maxLoc.y + mat2.rows - matchingTopRow;
-    Mat result = Mat(resultRows, mat1.cols, mat1.type());
-    mat1.rowRange(0, maxLoc.y).copyTo(result.rowRange(0, maxLoc.y));
-    mat2.rowRange(matchingTopRow, mat2.rows).copyTo(result.rowRange(maxLoc.y, result.rows));
-
-    return [self _te_UIImageFromCVMat:result];
+    return [self _te_UIImageFromCVMat:concatenateMats(mat1.rowRange(0, maxLoc.y), mat2.rowRange(matchingTopRow, mat2.rows))];
   }
   return nil;
 }
@@ -100,11 +90,7 @@ static const float tempMatchingThresholdForMiddle = 0.98;
   Mat mat1 = [image1 _te_cvMat];
   Mat mat2 = [image2 _te_cvMat];
 
-  Mat result = Mat(mat1.rows + mat2.rows, mat1.cols, mat1.type());
-  mat1.rowRange(0, mat1.rows).copyTo(result.rowRange(0, mat1.rows));
-  mat2.rowRange(0, mat2.rows).copyTo(result.rowRange(mat1.rows, result.rows));
-
-  return [self _te_UIImageFromCVMat:result];
+  return [self _te_UIImageFromCVMat:concatenateMats(mat1, mat2)];
 }
 
 + (UIImage *)te_imageByStitchingImage:(UIImage *)image1 withImage:(UIImage *)image2
@@ -217,6 +203,15 @@ static const float tempMatchingThresholdForMiddle = 0.98;
 }
 
 #pragma mark - Helper C++ Functions
+
+Mat concatenateMats(const Mat mat1, const Mat mat2)
+{
+  Mat result = Mat(mat1.rows + mat2.rows, mat1.cols, mat1.type());
+  mat1.copyTo(result.rowRange(0, mat1.rows));
+  mat2.copyTo(result.rowRange(mat1.rows, result.rows));
+
+  return result;
+}
 
 /**
  @param baseRow target's (0, baseRow) 是 match source 的头部的

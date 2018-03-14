@@ -27,21 +27,16 @@
   if (self = [super init]) {
     self.title = @"Test OpenCV";
 
-//    _array1 = @[@"LongImage23", @"LongImage23", @"LongImage20", @"LongImage20", @"LongImage18", @"LongImage1", @"LongImage3", @"LongImage4", @"LongImage6", @"LongImage8", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage13", @"LongImage14", @"LongImage15"];
-//    _array2 = @[@"LongImage24", @"LongImage25", @"LongImage21", @"LongImage22", @"LongImage19", @"LongImage2", @"LongImage4", @"LongImage5", @"LongImage7", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage12", @"LongImage14", @"LongImage15", @"LongImage16"];
+    _array1 = @[@"LongImage23", @"LongImage23", @"LongImage20", @"LongImage20", @"LongImage18", @"LongImage1", @"LongImage3", @"LongImage4", @"LongImage6", @"LongImage8", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage13", @"LongImage14", @"LongImage15"];
+    _array2 = @[@"LongImage24", @"LongImage25", @"LongImage21", @"LongImage22", @"LongImage19", @"LongImage2", @"LongImage4", @"LongImage5", @"LongImage7", @"LongImage9", @"LongImage10", @"LongImage11", @"LongImage12", @"LongImage14", @"LongImage15", @"LongImage16"];
 
-    _array1 = @[@"LongImageA", @"LongImageB", @"LongImageC", @"LongImageD", @"LongImageE",
-                @"LongImageF", @"LongImageG", @"LongImageH", @"LongImageI", @"LongImageJ",
-                @"LongImageK", @"LongImageL", @"LongImageM", @"LongImageN"];
-    _array2 = @[@"LongImageB", @"LongImageC", @"LongImageD", @"LongImageE",
-                @"LongImageF", @"LongImageG", @"LongImageH", @"LongImageI", @"LongImageJ",
-                @"LongImageK", @"LongImageL", @"LongImageM", @"LongImageN", @"LongImageO"];
+//    _array1 = @[@"LongImageA", @"LongImageB", @"LongImageC", @"LongImageD", @"LongImageE",
+//                @"LongImageF", @"LongImageG", @"LongImageH", @"LongImageI", @"LongImageJ",
+//                @"LongImageK", @"LongImageL", @"LongImageM", @"LongImageN"];
+//    _array2 = @[@"LongImageB", @"LongImageC", @"LongImageD", @"LongImageE",
+//                @"LongImageF", @"LongImageG", @"LongImageH", @"LongImageI", @"LongImageJ",
+//                @"LongImageK", @"LongImageL", @"LongImageM", @"LongImageN", @"LongImageO"];
     _imageIndex = -1;
-
-//    UIImage *img1 = [UIImage imageNamed:@"LongImage1"];
-//    UIImage *img2 = [UIImage imageNamed:@"LongImage2"];
-//    img1 = [img1 te_processImageThroughMat];
-//    img2 = [img2 te_processImageThroughMat];
 
     _imageView1 = [[UIImageView alloc] init];
     _imageView2 = [[UIImageView alloc] init];
@@ -102,7 +97,28 @@
 - (void)_te_stitch
 {
   NSError *error;
-  _imageView3.image = [UIImage te_imageByNoOverlapStitchingImage:_imageView1.image withImage:_imageView2.image error:&error];
+
+//  UIImage *stitched;
+//  for (NSInteger i = 4; i < _array1.count; ++i) {
+//    UIImage *source;
+//    if (stitched) {
+//      source = stitched;
+//    }
+//    else {
+//      source = [UIImage imageNamed:_array1[i - 1]];
+//    }
+//    UIImage *target = [UIImage imageNamed:_array1[i]];
+//    stitched = [UIImage te_imageByNoOverlapStitchingImage:source withImage:target error:nil];
+//    if (!stitched) {
+//      break;
+//    }
+//  }
+//
+//  _imageView3.image = stitched;
+
+  UIImage *source = [UIImage imageNamed:_array1[_imageIndex]];
+  UIImage *target = [UIImage imageNamed:_array2[_imageIndex]];
+  _imageView3.image = [UIImage te_imageByNoOverlapStitchingImage:source withImage:target error:nil];
 }
 
 - (void)_te_reset
