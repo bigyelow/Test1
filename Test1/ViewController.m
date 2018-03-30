@@ -35,7 +35,7 @@ static NSString * const OpenCV = @"OpenCV";
 static NSString * const CommonTest = @"CommonTest";
 static NSInteger OpenURLCount = 0;
 
-@interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate>
 
 @property (nonatomic, copy) NSArray *demos;
 @property (nonatomic, strong) WKWebView *webView;
@@ -98,19 +98,10 @@ static NSInteger OpenURLCount = 0;
   // WebView
   _webView = [[WKWebView alloc] initWithFrame:CGRectZero];
   _webView.hidden = YES;
+  _webView.navigationDelegate = self;
   [self.view addSubview:_webView];
 
   // Navigation bar
-  UIBarButtonItem *switchItem = [[UIBarButtonItem alloc] initWithTitle:@"Switch"
-                                                                 style:UIBarButtonItemStylePlain
-                                                                target:self
-                                                                action:@selector(_te_hiddenWebView)];
-  UIBarButtonItem *startLoadItem = [[UIBarButtonItem alloc] initWithTitle:@"Start"
-                                                                    style:UIBarButtonItemStylePlain
-                                                                   target:self
-                                                                   action:@selector(_te_startToLoad)];
-  self.navigationItem.rightBarButtonItems = @[startLoadItem, switchItem];
-
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(_te_UIApplicationWillResignActiveNotification)
                                                name:UIApplicationWillResignActiveNotification object:nil];
@@ -217,9 +208,21 @@ static NSInteger OpenURLCount = 0;
 
 - (void)_te_startToLoad
 {
+  _webView.hidden = NO;
+
+  UIBarButtonItem *hiddenWebViewItem = [[UIBarButtonItem alloc] initWithTitle:@"Hidden"
+                                                                        style:UIBarButtonItemStylePlain
+                                                                       target:self
+                                                                       action:@selector(_te_hiddenWebView)];
+  UIBarButtonItem *startLoadItem = [[UIBarButtonItem alloc] initWithTitle:@"Start"
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(_te_startToLoad)];
+  self.navigationItem.rightBarButtonItems = @[startLoadItem, hiddenWebViewItem];
+
   NSURLRequest *request;
   if (_tag) {
-    NSURL *url = [NSURL URLWithString:@"http://product.m.dangdang.com/25204457.html?unionid=P-330022m&dt_dapp=1&dt_dapp=1"];
+    NSURL *url = [NSURL URLWithString:@"https://www.bing.com/"];
     request = [NSURLRequest requestWithURL:url];
 
     self.tag = NO;
@@ -268,7 +271,9 @@ static NSInteger OpenURLCount = 0;
 
 - (void)_te_hiddenWebView
 {
-  _webView.hidden = !_webView.hidden;
+  _webView.hidden = YES;
+
+  self.navigationItem.rightBarButtonItems = nil;
 }
 
 - (void)_te_testMacro
@@ -343,4 +348,9 @@ static NSInteger OpenURLCount = 0;
   completionHandler(NSURLSessionAuthChallengeUseCredential, [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
 }
 
+#pragma mark - WKWebView delegate
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+  decisionHandler(WKNavigationActionPolicyAllow);
+}
 @end
