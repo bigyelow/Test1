@@ -233,7 +233,10 @@ static NSInteger OpenURLCount = 0;
     self.tag = YES;
   }
 
-  [_webView loadRequest:request];
+  NSMutableURLRequest *mRequest = [request mutableCopy];
+  [mRequest setValue:@"dafecad" forHTTPHeaderField:@"User-Agent"];
+
+  [_webView loadRequest:mRequest];
 }
 
 - (void)_te_presentVC
