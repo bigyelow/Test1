@@ -238,7 +238,6 @@
 				71B12A221EE1063500622A2E /* Frameworks */,
 				71B12A231EE1063500622A2E /* Resources */,
 				7F672E545B5873838AD30407 /* [CP] Embed Pods Frameworks */,
-				6E4BE1FFD01E5BA23AC97EA5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -380,21 +379,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6E4BE1FFD01E5BA23AC97EA5 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Test1/Pods-Test1-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		7F672E545B5873838AD30407 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -407,7 +391,6 @@
 				"${BUILT_PRODUCTS_DIR}/DoubanObjCClient/DoubanObjCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/FRDCryptology/FRDCryptology.framework",
 				"${BUILT_PRODUCTS_DIR}/OpenCV/opencv2.framework",
-				"${BUILT_PRODUCTS_DIR}/Polymorph/Polymorph.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability-DoubanInternal/Reachability_DoubanInternal.framework",
 				"${BUILT_PRODUCTS_DIR}/libextobjc/libextobjc.framework",
 			);
@@ -418,7 +401,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubanObjCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FRDCryptology.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/opencv2.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Polymorph.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability_DoubanInternal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libextobjc.framework",
 			);

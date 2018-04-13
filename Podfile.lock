@@ -78,7 +78,16 @@ DEPENDENCIES:
   - DoubanObjCClient (from `https://github.intra.douban.com/iOS/DoubanObjCClient.git`, commit `d267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0`)
   - DOUFoundation (from `https://github.intra.douban.com/iOS/DOUFoundation.git`, commit `a40451618d35fe59087eafbb04a5f1a62a8df29f`)
   - OpenCV
-  - Polymorph (from `https://github.com/douban/Polymorph.git`, commit `ec503cfe3fcf9e18f8c675175273d5cde608d1e2`)
+  - Polymorph (from `https://github.com/bigyelow/Polymorph.git`, commit `f4ff2e538f183658f8b74503df6011ff2fb7bfab`)
+
+SPEC REPOS:
+  http://github.intra.douban.com/iOS/CocoaPodsSpecs.git:
+    - FRDCryptology
+    - Reachability-DoubanInternal
+  http://github.intra.douban.com/mirror/Specs.git:
+    - AFNetworking
+    - libextobjc
+    - OpenCV
 
 EXTERNAL SOURCES:
   DoubanObjCClient:
@@ -88,8 +97,8 @@ EXTERNAL SOURCES:
     :commit: a40451618d35fe59087eafbb04a5f1a62a8df29f
     :git: https://github.intra.douban.com/iOS/DOUFoundation.git
   Polymorph:
-    :commit: ec503cfe3fcf9e18f8c675175273d5cde608d1e2
-    :git: https://github.com/douban/Polymorph.git
+    :commit: f4ff2e538f183658f8b74503df6011ff2fb7bfab
+    :git: https://github.com/bigyelow/Polymorph.git
 
 CHECKOUT OPTIONS:
   DoubanObjCClient:
@@ -99,8 +108,8 @@ CHECKOUT OPTIONS:
     :commit: a40451618d35fe59087eafbb04a5f1a62a8df29f
     :git: https://github.intra.douban.com/iOS/DOUFoundation.git
   Polymorph:
-    :commit: ec503cfe3fcf9e18f8c675175273d5cde608d1e2
-    :git: https://github.com/douban/Polymorph.git
+    :commit: f4ff2e538f183658f8b74503df6011ff2fb7bfab
+    :git: https://github.com/bigyelow/Polymorph.git
 
 SPEC CHECKSUMS:
   AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
@@ -109,9 +118,9 @@ SPEC CHECKSUMS:
   FRDCryptology: b26c95144171438ad5e5ef18ca2512ec48a79b62
   libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
   OpenCV: 0f7ab403d1e81769bc6f4f524c3c6928ecb1fdb8
-  Polymorph: 57da1d8ec0253281721b805869c638241fe9166d
+  Polymorph: 82d2782f4e4a71f914913deff40c548818b193e8
   Reachability-DoubanInternal: 1f6f2603a866d13dabe51ce27309ab9103901b0d
 
-PODFILE CHECKSUM: 94fb782bb8a1806280c17a397f86c9d383d281e9
+PODFILE CHECKSUM: 03b610c1334e246fc5739142c55395a02698a96b
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0
