@@ -66,6 +66,7 @@ class TestSwift: NSObject {
     } else {
       guard let urlString1 = urlString1, let urlString2 = urlString2 else {
         assert(false)
+        return
       }
       print(urlString1 == urlString2)
       if (urlString1 != urlString2) {
