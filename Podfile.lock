@@ -80,6 +80,15 @@ DEPENDENCIES:
   - OpenCV
   - Polymorph (from `https://github.com/douban/Polymorph.git`, commit `ec503cfe3fcf9e18f8c675175273d5cde608d1e2`)
 
+SPEC REPOS:
+  http://github.intra.douban.com/iOS/CocoaPodsSpecs.git:
+    - FRDCryptology
+    - Reachability-DoubanInternal
+  http://github.intra.douban.com/mirror/Specs.git:
+    - AFNetworking
+    - libextobjc
+    - OpenCV
+
 EXTERNAL SOURCES:
   DoubanObjCClient:
     :commit: d267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0
@@ -114,4 +123,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 94fb782bb8a1806280c17a397f86c9d383d281e9
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0
