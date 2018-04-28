@@ -33,6 +33,7 @@ static NSString * const Macro = @"Macro";
 static NSString * const AuthenticationSession = @"AuthenticationSession";
 static NSString * const OpenCV = @"OpenCV";
 static NSString * const CommonTest = @"CommonTest";
+static NSString * const GCD = @"GCD";
 static NSInteger OpenURLCount = 0;
 
 @interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate>
@@ -57,7 +58,7 @@ static NSInteger OpenURLCount = 0;
 - (instancetype)init
 {
   if (self = [super init]) {
-    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block, Macro, AuthenticationSession, OpenCV, CommonTest];
+    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block, Macro, AuthenticationSession, OpenCV, CommonTest, GCD];
     _appURLs = @[@"weixin://weixin.com/",
                  @"letvclient://letvclient.com/xxx",
                  @"pptv://pptv.com/ddd", @"sohuvideo://xxx.com/",
@@ -202,6 +203,9 @@ static NSInteger OpenURLCount = 0;
   else if ([_demos[indexPath.row] isEqualToString:OpenCV]) {
     [self.navigationController pushViewController:[[TestOpenCVViewController alloc] init] animated:YES];
   }
+  else if ([_demos[indexPath.row] isEqualToString:GCD]) {
+    [self _te_testGCD];
+  }
 }
 
 #pragma mark - Test
@@ -310,6 +314,22 @@ static NSInteger OpenURLCount = 0;
   if (array.lastObject) {
     NSLog(@"not nil");
   }
+}
+
+- (void)_te_testGCD
+{
+  dispatch_queue_t q = dispatch_queue_create("com.bigyelow.test", DISPATCH_QUEUE_CONCURRENT);
+
+  // 2. 同步执行
+  for (int i = 0; i < 10; ++i) {
+    dispatch_async(q, ^{
+      for (int j = 0; j < 100; ++j) {
+        NSLog(@"task %@: %@th job", @(i), @(j));
+      }
+    });
+  }
+
+  NSLog(@"come here - %@",[NSThread currentThread]);
 }
 
 #pragma mark - Notifications
