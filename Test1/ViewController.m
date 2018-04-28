@@ -306,16 +306,10 @@ static NSInteger OpenURLCount = 0;
 
 - (void)_te_commonTest
 {
-  NSString *frag = @"?tags=1";
-  NSURL *fragURL = [NSURL URLWithString:frag];
-  NSDictionary *dict = fragURL.queryDictionary;
-
-  if ([dict[@"tags"] isKindOfClass:[NSArray class]]) {
-    NSArray *array = dict[@"tags"];
-    NSLog(array[0]);
-    NSLog(array[1]);
+  NSArray *array = @[];
+  if (array.lastObject) {
+    NSLog(@"not nil");
   }
-  NSLog(dict);
 }
 
 #pragma mark - Notifications
