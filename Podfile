@@ -9,7 +9,8 @@ target 'Test1' do
   pod 'OpenCV'
   pod 'DOUFoundation',             :git => 'https://github.intra.douban.com/iOS/DOUFoundation.git', :commit => 'a40451618d35fe59087eafbb04a5f1a62a8df29f'
   pod 'Polymorph',                 :git => 'https://github.com/douban/Polymorph.git', :commit => 'ec503cfe3fcf9e18f8c675175273d5cde608d1e2'
-  pod 'DoubanObjCClient',       :git => 'https://github.intra.douban.com/iOS/DoubanObjCClient.git', :commit => 'd267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0'
+  pod 'DoubanObjCClient',          :git => 'https://github.intra.douban.com/iOS/DoubanObjCClient.git', :commit => 'd267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0'
+  pod 'FRDNetwork',                :git => 'https://github.intra.douban.com/huangduyu/FRDNetwork', :commit => '3a429fa06f08f9003448d65b195616b11520cda9'
   # pod 'FRDFangorn/CommonBusiness/Common', :git => 'https://github.intra.douban.com/iOS/FRDFangorn.git', :commit => '5b2f497352ab50a7e19cebb5c0ced822eca17ca7'
 end
 

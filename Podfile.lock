@@ -63,6 +63,9 @@ PODS:
   - DOUFoundation/ThreadSpecificData (0.2.15)
   - DOUFoundation/UDID (0.2.15)
   - FRDCryptology (0.1.1)
+  - FRDNetwork (0.2.8):
+    - DOUFoundation/Reachability (~> 0.2.13)
+    - FRDCryptology (~> 0.1.0)
   - libextobjc/EXTScope (0.4.1):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4.1)
@@ -77,6 +80,7 @@ PODS:
 DEPENDENCIES:
   - DoubanObjCClient (from `https://github.intra.douban.com/iOS/DoubanObjCClient.git`, commit `d267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0`)
   - DOUFoundation (from `https://github.intra.douban.com/iOS/DOUFoundation.git`, commit `a40451618d35fe59087eafbb04a5f1a62a8df29f`)
+  - FRDNetwork (from `https://github.intra.douban.com/huangduyu/FRDNetwork`, commit `3a429fa06f08f9003448d65b195616b11520cda9`)
   - OpenCV
   - Polymorph (from `https://github.com/douban/Polymorph.git`, commit `ec503cfe3fcf9e18f8c675175273d5cde608d1e2`)
 
@@ -96,6 +100,9 @@ EXTERNAL SOURCES:
   DOUFoundation:
     :commit: a40451618d35fe59087eafbb04a5f1a62a8df29f
     :git: https://github.intra.douban.com/iOS/DOUFoundation.git
+  FRDNetwork:
+    :commit: 3a429fa06f08f9003448d65b195616b11520cda9
+    :git: https://github.intra.douban.com/huangduyu/FRDNetwork
   Polymorph:
     :commit: ec503cfe3fcf9e18f8c675175273d5cde608d1e2
     :git: https://github.com/douban/Polymorph.git
@@ -107,6 +114,9 @@ CHECKOUT OPTIONS:
   DOUFoundation:
     :commit: a40451618d35fe59087eafbb04a5f1a62a8df29f
     :git: https://github.intra.douban.com/iOS/DOUFoundation.git
+  FRDNetwork:
+    :commit: 3a429fa06f08f9003448d65b195616b11520cda9
+    :git: https://github.intra.douban.com/huangduyu/FRDNetwork
   Polymorph:
     :commit: ec503cfe3fcf9e18f8c675175273d5cde608d1e2
     :git: https://github.com/douban/Polymorph.git
@@ -116,11 +126,12 @@ SPEC CHECKSUMS:
   DoubanObjCClient: 59fd9659f168c335f54358c8d9cc26d10314cc97
   DOUFoundation: a00405534d6acecf50ea2a7a838e0e2cce0bd4b3
   FRDCryptology: b26c95144171438ad5e5ef18ca2512ec48a79b62
+  FRDNetwork: 364b4a88e2c4f0f8943b2a0071d3eced8d8c3f86
   libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
   OpenCV: 0f7ab403d1e81769bc6f4f524c3c6928ecb1fdb8
   Polymorph: 57da1d8ec0253281721b805869c638241fe9166d
   Reachability-DoubanInternal: 1f6f2603a866d13dabe51ce27309ab9103901b0d
 
-PODFILE CHECKSUM: 94fb782bb8a1806280c17a397f86c9d383d281e9
+PODFILE CHECKSUM: cd117b061be20a07778656b4abd7f0b6e49477c8
 
 COCOAPODS: 1.5.0
