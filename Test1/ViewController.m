@@ -310,10 +310,9 @@ static NSInteger OpenURLCount = 0;
 
 - (void)_te_commonTest
 {
-  NSArray *array = @[];
-  if (array.lastObject) {
-    NSLog(@"not nil");
-  }
+  NSMutableArray *array = @[@"1", @"2"].mutableCopy;
+  [array insertObject:@"3" atIndex:2];
+  NSLog(@"inserted");
 }
 
 - (void)_te_testGCD
