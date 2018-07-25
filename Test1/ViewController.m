@@ -226,7 +226,7 @@ static NSInteger OpenURLCount = 0;
 
   NSURLRequest *request;
   if (_tag) {
-    NSURL *url = [NSURL URLWithString:@"https://www.bing.com/"];
+    NSURL *url = [NSURL URLWithString:@"https://nextidea.qq.com/cp/a20180702music/?qz_gdt=tytvqwyraaafoiga3rsq&_wv=1&dt_dapp=1"];
     request = [NSURLRequest requestWithURL:url];
 
     self.tag = NO;
