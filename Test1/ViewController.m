@@ -245,7 +245,7 @@ static NSInteger OpenURLCount = 0;
 
 - (void)_te_presentVC
 {
-  [self presentViewController:[[UINavigationController alloc] initWithRootViewController:[PresentingViewController new]]
+  [self.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:[PresentingViewController new]]
                      animated:YES
                    completion:nil];
 }
@@ -310,9 +310,10 @@ static NSInteger OpenURLCount = 0;
 
 - (void)_te_commonTest
 {
-  NSMutableArray *array = @[@"1", @"2"].mutableCopy;
-  [array insertObject:@"3" atIndex:2];
-  NSLog(@"inserted");
+  NSURLComponents *comp = [NSURLComponents componentsWithString:@"douban://douban.com/alert_dialog"];
+  NSURLQueryItem *item = [NSURLQueryItem queryItemWithName:@"data" value:@"{\"title\":\"隐私政策更新\",\"message\":\"我们更新了《豆瓣隐私政策》，在这里你可以了解我们如何收集、使用、保护你的个人信息以及你享有的权利等内容。2018年8月30日起，如果你继续使用豆瓣，即表示你同意接受更新的隐私政策。\",\"buttons\":[{\"text\":\"查看详情\",\"action\":\"https://accounts.douban.com/passport/agreement\"},{\"text\":\"我知道了\",\"action\":\"\"}]}"];
+  comp.queryItems = @[item];
+  NSLog(comp.URL.absoluteString);
 }
 
 - (void)_te_testGCD

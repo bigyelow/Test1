@@ -28,6 +28,11 @@
                                                                           action:@selector(_te_cancel)];
 }
 
+- (void)dealloc
+{
+  NSLog(@"Dealloc");
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
@@ -42,7 +47,10 @@
 
 - (void)_te_cancel
 {
-  [self dismissViewControllerAnimated:YES completion:nil];
+  UINavigationController *nav = (UINavigationController *)self.presentingViewController;
+  [self dismissViewControllerAnimated:YES completion:^{
+    [nav presentViewController:[PresentingViewController new] animated:YES completion:nil];
+  }];
 }
 
 - (void)_te_pushVC
