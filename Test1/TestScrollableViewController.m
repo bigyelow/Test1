@@ -6,6 +6,8 @@
 //  Copyright © 2018 huangduyu. All rights reserved.
 //
 
+@import WebKit;
+
 #import "TestScrollableViewController.h"
 #import "ScrollableDataSource.h"
 
@@ -14,7 +16,10 @@ static void *TestScollableContext = &TestScollableContext;
 static NSString *contentSizeKey = @"contentSize";
 static NSString *contentOffsetKey = @"contentOffset";
 
-@interface TestScrollableViewController ()
+@interface TestScrollableViewController () <WKNavigationDelegate>
+
+@property (nonatomic, strong) WKWebView *topWebView;
+@property (nonatomic, assign) CGFloat lastContentHeight;
 
 @property (nonatomic, strong) UITableView *topTableView;
 @property (nonatomic, strong) ScrollableDataSource *topDataSource;
@@ -32,8 +37,11 @@ static NSString *contentOffsetKey = @"contentOffset";
   [super viewDidLoad];
 
   [self.view addSubview:self.bottomTableView];
-  [self.bottomTableView addSubview:self.topHeader];
-  [self.bottomTableView addSubview:self.topTableView];
+//  [self.bottomTableView addSubview:self.topHeader];
+//  [self.bottomTableView addSubview:self.topTableView];
+  [self.bottomTableView addSubview:self.topWebView];
+
+  [self.topWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.zhihu.com/question/24075060/answer/252505809"]]];
 
   self.edgesForExtendedLayout = UIRectEdgeNone;
 }
@@ -44,13 +52,14 @@ static NSString *contentOffsetKey = @"contentOffset";
 
 //  self.topHeader.frame = CGRectMake(0, -5 * RowHeight, self.view.bounds.size.width, 5 * RowHeight);
   self.topTableView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
+  self.topWebView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
   self.bottomTableView.frame = self.view.bounds;
 }
 
 - (void)dealloc
 {
   @try {
-//    [self.bottomTableView removeObserver:self forKeyPath:contentSizeKey];
+    [self.bottomTableView removeObserver:self forKeyPath:contentOffsetKey];
     [self.topTableView removeObserver:self forKeyPath:contentSizeKey];
   }
   @catch (NSException *e) {
@@ -75,23 +84,27 @@ static NSString *contentOffsetKey = @"contentOffset";
   return _topTableView;
 }
 
+- (WKWebView *)topWebView
+{
+  if (!_topWebView) {
+    _topWebView = [[WKWebView alloc] init];
+    _topWebView.navigationDelegate = self;
+  }
+  return _topWebView;
+}
+
 - (UITableView *)bottomTableView
 {
   if (!_bottomTableView) {
     _bottomTableView = [self _te_createTableView];
     _bottomTableView.dataSource = self.bottomDataSource;
     _bottomTableView.delegate = self.bottomDataSource;
-//    _bottomTableView.contentInset = UIEdgeInsetsMake(RowHeight * 5, 0, 0, 0);
     _bottomTableView.backgroundColor = UIColor.blueColor;
 
-//    [_bottomTableView addObserver:self
-//                       forKeyPath:contentOffsetKey
-//                          options:NSKeyValueObservingOptionNew
-//                          context:TestScollableContext];
-//    [_bottomTableView addObserver:self
-//                       forKeyPath:contentSizeKey
-//                          options:NSKeyValueObservingOptionNew
-//                          context:TestScollableContext];
+    [_bottomTableView addObserver:self
+                       forKeyPath:contentOffsetKey
+                          options:NSKeyValueObservingOptionNew
+                          context:TestScollableContext];
   }
   return _bottomTableView;
 }
@@ -99,7 +112,7 @@ static NSString *contentOffsetKey = @"contentOffset";
 - (ScrollableDataSource *)topDataSource
 {
   if (!_topDataSource) {
-    _topDataSource = [self _te_createDataSourceWithTitle:@"Top" count:5];
+    _topDataSource = [self _te_createDataSourceWithTitle:@"Top" count:60];
   }
   return _topDataSource;
 }
@@ -125,25 +138,53 @@ static NSString *contentOffsetKey = @"contentOffset";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
+  // Bottom contentOffset
   if (context == TestScollableContext && [keyPath isEqualToString:contentOffsetKey] && object == self.bottomTableView) {
-    NSLog(@"offset = %@", @([change[NSKeyValueChangeNewKey] CGPointValue].y));
+    NSLog(@"bottom offset = %@", @([change[NSKeyValueChangeNewKey] CGPointValue].y));
   }
+
+  // Top contentOffset
+  else if (context == TestScollableContext && [keyPath isEqualToString:contentOffsetKey] && object == self.topTableView) {
+    NSLog(@"top offset = %@", @([change[NSKeyValueChangeNewKey] CGPointValue].y));
+  }
+
+  // Top contentSize
   else if (context == TestScollableContext && [keyPath isEqualToString:contentSizeKey] && object == self.topTableView) {
     // BottomTableView
     CGFloat contentSizeHeight = [change[NSKeyValueChangeNewKey] CGSizeValue].height;
-    CGFloat topInset = MIN(contentSizeHeight, [self _te_viewHeight]);
-    self.bottomTableView.contentInset = UIEdgeInsetsMake(topInset, 0, 0, 0);
-    self.bottomTableView.contentOffset = CGPointMake(0, -topInset);
+    self.bottomTableView.contentInset = UIEdgeInsetsMake(contentSizeHeight, 0, 0, 0);
+    self.bottomTableView.contentOffset = CGPointMake(0, -contentSizeHeight);
 
     // TopTableView
-    UITableView *view = (UITableView *)object;
-    CGRect frame = view.frame;
-    frame = CGRectMake(0, -topInset, frame.size.width, topInset);
-    view.frame = frame;
+    CGRect frame = self.topTableView.frame;
+    frame = CGRectMake(0, -contentSizeHeight, frame.size.width, contentSizeHeight);
+    self.topTableView.frame = frame;
   }
   else {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
   }
+}
+
+#pragma mark - WebView Delegate
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+  if (webView.isLoading) {
+    return;
+  }
+
+  [webView evaluateJavaScript:@"document.body.scrollHeight" completionHandler:^(id _Nullable height, NSError * _Nullable error) {
+    if ([height isKindOfClass:NSNumber.class]) {
+      CGFloat contentSizeHeight = [height floatValue];
+      self.bottomTableView.contentInset = UIEdgeInsetsMake(contentSizeHeight, 0, 0, 0);
+      self.bottomTableView.contentOffset = CGPointMake(0, -contentSizeHeight);
+
+      // TopTableView
+      CGRect frame = self.topWebView.frame;
+      frame = CGRectMake(0, -contentSizeHeight, frame.size.width, contentSizeHeight);
+      self.topWebView.frame = frame;
+    }
+  }];
 }
 
 #pragma mark - Helper
