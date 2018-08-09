@@ -19,6 +19,7 @@
 #import "Test1-Swift.h"
 #import "TestBlockObject.h"
 #import "TestOpenCVViewController.h"
+#import "TestScrollableViewController.h"
 
 static NSString * const WKWebViewStr = @"WKWebView";
 static NSString * const ImageStr = @"Image";
@@ -34,6 +35,7 @@ static NSString * const AuthenticationSession = @"AuthenticationSession";
 static NSString * const OpenCV = @"OpenCV";
 static NSString * const CommonTest = @"CommonTest";
 static NSString * const GCD = @"GCD";
+static NSString * const Scrollable = @"Scrollable";
 static NSInteger OpenURLCount = 0;
 
 @interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate>
@@ -58,7 +60,21 @@ static NSInteger OpenURLCount = 0;
 - (instancetype)init
 {
   if (self = [super init]) {
-    _demos = @[WKWebViewStr, ImageStr, VideoStr, NSURLSessionStr, URLEncodingStr, PresentingStr, Nullability, OpenURL, Block, Macro, AuthenticationSession, OpenCV, CommonTest, GCD];
+    _demos = @[Scrollable,
+               WKWebViewStr,
+               ImageStr,
+               VideoStr,
+               NSURLSessionStr,
+               URLEncodingStr,
+               PresentingStr,
+               Nullability,
+               OpenURL,
+               Block,
+               Macro,
+               AuthenticationSession,
+               OpenCV,
+               CommonTest,
+               GCD];
     _appURLs = @[@"weixin://weixin.com/",
                  @"letvclient://letvclient.com/xxx",
                  @"pptv://pptv.com/ddd", @"sohuvideo://xxx.com/",
@@ -205,6 +221,10 @@ static NSInteger OpenURLCount = 0;
   }
   else if ([_demos[indexPath.row] isEqualToString:GCD]) {
     [self _te_testGCD];
+  }
+  else if ([_demos[indexPath.row] isEqualToString:Scrollable]) {
+    TestScrollableViewController *vc = [TestScrollableViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
   }
 }
 
