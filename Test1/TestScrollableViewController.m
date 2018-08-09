@@ -10,8 +10,9 @@
 #import "ScrollableDataSource.h"
 
 static const NSInteger RowHeight = 44;
-static void *BottomTableViewContentSizeContext = &BottomTableViewContentSizeContext;
-static NSString *observedKey = @"contentSize";
+static void *TestScollableContext = &TestScollableContext;
+static NSString *contentSizeKey = @"contentSize";
+static NSString *contentOffsetKey = @"contentOffset";
 
 @interface TestScrollableViewController ()
 
@@ -31,24 +32,30 @@ static NSString *observedKey = @"contentSize";
   [super viewDidLoad];
 
   [self.view addSubview:self.bottomTableView];
-//  [self.bottomTableView addSubview:self.topHeader];
+  [self.bottomTableView addSubview:self.topHeader];
   [self.bottomTableView addSubview:self.topTableView];
 
-  self.automaticallyAdjustsScrollViewInsets = NO;
+  self.edgesForExtendedLayout = UIRectEdgeNone;
 }
 
 - (void)viewDidLayoutSubviews
 {
   [super viewDidLayoutSubviews];
 
-  self.topHeader.frame = CGRectMake(0, -5 * RowHeight, self.view.bounds.size.width, 5 * RowHeight);
-  self.topTableView.frame = CGRectMake(0, -5 * RowHeight, self.view.bounds.size.width, 5 * RowHeight);
+//  self.topHeader.frame = CGRectMake(0, -5 * RowHeight, self.view.bounds.size.width, 5 * RowHeight);
+  self.topTableView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
   self.bottomTableView.frame = self.view.bounds;
 }
 
 - (void)dealloc
 {
-  [self.bottomTableView removeObserver:self forKeyPath:observedKey];
+  @try {
+//    [self.bottomTableView removeObserver:self forKeyPath:contentSizeKey];
+    [self.topTableView removeObserver:self forKeyPath:contentSizeKey];
+  }
+  @catch (NSException *e) {
+    NSLog(@"exception");
+  }
 }
 
 #pragma mark - Properties
@@ -59,6 +66,11 @@ static NSString *observedKey = @"contentSize";
     _topTableView = [self _te_createTableView];
     _topTableView.dataSource = self.topDataSource;
     _topTableView.delegate = self.topDataSource;
+
+    [_topTableView addObserver:self
+                    forKeyPath:contentSizeKey
+                       options:NSKeyValueObservingOptionNew
+                       context:TestScollableContext];
   }
   return _topTableView;
 }
@@ -69,10 +81,17 @@ static NSString *observedKey = @"contentSize";
     _bottomTableView = [self _te_createTableView];
     _bottomTableView.dataSource = self.bottomDataSource;
     _bottomTableView.delegate = self.bottomDataSource;
-    _bottomTableView.contentInset = UIEdgeInsetsMake(RowHeight * 5, 0, 0, 0);
+//    _bottomTableView.contentInset = UIEdgeInsetsMake(RowHeight * 5, 0, 0, 0);
     _bottomTableView.backgroundColor = UIColor.blueColor;
 
-    [_bottomTableView addObserver:self forKeyPath:observedKey options:NSKeyValueObservingOptionNew context:BottomTableViewContentSizeContext];
+//    [_bottomTableView addObserver:self
+//                       forKeyPath:contentOffsetKey
+//                          options:NSKeyValueObservingOptionNew
+//                          context:TestScollableContext];
+//    [_bottomTableView addObserver:self
+//                       forKeyPath:contentSizeKey
+//                          options:NSKeyValueObservingOptionNew
+//                          context:TestScollableContext];
   }
   return _bottomTableView;
 }
@@ -80,7 +99,7 @@ static NSString *observedKey = @"contentSize";
 - (ScrollableDataSource *)topDataSource
 {
   if (!_topDataSource) {
-    _topDataSource = [self _te_createDataSourceWithTitle:@"Top" count:60];
+    _topDataSource = [self _te_createDataSourceWithTitle:@"Top" count:5];
   }
   return _topDataSource;
 }
@@ -106,10 +125,21 @@ static NSString *observedKey = @"contentSize";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
-  if (context == BottomTableViewContentSizeContext && [object isKindOfClass:UITableView.class]) {
-    [((UITableView *)object) scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                                   atScrollPosition:UITableViewScrollPositionBottom
-                                           animated:NO];
+  if (context == TestScollableContext && [keyPath isEqualToString:contentOffsetKey] && object == self.bottomTableView) {
+    NSLog(@"offset = %@", @([change[NSKeyValueChangeNewKey] CGPointValue].y));
+  }
+  else if (context == TestScollableContext && [keyPath isEqualToString:contentSizeKey] && object == self.topTableView) {
+    // BottomTableView
+    CGFloat contentSizeHeight = [change[NSKeyValueChangeNewKey] CGSizeValue].height;
+    CGFloat topInset = MIN(contentSizeHeight, [self _te_viewHeight]);
+    self.bottomTableView.contentInset = UIEdgeInsetsMake(topInset, 0, 0, 0);
+    self.bottomTableView.contentOffset = CGPointMake(0, -topInset);
+
+    // TopTableView
+    UITableView *view = (UITableView *)object;
+    CGRect frame = view.frame;
+    frame = CGRectMake(0, -topInset, frame.size.width, topInset);
+    view.frame = frame;
   }
   else {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -117,6 +147,12 @@ static NSString *observedKey = @"contentSize";
 }
 
 #pragma mark - Helper
+
+- (CGFloat)_te_viewHeight
+{
+  return UIScreen.mainScreen.bounds.size.height - [UIApplication sharedApplication].statusBarFrame.size.height
+  - self.navigationController.navigationBar.bounds.size.height;
+}
 
 - (UITableView *)_te_createTableView
 {
