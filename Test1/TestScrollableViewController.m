@@ -14,7 +14,6 @@
 static const NSInteger RowHeight = 44;
 static void *TestScollableContext = &TestScollableContext;
 static NSString *contentSizeKey = @"contentSize";
-static NSString *contentOffsetKey = @"contentOffset";
 
 @interface TestScrollableViewController () <WKNavigationDelegate>
 
@@ -27,8 +26,6 @@ static NSString *contentOffsetKey = @"contentOffset";
 @property (nonatomic, strong) UITableView *bottomTableView;
 @property (nonatomic, strong) ScrollableDataSource *bottomDataSource;
 
-@property (nonatomic, strong) UIView *topHeader;
-
 @end
 
 @implementation TestScrollableViewController
@@ -37,20 +34,22 @@ static NSString *contentOffsetKey = @"contentOffset";
   [super viewDidLoad];
 
   [self.view addSubview:self.bottomTableView];
-//  [self.bottomTableView addSubview:self.topHeader];
-//  [self.bottomTableView addSubview:self.topTableView];
   [self.bottomTableView addSubview:self.topWebView];
 
   [self.topWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.zhihu.com/question/24075060/answer/252505809"]]];
 
   self.edgesForExtendedLayout = UIRectEdgeNone;
+
+//  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Switch"
+//                                                                            style:UIBarButtonItemStylePlain
+//                                                                           target:self
+//                                                                           action:@selector(_te_switch)];
 }
 
 - (void)viewDidLayoutSubviews
 {
   [super viewDidLayoutSubviews];
 
-//  self.topHeader.frame = CGRectMake(0, -5 * RowHeight, self.view.bounds.size.width, 5 * RowHeight);
   self.topTableView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
   self.topWebView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
   self.bottomTableView.frame = self.view.bounds;
@@ -59,7 +58,6 @@ static NSString *contentOffsetKey = @"contentOffset";
 - (void)dealloc
 {
   @try {
-    [self.bottomTableView removeObserver:self forKeyPath:contentOffsetKey];
     [self.topTableView removeObserver:self forKeyPath:contentSizeKey];
   }
   @catch (NSException *e) {
@@ -75,11 +73,6 @@ static NSString *contentOffsetKey = @"contentOffset";
     _topTableView = [self _te_createTableView];
     _topTableView.dataSource = self.topDataSource;
     _topTableView.delegate = self.topDataSource;
-
-    [_topTableView addObserver:self
-                    forKeyPath:contentSizeKey
-                       options:NSKeyValueObservingOptionNew
-                       context:TestScollableContext];
   }
   return _topTableView;
 }
@@ -100,11 +93,6 @@ static NSString *contentOffsetKey = @"contentOffset";
     _bottomTableView.dataSource = self.bottomDataSource;
     _bottomTableView.delegate = self.bottomDataSource;
     _bottomTableView.backgroundColor = UIColor.blueColor;
-
-    [_bottomTableView addObserver:self
-                       forKeyPath:contentOffsetKey
-                          options:NSKeyValueObservingOptionNew
-                          context:TestScollableContext];
   }
   return _bottomTableView;
 }
@@ -125,31 +113,11 @@ static NSString *contentOffsetKey = @"contentOffset";
   return _bottomDataSource;
 }
 
-- (UIView *)topHeader
-{
-  if (!_topHeader) {
-    _topHeader = [[UIView alloc] init];
-    _topHeader.backgroundColor = UIColor.redColor;
-  }
-  return _topHeader;
-}
-
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
-  // Bottom contentOffset
-  if (context == TestScollableContext && [keyPath isEqualToString:contentOffsetKey] && object == self.bottomTableView) {
-    NSLog(@"bottom offset = %@", @([change[NSKeyValueChangeNewKey] CGPointValue].y));
-  }
-
-  // Top contentOffset
-  else if (context == TestScollableContext && [keyPath isEqualToString:contentOffsetKey] && object == self.topTableView) {
-    NSLog(@"top offset = %@", @([change[NSKeyValueChangeNewKey] CGPointValue].y));
-  }
-
-  // Top contentSize
-  else if (context == TestScollableContext && [keyPath isEqualToString:contentSizeKey] && object == self.topTableView) {
+  if (context == TestScollableContext && [keyPath isEqualToString:contentSizeKey] && object == self.topTableView) {
     // BottomTableView
     CGFloat contentSizeHeight = [change[NSKeyValueChangeNewKey] CGSizeValue].height;
     self.bottomTableView.contentInset = UIEdgeInsetsMake(contentSizeHeight, 0, 0, 0);
@@ -175,7 +143,7 @@ static NSString *contentOffsetKey = @"contentOffset";
 
   [webView evaluateJavaScript:@"document.body.scrollHeight" completionHandler:^(id _Nullable height, NSError * _Nullable error) {
     if ([height isKindOfClass:NSNumber.class]) {
-      CGFloat contentSizeHeight = [height floatValue];
+      CGFloat contentSizeHeight = [height floatValue] + 40;
       self.bottomTableView.contentInset = UIEdgeInsetsMake(contentSizeHeight, 0, 0, 0);
       self.bottomTableView.contentOffset = CGPointMake(0, -contentSizeHeight);
 
@@ -185,6 +153,32 @@ static NSString *contentOffsetKey = @"contentOffset";
       self.topWebView.frame = frame;
     }
   }];
+}
+
+#pragma mark - Action
+
+- (void)_te_switch
+{
+  // Top TableView
+  if (self.topWebView.superview) {
+    [self.topWebView removeFromSuperview];
+    [self.bottomTableView addSubview:self.topTableView];
+
+    [self.topTableView addObserver:self
+                        forKeyPath:contentSizeKey
+                           options:NSKeyValueObservingOptionNew
+                           context:TestScollableContext];
+    [self.topTableView reloadData];
+  }
+
+  // Top WebView
+  else if (self.topTableView.superview) {
+    [self.topTableView removeFromSuperview];
+    [self.bottomTableView addSubview:self.topWebView];
+
+    [self.topTableView removeObserver:self forKeyPath:contentSizeKey];
+    [self.topWebView reload];
+  }
 }
 
 #pragma mark - Helper
