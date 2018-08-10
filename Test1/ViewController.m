@@ -19,7 +19,7 @@
 #import "Test1-Swift.h"
 #import "TestBlockObject.h"
 #import "TestOpenCVViewController.h"
-#import "TestScrollableViewController.h"
+#import "TestScollableListViewController.h"
 
 static NSString * const WKWebViewStr = @"WKWebView";
 static NSString * const ImageStr = @"Image";
@@ -223,7 +223,7 @@ static NSInteger OpenURLCount = 0;
     [self _te_testGCD];
   }
   else if ([_demos[indexPath.row] isEqualToString:Scrollable]) {
-    TestScrollableViewController *vc = [TestScrollableViewController new];
+    TestScollableListViewController *vc = [TestScollableListViewController new];
     [self.navigationController pushViewController:vc animated:YES];
   }
 }

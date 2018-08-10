@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, TEViewCombinationType) {
+  TEViewCombinationTypeTopTableBottomTable,
+  TEViewCombinationTypeTopTableBottomWeb,
+  TEViewCombinationTypeTopWebBottomTable,
+};
+
 @interface TestScrollableViewController : UIViewController
+
+- (instancetype)initWithType:(TEViewCombinationType)type;
 
 @end

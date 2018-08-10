@@ -22,4 +22,9 @@
   return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  NSLog(@"select %@", @(indexPath.row));
+}
+
 @end

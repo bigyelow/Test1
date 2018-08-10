@@ -12,13 +12,15 @@
 #import "ScrollableDataSource.h"
 
 static const NSInteger RowHeight = 44;
-static void *TestScollableContext = &TestScollableContext;
+static void *TestScrollableContext = &TestScrollableContext;
 static NSString *contentSizeKey = @"contentSize";
 
 @interface TestScrollableViewController () <WKNavigationDelegate>
 
+@property (nonatomic, assign) TEViewCombinationType type;
+
 @property (nonatomic, strong) WKWebView *topWebView;
-@property (nonatomic, assign) CGFloat lastContentHeight;
+@property (nonatomic, strong) WKWebView *bottomWebView;
 
 @property (nonatomic, strong) UITableView *topTableView;
 @property (nonatomic, strong) ScrollableDataSource *topDataSource;
@@ -29,21 +31,22 @@ static NSString *contentSizeKey = @"contentSize";
 @end
 
 @implementation TestScrollableViewController
+@synthesize type = _type;
 
-- (void)viewDidLoad {
+- (instancetype)initWithType:(TEViewCombinationType)type
+{
+  if (self = [super init]) {
+    _type = type;
+  }
+  return self;
+}
+
+- (void)viewDidLoad
+{
   [super viewDidLoad];
 
-  [self.view addSubview:self.bottomTableView];
-  [self.bottomTableView addSubview:self.topWebView];
-
-  [self.topWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.zhihu.com/question/24075060/answer/252505809"]]];
-
+  self.type = _type;
   self.edgesForExtendedLayout = UIRectEdgeNone;
-
-//  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Switch"
-//                                                                            style:UIBarButtonItemStylePlain
-//                                                                           target:self
-//                                                                           action:@selector(_te_switch)];
 }
 
 - (void)viewDidLayoutSubviews
@@ -53,12 +56,15 @@ static NSString *contentSizeKey = @"contentSize";
   self.topTableView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
   self.topWebView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
   self.bottomTableView.frame = self.view.bounds;
+  self.bottomWebView.frame = self.view.bounds;
 }
 
 - (void)dealloc
 {
   @try {
-    [self.topTableView removeObserver:self forKeyPath:contentSizeKey];
+    if (self.type == TEViewCombinationTypeTopTableBottomWeb || self.type == TEViewCombinationTypeTopTableBottomTable) {
+      [self.topTableView removeObserver:self forKeyPath:contentSizeKey];
+    }
   }
   @catch (NSException *e) {
     NSLog(@"exception");
@@ -66,6 +72,58 @@ static NSString *contentSizeKey = @"contentSize";
 }
 
 #pragma mark - Properties
+
+- (TEViewCombinationType)type
+{
+  return _type;
+}
+
+- (void)setType:(TEViewCombinationType)type
+{
+  _type = type;
+
+  [self.bottomTableView removeFromSuperview];
+  [self.bottomWebView removeFromSuperview];
+  [self.topTableView removeFromSuperview];
+  [self.topWebView removeFromSuperview];
+
+  switch (_type) {
+    case TEViewCombinationTypeTopTableBottomWeb:
+      [self.view addSubview:self.bottomWebView];
+      [self.bottomWebView.scrollView addSubview:self.topTableView];
+
+      [self.topTableView addObserver:self
+                          forKeyPath:contentSizeKey
+                             options:NSKeyValueObservingOptionNew
+                             context:TestScrollableContext];
+
+      [self.bottomWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.zhihu.com/question/24075060/answer/252505809"]]];
+
+      break;
+
+    case TEViewCombinationTypeTopWebBottomTable:
+      [self.view addSubview:self.bottomTableView];
+      [self.bottomTableView addSubview:self.topWebView];
+
+      [self.topWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.zhihu.com/question/24075060/answer/252505809"]]];
+
+      break;
+
+    case TEViewCombinationTypeTopTableBottomTable:
+      [self.view addSubview:self.bottomTableView];
+      [self.bottomTableView addSubview:self.topTableView];
+
+      [self.topTableView addObserver:self
+                          forKeyPath:contentSizeKey
+                             options:NSKeyValueObservingOptionNew
+                             context:TestScrollableContext];
+
+      break;
+
+    default:
+      break;
+  }
+}
 
 - (UITableView *)topTableView
 {
@@ -86,6 +144,14 @@ static NSString *contentSizeKey = @"contentSize";
   return _topWebView;
 }
 
+- (WKWebView *)bottomWebView
+{
+  if (!_bottomWebView) {
+    _bottomWebView = [WKWebView new];
+  }
+  return _bottomWebView;
+}
+
 - (UITableView *)bottomTableView
 {
   if (!_bottomTableView) {
@@ -100,7 +166,7 @@ static NSString *contentSizeKey = @"contentSize";
 - (ScrollableDataSource *)topDataSource
 {
   if (!_topDataSource) {
-    _topDataSource = [self _te_createDataSourceWithTitle:@"Top" count:60];
+    _topDataSource = [self _te_createDataSourceWithTitle:@"Top" count:5];
   }
   return _topDataSource;
 }
@@ -117,13 +183,18 @@ static NSString *contentSizeKey = @"contentSize";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
-  if (context == TestScollableContext && [keyPath isEqualToString:contentSizeKey] && object == self.topTableView) {
-    // BottomTableView
+  if (context == TestScrollableContext && [keyPath isEqualToString:contentSizeKey] && object == self.topTableView) {
     CGFloat contentSizeHeight = [change[NSKeyValueChangeNewKey] CGSizeValue].height;
-    self.bottomTableView.contentInset = UIEdgeInsetsMake(contentSizeHeight, 0, 0, 0);
-    self.bottomTableView.contentOffset = CGPointMake(0, -contentSizeHeight);
+    if (self.type == TEViewCombinationTypeTopTableBottomTable) {  // Bottom TableView
+      self.bottomTableView.contentInset = UIEdgeInsetsMake(contentSizeHeight, 0, 0, 0);
+      self.bottomTableView.contentOffset = CGPointMake(0, -contentSizeHeight);
+    }
+    else if (self.type == TEViewCombinationTypeTopTableBottomWeb) { // Bottom WebView
+      self.bottomWebView.scrollView.contentInset = UIEdgeInsetsMake(contentSizeHeight, 0, 0, 0);
+      self.bottomWebView.scrollView.contentOffset = CGPointMake(0, -contentSizeHeight);
+    }
 
-    // TopTableView
+    // Top TableView
     CGRect frame = self.topTableView.frame;
     frame = CGRectMake(0, -contentSizeHeight, frame.size.width, contentSizeHeight);
     self.topTableView.frame = frame;
@@ -153,32 +224,6 @@ static NSString *contentSizeKey = @"contentSize";
       self.topWebView.frame = frame;
     }
   }];
-}
-
-#pragma mark - Action
-
-- (void)_te_switch
-{
-  // Top TableView
-  if (self.topWebView.superview) {
-    [self.topWebView removeFromSuperview];
-    [self.bottomTableView addSubview:self.topTableView];
-
-    [self.topTableView addObserver:self
-                        forKeyPath:contentSizeKey
-                           options:NSKeyValueObservingOptionNew
-                           context:TestScollableContext];
-    [self.topTableView reloadData];
-  }
-
-  // Top WebView
-  else if (self.topTableView.superview) {
-    [self.topTableView removeFromSuperview];
-    [self.bottomTableView addSubview:self.topWebView];
-
-    [self.topTableView removeObserver:self forKeyPath:contentSizeKey];
-    [self.topWebView reload];
-  }
 }
 
 #pragma mark - Helper
