@@ -36,6 +36,7 @@ static NSString * const OpenCV = @"OpenCV";
 static NSString * const CommonTest = @"CommonTest";
 static NSString * const GCD = @"GCD";
 static NSString * const Scrollable = @"Scrollable";
+static NSString * const MTURLProtocol = @"MTURLProtocol";
 static NSInteger OpenURLCount = 0;
 
 @interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate>
@@ -225,6 +226,9 @@ static NSInteger OpenURLCount = 0;
   else if ([_demos[indexPath.row] isEqualToString:Scrollable]) {
     TestScollableListViewController *vc = [TestScollableListViewController new];
     [self.navigationController pushViewController:vc animated:YES];
+  }
+  else if ([_demos[indexPath.row] isEqualToString:MTURLProtocol]) {
+
   }
 }
 
