@@ -69,6 +69,7 @@ PODS:
   - libextobjc/EXTScope (0.4.1):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4.1)
+  - MTURLProtocol (0.1.0)
   - OpenCV (3.2.0):
     - OpenCV/Dynamic (= 3.2.0)
   - OpenCV/Dynamic (3.2.0)
@@ -81,6 +82,7 @@ DEPENDENCIES:
   - DoubanObjCClient (from `https://github.intra.douban.com/iOS/DoubanObjCClient.git`, commit `d267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0`)
   - DOUFoundation (from `https://github.intra.douban.com/iOS/DOUFoundation.git`, commit `a40451618d35fe59087eafbb04a5f1a62a8df29f`)
   - FRDNetwork (from `https://github.intra.douban.com/huangduyu/FRDNetwork`, commit `3a429fa06f08f9003448d65b195616b11520cda9`)
+  - MTURLProtocol (from `https://github.com/bigyelow/MTURLProtocol`)
   - OpenCV
   - Polymorph (from `https://github.com/douban/Polymorph.git`, commit `ec503cfe3fcf9e18f8c675175273d5cde608d1e2`)
 
@@ -103,6 +105,8 @@ EXTERNAL SOURCES:
   FRDNetwork:
     :commit: 3a429fa06f08f9003448d65b195616b11520cda9
     :git: https://github.intra.douban.com/huangduyu/FRDNetwork
+  MTURLProtocol:
+    :git: https://github.com/bigyelow/MTURLProtocol
   Polymorph:
     :commit: ec503cfe3fcf9e18f8c675175273d5cde608d1e2
     :git: https://github.com/douban/Polymorph.git
@@ -117,6 +121,9 @@ CHECKOUT OPTIONS:
   FRDNetwork:
     :commit: 3a429fa06f08f9003448d65b195616b11520cda9
     :git: https://github.intra.douban.com/huangduyu/FRDNetwork
+  MTURLProtocol:
+    :commit: 7c32935b3e14ba18badb8e98582623463292027d
+    :git: https://github.com/bigyelow/MTURLProtocol
   Polymorph:
     :commit: ec503cfe3fcf9e18f8c675175273d5cde608d1e2
     :git: https://github.com/douban/Polymorph.git
@@ -128,10 +135,11 @@ SPEC CHECKSUMS:
   FRDCryptology: b26c95144171438ad5e5ef18ca2512ec48a79b62
   FRDNetwork: 364b4a88e2c4f0f8943b2a0071d3eced8d8c3f86
   libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
+  MTURLProtocol: 11b69f2b6b27e9aafce9b6d6cedb1c8e8e76915f
   OpenCV: 0f7ab403d1e81769bc6f4f524c3c6928ecb1fdb8
   Polymorph: 57da1d8ec0253281721b805869c638241fe9166d
   Reachability-DoubanInternal: 1f6f2603a866d13dabe51ce27309ab9103901b0d
 
-PODFILE CHECKSUM: cd117b061be20a07778656b4abd7f0b6e49477c8
+PODFILE CHECKSUM: 0c0ac9027477161de2f8e43886ef7e999abb8285
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.2

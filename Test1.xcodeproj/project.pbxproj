@@ -12,7 +12,6 @@
 		714A50A5211C44D600F1CCEE /* TestScrollableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714A50A4211C44D600F1CCEE /* TestScrollableViewController.m */; };
 		714A50A8211C463900F1CCEE /* ScrollableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 714A50A7211C463900F1CCEE /* ScrollableDataSource.m */; };
 		714A50AB211D844600F1CCEE /* TestScollableListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714A50AA211D844600F1CCEE /* TestScollableListViewController.m */; };
-		714A50AF212A7FC300F1CCEE /* MTURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 714A50AE212A7FC300F1CCEE /* MTURLProtocol.m */; };
 		715C51441F1C8DCF0049D1E9 /* TCommond.m in Sources */ = {isa = PBXBuildFile; fileRef = 715C51431F1C8DCF0049D1E9 /* TCommond.m */; };
 		715C51461F1C8E730049D1E9 /* TestNullabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715C51451F1C8E730049D1E9 /* TestNullabilityViewController.swift */; };
 		7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162AC891F0CB125006D3EA8 /* StringExtension.swift */; };
@@ -64,8 +63,6 @@
 		714A50A7211C463900F1CCEE /* ScrollableDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScrollableDataSource.m; sourceTree = "<group>"; };
 		714A50A9211D844600F1CCEE /* TestScollableListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestScollableListViewController.h; sourceTree = "<group>"; };
 		714A50AA211D844600F1CCEE /* TestScollableListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestScollableListViewController.m; sourceTree = "<group>"; };
-		714A50AD212A7FC300F1CCEE /* MTURLProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTURLProtocol.h; sourceTree = "<group>"; };
-		714A50AE212A7FC300F1CCEE /* MTURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTURLProtocol.m; sourceTree = "<group>"; };
 		715C51421F1C8DCF0049D1E9 /* TCommond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCommond.h; sourceTree = "<group>"; };
 		715C51431F1C8DCF0049D1E9 /* TCommond.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCommond.m; sourceTree = "<group>"; };
 		715C51451F1C8E730049D1E9 /* TestNullabilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNullabilityViewController.swift; sourceTree = "<group>"; };
@@ -137,15 +134,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		714A50AC212A7FA500F1CCEE /* MTURLProtocol */ = {
-			isa = PBXGroup;
-			children = (
-				714A50AD212A7FC300F1CCEE /* MTURLProtocol.h */,
-				714A50AE212A7FC300F1CCEE /* MTURLProtocol.m */,
-			);
-			path = MTURLProtocol;
-			sourceTree = "<group>";
-		};
 		7154BE062053989E00DEDBED /* OPenCV */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,7 +172,6 @@
 		71B12A271EE1063500622A2E /* Test1 */ = {
 			isa = PBXGroup;
 			children = (
-				714A50AC212A7FA500F1CCEE /* MTURLProtocol */,
 				7154BE062053989E00DEDBED /* OPenCV */,
 				71B12A2B1EE1063500622A2E /* AppDelegate.h */,
 				71B12A2C1EE1063500622A2E /* AppDelegate.m */,
@@ -419,6 +406,7 @@
 				"${BUILT_PRODUCTS_DIR}/DoubanObjCClient/DoubanObjCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/FRDCryptology/FRDCryptology.framework",
 				"${BUILT_PRODUCTS_DIR}/FRDNetwork/FRDNetwork.framework",
+				"${BUILT_PRODUCTS_DIR}/MTURLProtocol/MTURLProtocol.framework",
 				"${BUILT_PRODUCTS_DIR}/OpenCV/opencv2.framework",
 				"${BUILT_PRODUCTS_DIR}/Polymorph/Polymorph.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability-DoubanInternal/Reachability_DoubanInternal.framework",
@@ -431,6 +419,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubanObjCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FRDCryptology.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FRDNetwork.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MTURLProtocol.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/opencv2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Polymorph.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability_DoubanInternal.framework",
@@ -464,7 +453,6 @@
 				714A50A5211C44D600F1CCEE /* TestScrollableViewController.m in Sources */,
 				71B12A5D1EE1065C00622A2E /* TestExtension.m in Sources */,
 				71EA63E52050238800295761 /* TestOpenCVViewController.m in Sources */,
-				714A50AF212A7FC300F1CCEE /* MTURLProtocol.m in Sources */,
 				715C51461F1C8E730049D1E9 /* TestNullabilityViewController.swift in Sources */,
 				7162AC8C1F0CB198006D3EA8 /* TestSwift.swift in Sources */,
 			);
