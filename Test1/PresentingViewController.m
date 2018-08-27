@@ -10,6 +10,8 @@
 
 @interface PresentingViewController ()
 
+@property (nonatomic, strong) UILabel *textLabel;
+
 @end
 
 @implementation PresentingViewController
@@ -17,6 +19,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  self.view.backgroundColor = UIColor.whiteColor;
   self.title = self.customTitle ?: @"PresentingVC";
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Push"
                                                                             style:UIBarButtonItemStylePlain
@@ -26,11 +29,22 @@
                                                                            style:UIBarButtonItemStylePlain
                                                                           target:self
                                                                           action:@selector(_te_cancel)];
+
+  [self.view addSubview:self.textLabel];
 }
 
 - (void)dealloc
 {
   NSLog(@"Dealloc");
+}
+
+- (UILabel *)textLabel
+{
+  if (!_textLabel) {
+    _textLabel = [UILabel new];
+    _textLabel.text = @"PresentingVC";
+  }
+  return _textLabel;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -43,6 +57,13 @@
   else if (self.navigationController) {
     NSLog(@"navi");
   }
+}
+
+- (void)viewDidLayoutSubviews
+{
+  [super viewDidLayoutSubviews];
+  [self.textLabel sizeToFit];
+  self.textLabel.center = self.view.center;
 }
 
 - (void)_te_cancel
