@@ -1,18 +1,18 @@
 PODS:
-  - AFNetworking (3.2.0):
-    - AFNetworking/NSURLSession (= 3.2.0)
-    - AFNetworking/Reachability (= 3.2.0)
-    - AFNetworking/Security (= 3.2.0)
-    - AFNetworking/Serialization (= 3.2.0)
-    - AFNetworking/UIKit (= 3.2.0)
-  - AFNetworking/NSURLSession (3.2.0):
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.2.0)
-  - AFNetworking/Security (3.2.0)
-  - AFNetworking/Serialization (3.2.0)
-  - AFNetworking/UIKit (3.2.0):
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - DoubanObjCClient (3.1.12):
     - DoubanObjCClient/ALL (= 3.1.12)
@@ -23,7 +23,7 @@ PODS:
     - DoubanObjCClient/OAuth
     - DoubanObjCClient/PushRegister
   - DoubanObjCClient/DOUAPIClient (3.1.12):
-    - AFNetworking (~> 3.0)
+    - AFNetworking (~> 3.2.1)
     - DoubanObjCClient/Model
     - DOUFoundation/Extend (~> 0.2.13)
     - DOUFoundation/Logger (~> 0.2.13)
@@ -63,9 +63,10 @@ PODS:
   - DOUFoundation/ThreadSpecificData (0.2.15)
   - DOUFoundation/UDID (0.2.15)
   - FRDCryptology (0.1.1)
-  - FRDNetwork (0.2.8):
+  - FRDNetwork (0.2.10):
     - DOUFoundation/Reachability (~> 0.2.13)
     - FRDCryptology (~> 0.1.0)
+    - MTURLProtocol (~> 0.1.0)
   - libextobjc/EXTScope (0.4.1):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4.1)
@@ -77,14 +78,20 @@ PODS:
     - libextobjc/EXTScope (~> 0.4)
     - libextobjc/RuntimeExtensions (~> 0.4)
   - Reachability-DoubanInternal (5.0.0)
+  - Rexxar (0.3.0):
+    - Rexxar/Widget (= 0.3.0)
+  - Rexxar/Core (0.3.0)
+  - Rexxar/Widget (0.3.0):
+    - Rexxar/Core
 
 DEPENDENCIES:
-  - DoubanObjCClient (from `https://github.intra.douban.com/iOS/DoubanObjCClient.git`, commit `d267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0`)
+  - DoubanObjCClient (from `https://github.intra.douban.com/iOS/DoubanObjCClient.git`, commit `bfdad53f7442bd91a34548ee1f2af0f7715e45e0`)
   - DOUFoundation (from `https://github.intra.douban.com/iOS/DOUFoundation.git`, commit `a40451618d35fe59087eafbb04a5f1a62a8df29f`)
-  - FRDNetwork (from `https://github.intra.douban.com/huangduyu/FRDNetwork`, commit `3a429fa06f08f9003448d65b195616b11520cda9`)
-  - MTURLProtocol (from `https://github.com/bigyelow/MTURLProtocol`)
+  - FRDNetwork (from `https://github.intra.douban.com/huangduyu/FRDNetwork`, commit `2963b19d755f3b2a709986bca90caa41f7db6f04`)
+  - MTURLProtocol (from `https://github.intra.douban.com/iOS/MTURLProtocol`, commit `e3ebed6fb6d53dc74994a1c875b449ac95e97364`)
   - OpenCV
   - Polymorph (from `https://github.com/douban/Polymorph.git`, commit `ec503cfe3fcf9e18f8c675175273d5cde608d1e2`)
+  - Rexxar (from `https://github.com/douban/rexxar-ios.git`, commit `4c30548545cb4c4912f6bf7fd2d2438ea60b775d`)
 
 SPEC REPOS:
   http://github.intra.douban.com/iOS/CocoaPodsSpecs.git:
@@ -97,49 +104,57 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   DoubanObjCClient:
-    :commit: d267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0
+    :commit: bfdad53f7442bd91a34548ee1f2af0f7715e45e0
     :git: https://github.intra.douban.com/iOS/DoubanObjCClient.git
   DOUFoundation:
     :commit: a40451618d35fe59087eafbb04a5f1a62a8df29f
     :git: https://github.intra.douban.com/iOS/DOUFoundation.git
   FRDNetwork:
-    :commit: 3a429fa06f08f9003448d65b195616b11520cda9
+    :commit: 2963b19d755f3b2a709986bca90caa41f7db6f04
     :git: https://github.intra.douban.com/huangduyu/FRDNetwork
   MTURLProtocol:
-    :git: https://github.com/bigyelow/MTURLProtocol
+    :commit: e3ebed6fb6d53dc74994a1c875b449ac95e97364
+    :git: https://github.intra.douban.com/iOS/MTURLProtocol
   Polymorph:
     :commit: ec503cfe3fcf9e18f8c675175273d5cde608d1e2
     :git: https://github.com/douban/Polymorph.git
+  Rexxar:
+    :commit: 4c30548545cb4c4912f6bf7fd2d2438ea60b775d
+    :git: https://github.com/douban/rexxar-ios.git
 
 CHECKOUT OPTIONS:
   DoubanObjCClient:
-    :commit: d267df399045d8b2bf2b64c7d5bcd8c4d1cbe8c0
+    :commit: bfdad53f7442bd91a34548ee1f2af0f7715e45e0
     :git: https://github.intra.douban.com/iOS/DoubanObjCClient.git
   DOUFoundation:
     :commit: a40451618d35fe59087eafbb04a5f1a62a8df29f
     :git: https://github.intra.douban.com/iOS/DOUFoundation.git
   FRDNetwork:
-    :commit: 3a429fa06f08f9003448d65b195616b11520cda9
+    :commit: 2963b19d755f3b2a709986bca90caa41f7db6f04
     :git: https://github.intra.douban.com/huangduyu/FRDNetwork
   MTURLProtocol:
-    :commit: 7c32935b3e14ba18badb8e98582623463292027d
-    :git: https://github.com/bigyelow/MTURLProtocol
+    :commit: e3ebed6fb6d53dc74994a1c875b449ac95e97364
+    :git: https://github.intra.douban.com/iOS/MTURLProtocol
   Polymorph:
     :commit: ec503cfe3fcf9e18f8c675175273d5cde608d1e2
     :git: https://github.com/douban/Polymorph.git
+  Rexxar:
+    :commit: 4c30548545cb4c4912f6bf7fd2d2438ea60b775d
+    :git: https://github.com/douban/rexxar-ios.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
-  DoubanObjCClient: 59fd9659f168c335f54358c8d9cc26d10314cc97
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  DoubanObjCClient: bd869804e46eb2749a87250277c634340cc66d01
   DOUFoundation: a00405534d6acecf50ea2a7a838e0e2cce0bd4b3
   FRDCryptology: b26c95144171438ad5e5ef18ca2512ec48a79b62
-  FRDNetwork: 364b4a88e2c4f0f8943b2a0071d3eced8d8c3f86
+  FRDNetwork: dc052e0907d42cb6ddd4651f8534407d00b76480
   libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
   MTURLProtocol: 11b69f2b6b27e9aafce9b6d6cedb1c8e8e76915f
   OpenCV: 0f7ab403d1e81769bc6f4f524c3c6928ecb1fdb8
   Polymorph: 57da1d8ec0253281721b805869c638241fe9166d
   Reachability-DoubanInternal: 1f6f2603a866d13dabe51ce27309ab9103901b0d
+  Rexxar: 43c951140df4125ca35e873d410de50c396b3aa4
 
-PODFILE CHECKSUM: 0c0ac9027477161de2f8e43886ef7e999abb8285
+PODFILE CHECKSUM: 9c948d49984a1c1614aefda2bd15a5054985782f
 
 COCOAPODS: 1.5.2

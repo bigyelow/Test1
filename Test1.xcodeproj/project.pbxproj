@@ -410,6 +410,7 @@
 				"${BUILT_PRODUCTS_DIR}/OpenCV/opencv2.framework",
 				"${BUILT_PRODUCTS_DIR}/Polymorph/Polymorph.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability-DoubanInternal/Reachability_DoubanInternal.framework",
+				"${BUILT_PRODUCTS_DIR}/Rexxar/Rexxar.framework",
 				"${BUILT_PRODUCTS_DIR}/libextobjc/libextobjc.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -423,6 +424,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/opencv2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Polymorph.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability_DoubanInternal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Rexxar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libextobjc.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
