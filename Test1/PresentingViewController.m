@@ -11,6 +11,7 @@
 @interface PresentingViewController ()
 
 @property (nonatomic, strong) UILabel *textLabel;
+@property (nonatomic, strong) UIButton *closeButton;
 
 @end
 
@@ -31,6 +32,7 @@
                                                                           action:@selector(_te_cancel)];
 
   [self.view addSubview:self.textLabel];
+  [self.view addSubview:self.closeButton];
 }
 
 - (void)dealloc
@@ -45,6 +47,16 @@
     _textLabel.text = @"PresentingVC";
   }
   return _textLabel;
+}
+
+- (UIButton *)closeButton
+{
+  if (!_closeButton) {
+    _closeButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [_closeButton setTitle:@"Close" forState:UIControlStateNormal];
+    [_closeButton addTarget:self action:@selector(_te_close) forControlEvents:UIControlEventTouchUpInside];
+  }
+  return _closeButton;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -64,6 +76,14 @@
   [super viewDidLayoutSubviews];
   [self.textLabel sizeToFit];
   self.textLabel.center = self.view.center;
+
+  CGSize size = [self.closeButton sizeThatFits:CGSizeZero];
+  self.closeButton.frame = CGRectMake(10, 20, size.width, size.height);
+}
+
+- (void)_te_close
+{
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)_te_cancel

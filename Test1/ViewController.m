@@ -20,6 +20,7 @@
 #import "TestBlockObject.h"
 #import "TestOpenCVViewController.h"
 #import "TestScollableListViewController.h"
+#import "TestTransitionDelegate.h"
 
 static NSString * const WKWebViewStr = @"WKWebView";
 static NSString * const ImageStr = @"Image";
@@ -54,6 +55,7 @@ static NSInteger OpenURLCount = 0;
 @property (nonatomic, strong) TestBlockObject *blockObject;
 @property (nonatomic, copy) NSArray<NSString *>* appURLs;
 @property (nonatomic, strong) SFAuthenticationSession *session;
+@property (nonatomic, strong) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
 @end
 
@@ -234,8 +236,19 @@ static NSInteger OpenURLCount = 0;
   }
   else if ([_demos[indexPath.row] isEqualToString:Transition]) {
     PresentingViewController *vc = [PresentingViewController new];
+    vc.transitioningDelegate = self.transitionDelegate;
     [self presentViewController:vc animated:YES completion:nil];
   }
+}
+
+#pragma mark - Properties
+
+- (id<UIViewControllerTransitioningDelegate>)transitionDelegate
+{
+  if (!_transitionDelegate) {
+    _transitionDelegate = [TestTransitionDelegate new];
+  }
+  return _transitionDelegate;
 }
 
 #pragma mark - Test
