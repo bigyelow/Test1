@@ -10,6 +10,8 @@
 		710DDFBA1F46B57800D52E6B /* URLEncode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710DDFB91F46B57800D52E6B /* URLEncode.swift */; };
 		713BC5EB1F2B2C5C001E4D10 /* TestBlockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 713BC5EA1F2B2C5C001E4D10 /* TestBlockObject.m */; };
 		7145F1442133E16F001FF2E4 /* TestTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7145F1432133E16F001FF2E4 /* TestTransitionDelegate.m */; };
+		7145F1472133E62F001FF2E4 /* TestTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7145F1462133E62F001FF2E4 /* TestTransitionAnimator.m */; };
+		7145F14A2133F686001FF2E4 /* UIImageView+WebImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7145F1492133F686001FF2E4 /* UIImageView+WebImageCache.m */; };
 		714A50A5211C44D600F1CCEE /* TestScrollableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714A50A4211C44D600F1CCEE /* TestScrollableViewController.m */; };
 		714A50A8211C463900F1CCEE /* ScrollableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 714A50A7211C463900F1CCEE /* ScrollableDataSource.m */; };
 		714A50AB211D844600F1CCEE /* TestScollableListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714A50AA211D844600F1CCEE /* TestScollableListViewController.m */; };
@@ -60,6 +62,10 @@
 		713BC5EA1F2B2C5C001E4D10 /* TestBlockObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestBlockObject.m; sourceTree = "<group>"; };
 		7145F1422133E16F001FF2E4 /* TestTransitionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestTransitionDelegate.h; sourceTree = "<group>"; };
 		7145F1432133E16F001FF2E4 /* TestTransitionDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestTransitionDelegate.m; sourceTree = "<group>"; };
+		7145F1452133E62F001FF2E4 /* TestTransitionAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestTransitionAnimator.h; sourceTree = "<group>"; };
+		7145F1462133E62F001FF2E4 /* TestTransitionAnimator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestTransitionAnimator.m; sourceTree = "<group>"; };
+		7145F1482133F686001FF2E4 /* UIImageView+WebImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebImageCache.h"; sourceTree = "<group>"; };
+		7145F1492133F686001FF2E4 /* UIImageView+WebImageCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebImageCache.m"; sourceTree = "<group>"; };
 		714A50A3211C44D600F1CCEE /* TestScrollableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestScrollableViewController.h; sourceTree = "<group>"; };
 		714A50A4211C44D600F1CCEE /* TestScrollableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestScrollableViewController.m; sourceTree = "<group>"; };
 		714A50A6211C463900F1CCEE /* ScrollableDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScrollableDataSource.h; sourceTree = "<group>"; };
@@ -182,6 +188,8 @@
 				71B12A2F1EE1063500622A2E /* ViewController.m */,
 				7145F1422133E16F001FF2E4 /* TestTransitionDelegate.h */,
 				7145F1432133E16F001FF2E4 /* TestTransitionDelegate.m */,
+				7145F1452133E62F001FF2E4 /* TestTransitionAnimator.h */,
+				7145F1462133E62F001FF2E4 /* TestTransitionAnimator.m */,
 				71B12A311EE1063500622A2E /* Main.storyboard */,
 				71B12A341EE1063500622A2E /* Assets.xcassets */,
 				71B12A361EE1063500622A2E /* LaunchScreen.storyboard */,
@@ -208,6 +216,8 @@
 				714A50A7211C463900F1CCEE /* ScrollableDataSource.m */,
 				714A50A9211D844600F1CCEE /* TestScollableListViewController.h */,
 				714A50AA211D844600F1CCEE /* TestScollableListViewController.m */,
+				7145F1482133F686001FF2E4 /* UIImageView+WebImageCache.h */,
+				7145F1492133F686001FF2E4 /* UIImageView+WebImageCache.m */,
 			);
 			path = Test1;
 			sourceTree = "<group>";
@@ -453,6 +463,8 @@
 				7162AC8A1F0CB125006D3EA8 /* StringExtension.swift in Sources */,
 				710DDFBA1F46B57800D52E6B /* URLEncode.swift in Sources */,
 				71EA63EB20502C2300295761 /* UIImage+OpenCV.mm in Sources */,
+				7145F14A2133F686001FF2E4 /* UIImageView+WebImageCache.m in Sources */,
+				7145F1472133E62F001FF2E4 /* TestTransitionAnimator.m in Sources */,
 				713BC5EB1F2B2C5C001E4D10 /* TestBlockObject.m in Sources */,
 				71B12A2D1EE1063500622A2E /* AppDelegate.m in Sources */,
 				71B12A601EE1067000622A2E /* SubTestExtension.m in Sources */,
