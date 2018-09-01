@@ -39,6 +39,7 @@ static NSString * const GCD = @"GCD";
 static NSString * const Scrollable = @"Scrollable";
 static NSString * const Transition = @"Transition";
 static NSString * const MTURLProtocol = @"MTURLProtocol";
+static NSString * const TestDistance = @"TestDistance";
 static NSInteger OpenURLCount = 0;
 
 @interface ViewController () <NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate>
@@ -64,7 +65,8 @@ static NSInteger OpenURLCount = 0;
 - (instancetype)init
 {
   if (self = [super init]) {
-    _demos = @[Transition,
+    _demos = @[TestDistance,
+               Transition,
                Scrollable,
                WKWebViewStr,
                ImageStr,
@@ -238,6 +240,16 @@ static NSInteger OpenURLCount = 0;
     PresentingViewController *vc = [PresentingViewController new];
     vc.transitioningDelegate = self.transitionDelegate;
     [self presentViewController:vc animated:YES completion:nil];
+  }
+  else if ([_demos[indexPath.row] isEqualToString:TestDistance]) {
+    BOOL result =  [TestSwift testDistanceWithArray:@[@1, @2, @3, @1] k:3];
+    NSLog(result ? @"YES" : @"NO");
+
+    result = [TestSwift testDistanceWithArray:@[@1, @0, @1, @1] k:1];
+    NSLog(result ? @"YES" : @"NO");
+
+    result = [TestSwift testDistanceWithArray:@[@1, @2, @3, @1, @2, @3] k:2];
+    NSLog(result ? @"YES" : @"NO");
   }
 }
 

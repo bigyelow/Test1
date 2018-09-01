@@ -9,6 +9,27 @@
 import UIKit
 
 class TestSwift: NSObject {
+  static func testDistance(array: [Int], k: Int) -> Bool {
+    var tupleArray = [(Int, Int)]()
+    for (i, value) in array.enumerated() {
+      tupleArray.append((value, i))
+    }
+    tupleArray.sort { $0.0 < $1.0 }
+
+    for (i, tuple) in tupleArray.enumerated() {
+      if i == 0 {
+        continue
+      }
+
+      let lastTuple = tupleArray[i - 1]
+      if tuple.0 == lastTuple.0 && abs(tuple.1 - lastTuple.1) <= k  {
+        return true
+      }
+    }
+
+    return false
+  }
+
   static func test() {
     let string1 = "http://erobo.com?target=https%3A%2F%2Fclass.hujiang.com%2Fclasstopic%2Fdetail%2F92093%3Fch_campaign%3Dcls14412%26ch_source%3Doad_ydapplm_2_db2"
     let string2 = "bopen://m.taobao.com/tbopen/index.html?action=ali.open.nav&module=h5&source=alimama&appkey=24542003&backURL=&packageName=com.douban.frodo&visa=&h5Url=http%3A%2F%2Fmclick.simba.taobao.com%2Fcc_im%3Fp%3D%26s%3D1819449181%26k%3D448%26e%3DdoExlocZg3hyJXHLzvBMyUuD%252FAzu1ezeP6Z1GD1xzTWLcSY9UYaTzT%252BfYQeW3WSdbFfI9aV3Qp6SfdgmFC5J5T6X%252F23teVxydV2imyJHJKuNtTjX4IKMcqGyy1gHbizfEi9ao67Aij3GVw96n%252FWMNBv%252BTYoccR1gqzSrrioCcjAN6B6%252Bpan9BqGyy1gHbizfEi9ao67Aij3GVw96n%252FWMNIeylVWH6KtFdfSsxIhXIXc0cbpXyOmS%252BMLT9ptCuow2iLPs6G02%252FKmvzYkqZvcUl1cGgUTS8a8j%252Fmy%252B26kZa5WqQSfGa8yI5yduYxpvZtDaz1fllvvxWr8Dc58CFnQ9SFWMKFHJKlS9meoPOK%252BNP8xOKXLiro5oCg63KGXVY1Ih4sfI4EwAoT7Ppx8aAm%252FX8UVqcK21XjeXrvM%252BqJqwc05QlfmWCVqms6l11thomfLU%26clk1%3D0a672a11000059966134665200d7abb1"
