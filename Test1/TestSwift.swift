@@ -9,9 +9,9 @@
 import UIKit
 
 class TestSwift: NSObject {
-  static func testDistance(array: [Int], k: Int) -> Bool {
+  static func testDistance(nums: [Int], k: Int) -> Bool {
     var tupleArray = [(Int, Int)]()
-    for (i, value) in array.enumerated() {
+    for (i, value) in nums.enumerated() {
       tupleArray.append((value, i))
     }
     tupleArray.sort { $0.0 < $1.0 }
@@ -28,6 +28,18 @@ class TestSwift: NSObject {
     }
 
     return false
+  }
+
+  static func arrayPairSum(_ nums: [Int]) -> Int {
+    let sortedNums = nums.sorted()
+    var sum = 0
+    for (i, v) in sortedNums.enumerated() {
+      if i % 2 == 0 {
+        sum += v
+      }
+    }
+
+    return sum
   }
 
   static func test() {

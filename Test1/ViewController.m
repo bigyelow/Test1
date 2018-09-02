@@ -39,7 +39,7 @@ static NSString * const GCD = @"GCD";
 static NSString * const Scrollable = @"Scrollable";
 static NSString * const Transition = @"Transition";
 static NSString * const MTURLProtocol = @"MTURLProtocol";
-static NSString * const TestDistance = @"TestDistance";
+static NSString * const SimpleAlgorithmTest = @"SimpleAlgorithmTest";
 static NSInteger OpenURLCount = 0;
 
 @interface ViewController () <NSURLSessionTaskDelegate, NSURLSessionDataDelegate, UITableViewDelegate, UITableViewDataSource, WKNavigationDelegate>
@@ -65,7 +65,7 @@ static NSInteger OpenURLCount = 0;
 - (instancetype)init
 {
   if (self = [super init]) {
-    _demos = @[TestDistance,
+    _demos = @[SimpleAlgorithmTest,
                Transition,
                Scrollable,
                WKWebViewStr,
@@ -241,15 +241,20 @@ static NSInteger OpenURLCount = 0;
     vc.transitioningDelegate = self.transitionDelegate;
     [self presentViewController:vc animated:YES completion:nil];
   }
-  else if ([_demos[indexPath.row] isEqualToString:TestDistance]) {
-    BOOL result =  [TestSwift testDistanceWithArray:@[@1, @2, @3, @1] k:3];
+  else if ([_demos[indexPath.row] isEqualToString:SimpleAlgorithmTest]) {
+    // Test Distance
+    BOOL result =  [TestSwift testDistanceWithNums:@[@1, @2, @3, @1] k:3];
     NSLog(result ? @"YES" : @"NO");
 
-    result = [TestSwift testDistanceWithArray:@[@1, @0, @1, @1] k:1];
+    result = [TestSwift testDistanceWithNums:@[@1, @0, @1, @1] k:1];
     NSLog(result ? @"YES" : @"NO");
 
-    result = [TestSwift testDistanceWithArray:@[@1, @2, @3, @1, @2, @3] k:2];
+    result = [TestSwift testDistanceWithNums:@[@1, @2, @3, @1, @2, @3] k:2];
     NSLog(result ? @"YES" : @"NO");
+
+    // Test arrayPairSum
+    NSInteger sum = [TestSwift arrayPairSum:@[@1, @4, @3, @2]];
+    NSLog(@"sum = %@", @(sum));
   }
 }
 
